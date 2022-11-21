@@ -1,0 +1,50 @@
+[{
+        "symbol": "1INCH",
+        "name": "1inch",
+        "address": "",
+        "baseAddress": "0x443C5116CdF663Eb387e72C688D276e702135C87",
+        "image": ""
+    },
+    {
+        "symbol": "AAVE",
+        "name": "Aave",
+        "address": "",
+        "baseAddress": "0xbE23a3AA13038CfC28aFd0ECe4FdE379fE7fBfc4",
+        "image": ""
+    },
+    {
+        "symbol": "ADA",
+        "name": "Cardano",
+        "address": "",
+        "baseAddress": "0x882554df528115a743c4537828DA8D5B58e52544",
+        "image": ""
+    },
+    {
+        "symbol": "AGEUR",
+        "name": "Angle Protocol",
+        "address": "",
+        "baseAddress": "0x9b88d07B2354eF5f4579690356818e07371c7BeD",
+        "image": ""
+    },
+    {
+        "symbol": "ALCX",
+        "name": "Alchemix",
+        "address": "",
+        "baseAddress": "0x5DB6e61B6159B20F068dc15A47dF2E5931b14f29",
+        "image": ""
+    },
+    {
+        "symbol": "ALGO",
+        "name": "Algorand",
+        "address": "",
+        "baseAddress": "0x03Bc6D9EFed65708D35fDaEfb25E87631a0a3437",
+        "image": ""
+    },
+    {
+        "symbol": "ALPHA",
+        "name": "Alpha Finance",
+        "address": "",
+        "baseAddress": "0x289833F252eaB98582D62db94Bd75aB48AD9CF0D",
+        "image": ""
+    }
+]

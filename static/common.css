@@ -1,0 +1,42 @@
+@import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
+@font-face {
+    font-family: neue;
+    src: url('/fonts/neue.otf');
+}
+
+@font-face {
+    font-family: axiforma;
+    src: url('/fonts/axiforma.ttf');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: 'axiforma';
+    transition: .2s;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+section {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.app-width {
+    width: 1400px;
+    max-width: 90%;
+}
+
+.fi {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

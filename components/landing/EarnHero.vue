@@ -1,0 +1,93 @@
+<template>
+<section id="earn">
+    <div class="app-width">
+        <div class="tag">Earn from Liquidity + Up to 15% APY</div>
+        <div class="sweeper">
+            <div class="text">
+                <div>
+                    <h3>Provide Liquidity to Earn $MATIC + Up to 15% Annual Interest</h3>
+                    <p>You will earn $MATIC tokens for providing liquidity, and also earn upto 15% interest on it annually.</p>
+                </div>
+                <div class="action">Provide Liquidity</div>
+            </div>
+            <div class="image">
+                <img src="/images/swap.png" alt="">
+            </div>
+        </div>
+    </div>
+</section>
+</template>
+
+<style scoped>
+section {
+    padding: 80px;
+}
+
+.tag {
+    background: #fff;
+    border-radius: 20px;
+    padding: 10px 20px;
+    box-shadow: 0 0 10px #ccc;
+    font-size: 16px;
+    width: fit-content;
+    font-family: 'neue';
+}
+
+.sweeper {
+    margin-top: 40px;
+}
+
+.text {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 100px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text div:first-child {
+    width: 600px;
+    max-width: 100%;
+}
+
+.text h3 {
+    font-size: 40px;
+    line-height: 50px;
+    font-weight: 800;
+}
+
+.text p {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.action {
+    width: 220px;
+    height: 60px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    background: #e6e6e6;
+    color: #010101;
+    box-shadow: 2px 2px #010101;
+    border: 1px solid #010101;
+}
+
+.image {
+    width: 100%;
+    background: rgb(252, 197, 180);
+    border-radius: 10px;
+    margin-top: 60px;
+    padding: 60px;
+    display: flex;
+    justify-content: center;
+}
+
+.image img {
+    height: 550px;
+}
+</style>
