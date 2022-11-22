@@ -77,7 +77,7 @@ section {
     flex-wrap: wrap;
     width: 100%;
     padding: 150px 0;
-    min-height: 100vh;
+    min-height: 95vh;
 }
 
 .head {

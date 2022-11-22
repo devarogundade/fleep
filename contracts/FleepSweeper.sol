@@ -41,8 +41,7 @@ contract FleepSweeper {
                 tokens[index],
                 _fleepSwap.getNativePair(),
                 amount0,
-                pools[index],
-                0
+                pools[index]
             );
         }
 

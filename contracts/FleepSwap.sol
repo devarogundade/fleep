@@ -2,10 +2,12 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import {PriceApi} from "./PriceApi.sol";
+import {FleepToken} from "./FleepToken.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract FleepSwap {
     PriceApi private _priceApi;
+    FleepToken private _fleepToken;
 
     // contract admin
     address private _deployer;
@@ -79,12 +81,15 @@ contract FleepSwap {
 
     struct Provider {
         uint id;
+        uint256 totalEarned;
+        uint256 balance;
         uint[] liquids;
     }
 
     //  check the price of BNB/SUSHI
-    constructor(address priceApI) {
+    constructor(address priceApI, address fleepToken) {
         _priceApi = PriceApi(priceApI);
+        _fleepToken = FleepToken(fleepToken);
         _deployer = msg.sender;
     }
 
@@ -95,13 +100,49 @@ contract FleepSwap {
         return _priceApi.getExchangeRate(base, quote);
     }
 
+    // gets the exchanges rates for pair of tokens
+    // with accordance to amount of tokens
+    function estimate(
+        address token0,
+        address token1,
+        uint256 amount0
+    ) public view returns (uint256) {
+        int256 rate = _priceApi.getExchangeRate(pairs[token0], pairs[token1]);
+        return amount0 * uint256(rate);
+    }
+
+    // returns the pair address for $MATIC
+    function getNativePair() public view returns (address) {
+        return NATIVE_PAIR;
+    }
+
+    // register as a provider
+    function unlockedProviderAccount() public onlyGuest {
+        // to become a provider you must hodl at least 10
+        // of Fleep Token
+        require(
+            _fleepToken.balanceOf(msg.sender) >= 10**_fleepToken.getDecimals(),
+            "You must hodl at least 10 Fleep Tokens"
+        );
+
+        PROVIDER_ID++;
+        Provider memory provider = providers[msg.sender];
+        providers[msg.sender] = Provider(
+            PROVIDER_ID,
+            provider.totalEarned,
+            provider.balance,
+            provider.liquids
+        );
+    }
+
+    // === Swapping === //
+
     function swap(
         address token0,
         address token1,
         uint256 amount0,
-        uint poolId,
-        int256 uiExchangeRate
-    ) public returns (uint256) {
+        uint poolId
+    ) public payable returns (uint256) {
         require(amount0 < 100, "Amount to swap cannot be lesser than 100 WEI");
         require(
             pairs[token0] != address(0),
@@ -112,38 +153,85 @@ contract FleepSwap {
             "Pair does not exists, Contact admin"
         );
 
-        int256 rate = _priceApi.getExchangeRate(pairs[token0], pairs[token1]);
+        uint256 rate;
+        uint256 amount1;
 
-        // ingore user interface validation by setting uiExchangeRate to zero
-        if (uiExchangeRate > 0) {
-            // confirms the user interface is aware of the latest price
-            require(
-                rate == uiExchangeRate,
-                "Exchange rate has changed compare to last seen"
-            );
-        }
-
-        uint256 amount1 = amount0 * uint256(rate);
+        uint256 _safeAmount0 = amount0;
 
         require(pools[poolId].id > 0, "Pool does not exists");
 
-        IERC20 baseToken = IERC20(token0);
-        IERC20 quoteToken = IERC20(token1);
+        if (pairs[token0] == NATIVE_PAIR) {
+            _safeAmount0 = (msg.value - tx.gasprice);
+            rate = uint256(
+                _priceApi.getExchangeRate(NATIVE_PAIR, pairs[token1])
+            );
+            amount1 = _safeAmount0 * uint256(rate);
 
-        uint256 _balanceOfToken1 = quoteToken.balanceOf(address(this));
+            IERC20 quoteToken = IERC20(token1);
 
-        // check if contract has enough destination token liquid
-        require(_balanceOfToken1 >= amount1, "Insufficient Pool Size");
+            (, uint256 _balanceOfToken1) = _poolSize(poolId);
 
-        _aggregateLiquids(amount0, amount1, _balanceOfToken1, pools[poolId]);
+            // check if contract has enough destination token liquid
+            require(_balanceOfToken1 >= amount1, "Insufficient Pool Size");
 
-        _transferSwappedTokens(
-            baseToken,
-            quoteToken,
-            amount0,
-            amount1,
-            msg.sender
-        );
+            _aggregateLiquids(
+                amount0,
+                amount1,
+                _balanceOfToken1,
+                pools[poolId]
+            );
+
+            quoteToken.transfer(msg.sender, amount1);
+        } else if (pairs[token1] == NATIVE_PAIR) {
+            rate = uint256(
+                _priceApi.getExchangeRate(pairs[token0], NATIVE_PAIR)
+            );
+            amount1 = _safeAmount0 * uint256(rate);
+
+            IERC20 baseToken = IERC20(token0);
+            baseToken.approve(address(this), _safeAmount0);
+            baseToken.transferFrom(msg.sender, address(this), _safeAmount0);
+
+            (uint256 _balanceOfToken1, ) = _poolSize(poolId);
+            require(_balanceOfToken1 >= amount1, "Insufficient Pool Size");
+
+            _aggregateLiquids(
+                amount0,
+                amount1,
+                _balanceOfToken1,
+                pools[poolId]
+            );
+
+            payable(msg.sender).transfer(amount1);
+        } else {
+            rate = uint256(
+                _priceApi.getExchangeRate(pairs[token0], pairs[token1])
+            );
+            amount1 = _safeAmount0 * uint256(rate);
+
+            IERC20 baseToken = IERC20(token0);
+            IERC20 quoteToken = IERC20(token1);
+
+            (, uint256 _balanceOfToken1) = _poolSize(poolId);
+
+            // check if contract has enough destination token liquid
+            require(_balanceOfToken1 >= amount1, "Insufficient Pool Size");
+
+            _aggregateLiquids(
+                amount0,
+                amount1,
+                _balanceOfToken1,
+                pools[poolId]
+            );
+
+            _transferSwappedTokens(
+                baseToken,
+                quoteToken,
+                amount0,
+                amount1,
+                msg.sender
+            );
+        }
 
         // store the swap data on-chain
         emit FleepSwaped(amount0, amount1, token0, token1, block.timestamp);
@@ -151,9 +239,26 @@ contract FleepSwap {
         return amount1;
     }
 
+    // === Providers === //
+
+    function createPool(address token0, address token1)
+        public
+        onlyProvider
+        returns (uint)
+    {
+        // create pool id
+        POOL_ID++;
+        // create a new pool from struct
+        Pool memory pool = pools[POOL_ID];
+        // register the pool
+        pools[POOL_ID] = Pool(POOL_ID, token0, token1, pool.liquids);
+        return POOL_ID;
+    }
+
     function provideLiquidity(uint256 amount0, uint poolId)
         public
         payable
+        onlyProvider
         returns (uint256, uint256)
     {
         require(amount0 > 100, "Amount cannot be lesser than 100 WEI");
@@ -180,16 +285,20 @@ contract FleepSwap {
         if (pairs[token0] == NATIVE_PAIR) {
             // only in format of MATIC as pair subject
             // ex MATIC/XEND
-            _safeAmount0 = msg.value;
+            _safeAmount0 = (msg.value - tx.gasprice);
 
-            rate = uint256(_priceApi.getExchangeRate(pairs[token0], pairs[token1]));
+            rate = uint256(
+                _priceApi.getExchangeRate(pairs[token0], pairs[token1])
+            );
             amount1 = _safeAmount0 * uint256(rate);
 
             // swap involve native token
             IERC20 quoteToken = IERC20(token1);
             _nativeStake(quoteToken, amount1);
         } else {
-            rate = uint256(_priceApi.getExchangeRate(pairs[token0], pairs[token1]));
+            rate = uint256(
+                _priceApi.getExchangeRate(pairs[token0], pairs[token1])
+            );
             amount1 = _safeAmount0 * uint256(rate);
 
             // both tokens are ERC20
@@ -219,31 +328,37 @@ contract FleepSwap {
         return (_safeAmount0, amount1);
     }
 
-    function createPool(address token0, address token1) public returns (uint) {
-        // create pool id
-        POOL_ID++;
-        // create a new pool from struct
-        Pool memory pool = pools[POOL_ID];
-        // register the pool
-        pools[POOL_ID] = Pool(POOL_ID, token0, token1, pool.liquids);
+    function removeLiquidity(uint id) public onlyProvider {}
 
-        return (POOL_ID);
+    function withDrawEarnings(uint256 amount) public onlyProvider {
+        require(
+            providers[msg.sender].balance >= amount,
+            "Insufficient Balance"
+        );
+        providers[msg.sender].balance -= amount;
+        payable(msg.sender).transfer(amount);
     }
 
-    function estimate(
-        address token0,
-        address token1,
-        uint256 amount0
-    ) public view returns (uint256) {
-        int256 rate = _priceApi.getExchangeRate(pairs[token0], pairs[token1]);
-        return amount0 * uint256(rate);
+    // === Administration === //
+
+    function updateNativePair(address pair) public onlyDeployer {
+        require(pair != address(0), "Invalid Pair Address");
+        NATIVE_PAIR = pair;
     }
 
-    function getNativePair() public view returns (address) {
-        return NATIVE_PAIR;
+    function updateSwapFee(uint fee) public onlyDeployer {
+        require(fee > 0, "Platform fee cannot be zero");
+        require(fee < 100, "Platform fee cannot be a hundred");
+        swapFee = fee;
     }
 
-    // === Helpers === //
+    function createPair(address token, address pair) public onlyDeployer {
+        require(token != address(0), "Invalid Token Address");
+        require(pair != address(0), "Invalid Pair Address");
+        pairs[token] = pair;
+    }
+
+    // === Internal Functions === //
 
     function _liquidIndex(uint poolId, address provider)
         private
@@ -358,26 +473,30 @@ contract FleepSwap {
         token1.transferFrom(msg.sender, address(this), amount1);
     }
 
-    // === Administration === //
-
-    function updateNativePair(address pair) public onlyDeployer {
-        require(pair != address(0), "Invalid Pair Address");
-        NATIVE_PAIR = pair;
+    function _poolSize(uint id) private view returns (uint256, uint256) {
+        uint256 amount0;
+        uint256 amount1;
+        for (uint index = 0; index < pools[id].liquids.length; index++) {
+            uint liquidId = pools[id].liquids[index];
+            amount0 += liquids[liquidId].amount0;
+            amount1 += liquids[liquidId].amount1;
+        }
+        return (amount0, amount1);
     }
 
-    function updateSwapFee(uint fee) public onlyDeployer {
-        require(fee > 0, "Platform fee cannot be zero");
-        require(fee < 100, "Platform fee cannot be a hundred");
-        swapFee = fee;
-    }
-
-    function createPair(address token, address pair) public onlyDeployer {
-        require(token != address(0), "Invalid Token Address");
-        require(pair != address(0), "Invalid Pair Address");
-        pairs[token] = pair;
-    }
+    // function _distributeFees(Liquid[] memory liquids) private {}
 
     // === Modifiers === //
+
+    modifier onlyGuest() {
+        require(providers[msg.sender].id == 0, "Only Guest");
+        _;
+    }
+
+    modifier onlyProvider() {
+        require(providers[msg.sender].id != 0, "Only Provider");
+        _;
+    }
 
     modifier onlyDeployer() {
         require(msg.sender == _deployer, "Only Deployer");

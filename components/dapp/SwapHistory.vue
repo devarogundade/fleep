@@ -2,11 +2,11 @@
 <div class="picker">
     <div class="head">
         <i class="fi fi-rr-cross" v-on:click="$emit('close')"></i>
-        <h3>Select a token</h3>
+        <h3>Swap history</h3>
     </div>
     <div class="body">
         <div class="tokens">
-            <div class="token" v-for="token in tokens" :key="token.symbol" v-on:click="$emit('pick', token)">
+            <div class="token" v-for="token in tokens" :key="token.symbol">
                 <div class="left">
                     <img :src="token.image" alt="">
                     <p>{{ token.name }}</p>

@@ -35,7 +35,8 @@ export default {
     ],
 
     plugins: [
-        '@/plugins/BalanceApi.js'
+        '@/plugins/BalanceApi.js',
+        '@/plugins/LogsApi.js'
     ],
 
     modules: [

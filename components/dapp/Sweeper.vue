@@ -189,7 +189,7 @@ section {
 }
 
 .sweep {
-    min-height: 100vh;
+    min-height: 95vh;
     display: flex;
     flex-direction: column;
     align-items: center;

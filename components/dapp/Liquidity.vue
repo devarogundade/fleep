@@ -152,7 +152,7 @@ section {
     justify-content: center;
     padding: 150px 0;
     width: 100%;
-    min-height: 100vh;
+    min-height: 95vh;
 }
 
 .form {

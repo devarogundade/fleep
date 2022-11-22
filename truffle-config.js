@@ -27,7 +27,7 @@ module.exports = {
         mainnet: {
             provider: () => new HDWalletProvider(
                 MNEMONIC,
-                `https://rpc-mumbai.maticvigil.com/v1/${MATIC_RPC_ID}`
+                `https://rpc-mainnet.maticvigil.com/v1/${MATIC_RPC_ID}`
             ),
             network_id: 80001, // Polygon chain mainnet id
             confirmations: 2,

@@ -69,6 +69,90 @@ const FleepSwap = {
                 status: false
             }
         }
+    },
+    getPair: async function(token) {
+        const instance = await this.getInstance()
+        if (instance == null) return null
+
+        try {
+            return await instance.pairs(token)
+        } catch (error) {
+            return null
+        }
+    },
+    getPool: async function(id) {
+        const instance = await this.getInstance()
+        if (instance == null) return null
+
+        try {
+            return await instance.pools(id)
+        } catch (error) {
+            return null
+        }
+    },
+    getLiquid: async function(id) {
+        const instance = await this.getInstance()
+        if (instance == null) return null
+
+        try {
+            return await instance.liquids(id)
+        } catch (error) {
+            return null
+        }
+    },
+
+    // testing functions
+    createPair: async function(token0, token1, address) {
+        const instance = await this.getInstance()
+
+        if (instance == null) return {
+            message: 'Failed to Initialize',
+            error: null,
+            status: false
+        }
+
+        try {
+            const trx = await instance.createPair(token0, token1, {
+                from: address
+            })
+            return {
+                message: 'Transaction sent',
+                trx: trx,
+                status: true
+            }
+        } catch (error) {
+            return {
+                message: 'Transaction failed',
+                error: error,
+                status: false
+            }
+        }
+    },
+    updateNativePair: async function(pair, address) {
+        const instance = await this.getInstance()
+
+        if (instance == null) return {
+            message: 'Failed to Initialize',
+            error: null,
+            status: false
+        }
+
+        try {
+            const trx = await instance.updateNativePair(pair, {
+                from: address
+            })
+            return {
+                message: 'Transaction sent',
+                trx: trx,
+                status: true
+            }
+        } catch (error) {
+            return {
+                message: 'Transaction failed',
+                error: error,
+                status: false
+            }
+        }
     }
 }
 

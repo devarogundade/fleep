@@ -4,6 +4,7 @@
         <div class="swap">
             <div class="form">
                 <div class="toolbar">
+                    <i class="fi fi-rr-history" v-on:click="history = !history"></i>
                     <i class="fi fi-rr-refresh"></i>
                     <i class="fi fi-rr-settings"></i>
                 </div>
@@ -62,6 +63,7 @@
     </div>
 
     <TokenPicker v-if="picker" v-on:close="picker = false" v-on:pick="pickToken($event)" />
+    <SwapHistory v-if="history" v-on:close="history = false" />
 </section>
 </template>
 
@@ -72,6 +74,7 @@ export default {
     data() {
         return {
             picker: false,
+            history: false,
             pickCursor: "from",
             from: {
                 balance: 0,
@@ -152,7 +155,7 @@ section {
     justify-content: center;
     padding: 150px 0;
     width: 100%;
-    min-height: 100vh;
+    min-height: 95vh;
 }
 
 .form {

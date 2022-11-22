@@ -4,6 +4,7 @@
     <SwapHero />
     <SweepHero />
     <EarnHero />
+    <Faqs />
 </div>
 </template>
 
