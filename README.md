@@ -44,13 +44,13 @@ About fleep here
 - Heroku
 
 ## Roadmap
-   https://buidl.netlify.app/#roadmap
+   https://fleep-finance.netlify.app/#roadmap
 
 ## Tokenomics
    Total Supply: 1,000,000,000
    Token Name: Buidl Token
    Token Symbol: BDL
-   https://buidl.netlify.app/#bdl-token
+   https://fleep-finance.netlify.app/#bdl-token
 
 ## Contribution
 
