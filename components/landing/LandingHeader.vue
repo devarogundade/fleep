@@ -4,7 +4,7 @@
         <div class="header">
             <router-link to="/">
                 <div class="logo">
-                    <img src="/images/polygon.png" alt="">
+                    <img src="/images/logo.png" alt="">
                 </div>
             </router-link>
             <ul ref="menu">

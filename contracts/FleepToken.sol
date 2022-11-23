@@ -25,7 +25,7 @@ contract FleepToken is ERC20 {
         transfer(minter, amount);
     }
 
-    function getDecimals() public view returns (uint256) {
-        return 10**decimals();
+    function inWei(uint256 amount) public view returns (uint256) {
+        return amount * 10**decimals();
     }
 }

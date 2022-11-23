@@ -60,8 +60,6 @@
             </div>
         </div>
     </div>
-
-    <TokenPicker v-if="picker" v-on:close="picker = false" v-on:pick="pickToken($event)" />
 </section>
 </template>
 
@@ -91,6 +89,7 @@ export default {
                 },
             },
             rate: "•••",
+            poolId: this.$route.params.pool
         };
     },
     watch: {
@@ -100,7 +99,14 @@ export default {
             }
         },
     },
+    mounted() {
+        this.getPool()
+    },
     methods: {
+        getPool: async function () {
+            const response = await FleepSwap.getPool(this.poolId)
+            console.log(response);
+        },
         switchCursor: function (cursor) {
             this.picker = true;
             this.pickCursor = cursor;

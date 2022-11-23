@@ -5,15 +5,20 @@
             <div class="head">
                 <div class="toolbar">
                     <input type="text" placeholder="Search by name or address">
-                    <router-link to="/dapp/liquidity">
-                        <div class="add-liquid">Add Liquidity</div>
+                    <router-link to="/dapp/earnings">
+                        <div class="my-liquid">My Liquidities</div>
                     </router-link>
                 </div>
             </div>
             <div class="liquidities">
                 <div class="liquidity">
+                    <div class="images">
+                        <img>
+                        <img>
+                    </div>
                     <p class="name">Pair</p>
                     <p class="available">Available Pool Size</p>
+                    <p class="action"></p>
                 </div>
                 <div class="liquidity" v-for="(pool, index) in pools" :key="index">
                     <div class="images">
@@ -22,6 +27,11 @@
                     </div>
                     <p class="name">{{ `${poolToken(pool.token0).name} (${poolToken(pool.token0).symbol}) / ${poolToken(pool.token1).name} (${poolToken(pool.token1).symbol})` }}</p>
                     <p class="available">1.34 BTC / 3843 USDT</p>
+                    <div class="action">
+                        <router-link :to="`/dapp/liquidity/${pool.id}`">
+                            <div class="add-liquid">Add Liquidity</div>
+                        </router-link>
+                    </div>
                 </div>
             </div>
         </div>
@@ -143,8 +153,16 @@ section {
 .liquidity .available {
     margin-top: -4px;
     font-size: 16px;
-    width: 100%;
+    width: 400px;
     text-align: right;
+}
+
+.liquidity .action {
+    margin-top: -4px;
+    font-size: 16px;
+    width: 300px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .toolbar {
@@ -168,7 +186,7 @@ section {
     width: 100%;
 }
 
-.add-liquid {
+.my-liquid {
     width: 200px;
     display: flex;
     align-items: center;
@@ -177,5 +195,17 @@ section {
     height: 50px;
     border-radius: 20px;
     color: #fff;
+}
+
+.add-liquid {
+    width: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #cacfff;
+    height: 40px;
+    border-radius: 10px;
+    color: #000986;
+    font-size: 14px;
 }
 </style>

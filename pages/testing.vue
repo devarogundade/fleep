@@ -14,7 +14,7 @@
 
         <div class="update_native_pair">
             <input type="Pair Address" v-model="token0">
-            <button v-on:click="createPair()">Update Native Pair</button>
+            <button v-on:click="updateNativePair()">Update Native Pair</button>
         </div>
     </div>
 </section>

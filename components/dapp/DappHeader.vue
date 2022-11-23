@@ -5,7 +5,7 @@
             <div class="left">
                 <router-link to="/dapp">
                     <div class="logo">
-                        <img src="/images/polygon.png" alt="">
+                        <img src="/images/logo.png" alt="">
                     </div>
                 </router-link>
                 <div class="menu" ref="menu">

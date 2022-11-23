@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="button">
-                    <div class="action">Approve and Swap</div>
+                    <div class="action" v-on:click="swap()">Approve and Swap</div>
                     <p>Enter the amount of tokens you want to swap.</p>
                 </div>
 
@@ -68,21 +68,25 @@
 </template>
 
 <script>
+import Network from '~/static/scripts/Network';
 import FleepSwap from "../../static/scripts/FleepSwap";
+import testnetTokens from "../../static/tokens/testnet.json"
+import mainnetTokens from "../../static/tokens/mainnet.json"
 
 export default {
     data() {
         return {
             picker: false,
             history: false,
+            network: Network.current() == 'true',
             pickCursor: "from",
+            tokens: [],
             from: {
                 balance: 0,
                 amount: "",
                 token: {
-                    symbol: "Matic",
-                    baseAddress: "0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada",
-                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png"
+                    symbol: "Select",
+                    image: '',
                 },
             },
             to: {
@@ -100,8 +104,30 @@ export default {
         rate: function (_rate) {
             if (this.from.amount != "") {
                 this.to.amount = this.from.amount * _rate;
+
             }
         },
+        from: {
+            handler: function (_old, _from) {
+                if (this.rate != '' && this.rate != '•••') {
+                    this.to.amount = _from.amount * this.rate
+                }
+            },
+            deep: true
+        }
+    },
+    mounted() {
+        if (this.network) {
+            // mainnet
+            this.tokens = mainnetTokens
+        } else {
+            // testnet
+            this.tokens = testnetTokens
+        }
+
+        this.from.token = this.tokens[0]
+        this.to.token = this.tokens[1]
+        this.getExchangeRate()
     },
     methods: {
         switchCursor: function (cursor) {
@@ -122,9 +148,11 @@ export default {
             this.rate = "•••";
 
             const response = await FleepSwap.getExchangeRate(
-                this.from.token.baseAddress,
-                this.to.token.baseAddress
+                this.from.token.address,
+                this.to.token.address
             );
+
+            console.log(response);
 
             if (response.status) {
                 this.rate = response.rate / 10 ** 8;
@@ -139,6 +167,9 @@ export default {
 
             this.getExchangeRate();
         },
+        swap: async function() {
+
+        }
     },
 };
 </script>

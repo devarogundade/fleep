@@ -20,7 +20,17 @@ const FleepSwap = {
             return null
         }
     },
-    swap: async function(from, to, amount, uiExchangeRate = 0, userAddress) {
+    provider: async function(address) {
+        const instance = await this.getInstance()
+        if (instance == null) return null
+
+        try {
+            return await instance.providers(address)
+        } catch (error) {
+            return null
+        }
+    },
+    swap: async function(token0, token1, amount0, poolId) {
         const instance = await this.getInstance()
 
         if (instance == null) return {
@@ -30,7 +40,7 @@ const FleepSwap = {
         }
 
         try {
-            const trx = await instance.swap(from, to, amount, uiExchangeRate, {
+            const trx = await instance.swap(token0, token1, amount0, poolId, {
                 from: userAddress
             })
             return {
@@ -98,6 +108,33 @@ const FleepSwap = {
             return await instance.liquids(id)
         } catch (error) {
             return null
+        }
+    },
+    unlockProvider: async function(address) {
+        const instance = await this.getInstance()
+
+        if (instance == null) return {
+            message: 'Failed to Initialize',
+            error: null,
+            status: false
+        }
+
+        try {
+            const trx = await instance.unlockedProviderAccount({
+                from: address
+            })
+            return {
+                message: 'Transaction sent',
+                trx: trx,
+                status: true
+            }
+        } catch (error) {
+            console.log(error);
+            return {
+                message: 'Transaction failed',
+                error: error,
+                status: false
+            }
         }
     },
 

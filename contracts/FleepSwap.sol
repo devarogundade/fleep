@@ -96,8 +96,12 @@ contract FleepSwap {
     // gets the exchanges rates for pair of tokens
     // useful for user knowing the price of swap
     // before the actually perform a swap
-    function getRate(address base, address quote) public view returns (int256) {
-        return _priceApi.getExchangeRate(base, quote);
+    function getRate(address token0, address token1)
+        public
+        view
+        returns (int256)
+    {
+        return _priceApi.getExchangeRate(pairs[token0], pairs[token1]);
     }
 
     // gets the exchanges rates for pair of tokens
@@ -119,19 +123,18 @@ contract FleepSwap {
     // register as a provider
     function unlockedProviderAccount() public onlyGuest {
         // to become a provider you must hodl at least 10
-        // of Fleep Token
+        // tokens of Fleep Token
         require(
-            _fleepToken.balanceOf(msg.sender) >= 10**_fleepToken.getDecimals(),
+            _fleepToken.balanceOf(msg.sender) >= _fleepToken.inWei(10),
             "You must hodl at least 10 Fleep Tokens"
         );
 
         PROVIDER_ID++;
-        Provider memory provider = providers[msg.sender];
         providers[msg.sender] = Provider(
             PROVIDER_ID,
-            provider.totalEarned,
-            provider.balance,
-            provider.liquids
+            providers[msg.sender].totalEarned,
+            providers[msg.sender].balance,
+            providers[msg.sender].liquids
         );
     }
 
@@ -169,15 +172,15 @@ contract FleepSwap {
 
             IERC20 quoteToken = IERC20(token1);
 
-            (, uint256 _balanceOfToken1) = _poolSize(poolId);
+            (, uint256 poolSizeToken1) = _poolSize(poolId);
 
             // check if contract has enough destination token liquid
-            require(_balanceOfToken1 >= amount1, "Insufficient Pool Size");
+            require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
             _aggregateLiquids(
                 amount0,
                 amount1,
-                _balanceOfToken1,
+                poolSizeToken1,
                 pools[poolId]
             );
 
@@ -192,13 +195,13 @@ contract FleepSwap {
             baseToken.approve(address(this), _safeAmount0);
             baseToken.transferFrom(msg.sender, address(this), _safeAmount0);
 
-            (uint256 _balanceOfToken1, ) = _poolSize(poolId);
-            require(_balanceOfToken1 >= amount1, "Insufficient Pool Size");
+            (uint256 poolSizeToken1, ) = _poolSize(poolId);
+            require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
             _aggregateLiquids(
                 amount0,
                 amount1,
-                _balanceOfToken1,
+                poolSizeToken1,
                 pools[poolId]
             );
 
@@ -212,15 +215,15 @@ contract FleepSwap {
             IERC20 baseToken = IERC20(token0);
             IERC20 quoteToken = IERC20(token1);
 
-            (, uint256 _balanceOfToken1) = _poolSize(poolId);
+            (, uint256 poolSizeToken1) = _poolSize(poolId);
 
             // check if contract has enough destination token liquid
-            require(_balanceOfToken1 >= amount1, "Insufficient Pool Size");
+            require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
             _aggregateLiquids(
                 amount0,
                 amount1,
-                _balanceOfToken1,
+                poolSizeToken1,
                 pools[poolId]
             );
 
@@ -386,7 +389,7 @@ contract FleepSwap {
     function _aggregateLiquids(
         uint256 amount0,
         uint256 amount1,
-        uint256 _balanceOfToken1,
+        uint256 poolSizeToken1,
         Pool memory pool
     ) private {
         // equally share swap impact on all provider liquids based on their contribution
@@ -396,7 +399,7 @@ contract FleepSwap {
             // calculated with ratio of this liquid compared
             // to other liquids contributing
             uint256 additionAmount = ((liquids[liquidId].amount1 * amount0) /
-                _balanceOfToken1);
+                poolSizeToken1);
 
             // step I
             liquids[liquidId].amount0 += additionAmount;
@@ -404,7 +407,7 @@ contract FleepSwap {
             // calculated with ratio of this liquid compared
             // to other liquids contributing
             uint256 deductionAmount = ((liquids[liquidId].amount1 * amount1) /
-                _balanceOfToken1);
+                poolSizeToken1);
 
             // step II
             liquids[liquidId].amount1 -= deductionAmount;
