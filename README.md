@@ -33,8 +33,8 @@ About fleep here
 
 ## Demo
 
-- See mode at https://buidl.netflify.app/
-- Buidl Token Faucet https://buidl.netlify.app/mint
+- See mode at https://fleep-finance.netflify.app/
+- Faucet https://fleep-finance.netlify.app/faucet
 
 ## Sneak peaks
    
@@ -47,7 +47,7 @@ About fleep here
    https://buidl.netlify.app/#roadmap
 
 ## Tokenomics
-   Total Supply: 10,000,000,000
+   Total Supply: 1,000,000,000
    Token Name: Buidl Token
    Token Symbol: BDL
    https://buidl.netlify.app/#bdl-token
