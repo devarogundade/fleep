@@ -17,7 +17,7 @@
                             <router-link :class="$route.name == 'dapp-sweep' ? 'active' : ''" to="/dapp/sweep">Sweep Dust</router-link>
                         </li>
                         <li>
-                            <router-link :class="($route.name == 'dapp-pools' || $route.name == 'dapp-liquidity') ? 'active' : ''" to="/dapp/pools">Pools</router-link>
+                            <router-link :class="($route.name == 'dapp-pools' || $route.name == 'dapp-liquidity-pool') ? 'active' : ''" to="/dapp/pools">Pools</router-link>
                         </li>
                         <li>
                             <router-link :class="$route.name == 'dapp-earnings' ? 'active' : ''" to="/dapp/earnings">Earnings</router-link>

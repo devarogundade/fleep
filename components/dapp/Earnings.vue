@@ -31,6 +31,7 @@
 <script>
 import Authenticate from '~/static/scripts/Authenticate'
 import FleepSwap from '~/static/scripts/FleepSwap'
+import FleepVault from '~/static/scripts/FleepVault'
 import Network from '~/static/scripts/Network'
 
 export default {
@@ -46,7 +47,7 @@ export default {
     },
     methods: {
         getUser: async function () {
-            const address = await (await Authenticate.getUserAddress(this.network)).address
+            const address = (await Authenticate.getUserAddress(this.network)).address
             const response = await FleepSwap.provider(address)
             const user = {
                 id: Number(response.id),
@@ -61,7 +62,10 @@ export default {
             this.booting = false
         },
         getStarted: async function () {
-            const address = await (await Authenticate.getUserAddress(this.network)).address
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            const wallet = await FleepVault.createWallet()
+            if (!wallet.status) return
+
             await FleepSwap.unlockProvider(address)
             this.getUser(address)
         }

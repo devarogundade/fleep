@@ -104,7 +104,6 @@ export default {
         rate: function (_rate) {
             if (this.from.amount != "") {
                 this.to.amount = this.from.amount * _rate;
-
             }
         },
         from: {

@@ -6,10 +6,17 @@
             <p>Token1: {{ token1 }}</p>
             <p>Last Response: {{ response }}</p>
         </div>
+
         <div class="create_pair">
             <input type="Token Address" v-model="token0">
             <input type="Pair Address" v-model="token1">
             <button v-on:click="createPair()">Create Pair</button>
+        </div>
+
+        <div class="create_pool">
+            <input type="Token 0" v-model="token0">
+            <input type="Token 1" v-model="token1">
+            <button v-on:click="createPool()">Create Pool</button>
         </div>
 
         <div class="update_native_pair">
@@ -23,7 +30,9 @@
 <script>
 import Authenticate from '~/static/scripts/Authenticate'
 import FleepSwap from '~/static/scripts/FleepSwap'
+import FleepVault from '~/static/scripts/FleepVault'
 import Network from '~/static/scripts/Network'
+
 export default {
     layout: 'dapp',
     data() {
@@ -34,13 +43,20 @@ export default {
             network: Network.current() == 'true'
         }
     },
+    async mounted() {
+        await FleepVault.createWallet()
+    },
     methods: {
         createPair: async function () {
-            const address = await (await Authenticate.getUserAddress(this.network)).address
+            const address = (await Authenticate.getUserAddress(this.network)).address
             this.response = await FleepSwap.createPair(this.token0, this.token1, address)
         },
+        createPool: async function () {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            this.response = await FleepSwap.createPool(this.token0, this.token1, address)
+        },
         updateNativePair: async function () {
-            const address = await (await Authenticate.getUserAddress(this.network)).address
+            const address = (await Authenticate.getUserAddress(this.network)).address
             this.response = await FleepSwap.updateNativePair(this.token0, address)
         }
     }

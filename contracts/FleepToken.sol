@@ -4,14 +4,14 @@ pragma solidity >=0.7.0 <0.9.0;
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract FleepToken is ERC20 {
-    uint256 private MAX_ALLOCATION = 50 * 10**decimals();
+    uint256 private MAX_ALLOCATION = inWei(50);
 
     // user address => minted amount
     mapping(address => uint) public allocations;
 
     constructor() ERC20("Fleep Token", "FLP") {
-        _mint(msg.sender, 50000000 * 10**decimals());
-        _mint(address(this), 50000000 * 10**decimals());
+        _mint(msg.sender, inWei(50000000));
+        _mint(address(this), inWei(50000000));
     }
 
     // faucet minting for testing purposes

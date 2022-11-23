@@ -46,4 +46,14 @@ export default {
     axios: {
         baseURL: '/',
     },
+
+    build: {
+        extend(config, {}) {
+            config.node = {
+                fs: 'empty',
+                net: 'empty',
+                express: 'empty'
+            }
+        }
+    },
 }

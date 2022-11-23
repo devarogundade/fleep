@@ -129,7 +129,33 @@ const FleepSwap = {
                 status: true
             }
         } catch (error) {
-            console.log(error);
+            return {
+                message: 'Transaction failed',
+                error: error,
+                status: false
+            }
+        }
+    },
+    createPool: async function(token0, token1, address) {
+        const instance = await this.getInstance()
+
+        if (instance == null) return {
+            message: 'Failed to Initialize',
+            error: null,
+            status: false
+        }
+
+        try {
+            const trx = await instance.createPool(token0, token1, {
+                from: address
+            })
+
+            return {
+                message: 'Transaction sent',
+                trx: trx,
+                status: true
+            }
+        } catch (error) {
             return {
                 message: 'Transaction failed',
                 error: error,

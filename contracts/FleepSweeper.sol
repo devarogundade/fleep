@@ -6,12 +6,7 @@ import {FleepSwap} from "./FleepSwap.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract FleepSweeper {
-    address private _deployer;
     FleepSwap private _fleepSwap;
-
-    // charges 1% fee on every successful
-    // sweeps
-    uint private sweepFee = 1;
 
     // registers every successful swap
     event FleepSweeped(
@@ -29,8 +24,9 @@ contract FleepSweeper {
         public
         returns (uint256)
     {
-        uint256 amount1;
+        require(tokens.length == pools.length, "Tokens and Pools Must Map");
 
+        uint256 amount1;
         for (uint index = 0; index < tokens.length; index++) {
             if (tokens[index] == address(0)) continue;
 
@@ -49,7 +45,8 @@ contract FleepSweeper {
     }
 
     function estimate(address[] memory tokens, address wallet)
-        public view
+        public
+        view
         returns (uint256)
     {
         uint256 amount1;
@@ -68,16 +65,5 @@ contract FleepSweeper {
         }
 
         return amount1;
-    }
-
-    function updateSweepFee(uint fee) public onlyDeployer {
-        require(fee > 0, "Platform fee cannot be zero");
-        require(fee < 100, "Platform fee cannot be a hundred");
-        sweepFee = fee;
-    }
-
-    modifier onlyDeployer() {
-        require(msg.sender == _deployer, "Only Deployer");
-        _;
     }
 }

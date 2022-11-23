@@ -9,7 +9,7 @@
                 </div>
                 <div class="entity">
                     <div class="label">
-                        <p>From</p>
+                        <p>Base</p>
                         <p>Available: {{ from.balance }}</p>
                     </div>
                     <div class="input">
@@ -18,19 +18,19 @@
                                 <img :src="from.token.image" alt="" />
                                 <p class="symbol">{{ from.token.symbol }}</p>
                             </div>
-                            <i class="fi fi-rr-angle-small-down"></i>
+                            <!-- <i class="fi fi-rr-angle-small-down"></i> -->
                         </div>
                         <input v-model="from.amount" type="number" placeholder="0" />
                     </div>
                 </div>
 
                 <div class="switch">
-                    <i class="fi fi-rr-sort-alt" v-on:click="switchTokens()"></i>
+                    <!-- <i class="fi fi-rr-sort-alt" v-on:click="switchTokens()"></i> -->
                 </div>
 
                 <div class="entity">
                     <div class="label">
-                        <p>To</p>
+                        <p>Quote</p>
                         <p>Available: {{ to.balance }}</p>
                     </div>
                     <div class="input">
@@ -39,7 +39,7 @@
                                 <img :src="to.token.image" alt="" />
                                 <p class="symbol">{{ to.token.symbol }}</p>
                             </div>
-                            <i class="fi fi-rr-angle-small-down"></i>
+                            <!-- <i class="fi fi-rr-angle-small-down"></i> -->
                         </div>
                         <input v-model="to.amount" type="number" placeholder="0" disabled />
                     </div>
@@ -51,7 +51,7 @@
 
                 <div class="button">
                     <div class="action">Add Liquidity</div>
-                    <p>Enter the amount of tokens you want to swap.</p>
+                    <p>Enter the amount of tokens you want to provide.</p>
                 </div>
 
                 <div class="divider"></div>
@@ -65,6 +65,11 @@
 
 <script>
 import FleepSwap from "../../static/scripts/FleepSwap";
+import mainnetPools from "../../static/pools/mainnet.json"
+import testnetPools from "../../static/pools/testnet.json"
+import testnetTokens from "../../static/tokens/testnet.json"
+import mainnetTokens from "../../static/tokens/mainnet.json"
+import Network from "../../static/scripts/Network"
 
 export default {
     data() {
@@ -75,9 +80,8 @@ export default {
                 balance: 0,
                 amount: "",
                 token: {
-                    symbol: "Matic",
-                    baseAddress: "0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada",
-                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png"
+                    symbol: "Select",
+                    image: '',
                 },
             },
             to: {
@@ -89,7 +93,9 @@ export default {
                 },
             },
             rate: "•••",
-            poolId: this.$route.params.pool
+            poolId: this.$route.params.pool,
+            pool: null,
+            network: Network.current() == 'true'
         };
     },
     watch: {
@@ -98,8 +104,34 @@ export default {
                 this.to.amount = this.from.amount * _rate;
             }
         },
+        from: {
+            handler: function (_old, _from) {
+                if (this.rate != '' && this.rate != '•••') {
+                    this.to.amount = _from.amount * this.rate
+                }
+            },
+            deep: true
+        }
     },
     mounted() {
+        let pools, tokens;
+        if (this.network) {
+            // mainnet
+            pools = mainnetPools
+            tokens = mainnetTokens
+        } else {
+            // testnet
+            pools = testnetPools
+            tokens = testnetTokens
+        }
+
+        this.pool = pools.filter(p => p.id == this.poolId)[0]
+        console.log(this.pool);
+
+        this.from.token = tokens.filter(t => t.address == this.pool.token0)[0]
+        this.to.token = tokens.filter(t => t.address == this.pool.token1)[0]
+
+        this.getExchangeRate()
         this.getPool()
     },
     methods: {
@@ -125,22 +157,15 @@ export default {
             this.rate = "•••";
 
             const response = await FleepSwap.getExchangeRate(
-                this.from.token.baseAddress,
-                this.to.token.baseAddress
+                this.from.token.address,
+                this.to.token.address
             );
+
+            console.log(response);
 
             if (response.status) {
                 this.rate = response.rate / 10 ** 8;
             }
-        },
-        switchTokens: function () {
-            let tempFrom = this.from;
-
-            this.from = this.to;
-            this.to = tempFrom;
-            tempFrom = null;
-
-            this.getExchangeRate();
         },
     },
 };

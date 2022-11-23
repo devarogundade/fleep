@@ -5,7 +5,7 @@ dotenv.config()
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
-const XendVault = {
+const FleepVault = {
     instance: null,
     getInstance: async function(network = false) {
         if (this.instance != null) return this.instance
@@ -16,6 +16,29 @@ const XendVault = {
             return this.instance
         } catch (error) {
             return null
+        }
+    },
+    createWallet: async function() {
+        const instance = await this.getInstance()
+        if (instance == null) return {
+            status: false,
+            error: null,
+            message: 'Failed to initialize'
+        }
+
+        try {
+            const wallet = await instance.createWallet()
+            return {
+                status: this,
+                wallet: wallet,
+                message: 'Failed'
+            }
+        } catch (error) {
+            return {
+                status: false,
+                error: error,
+                message: 'Failed'
+            }
         }
     },
     deposit: async function(amount) {
@@ -39,4 +62,4 @@ const XendVault = {
     }
 }
 
-export default XendVault
+export default FleepVault
