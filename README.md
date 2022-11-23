@@ -50,7 +50,7 @@ About fleep here
    Total Supply: 1,000,000,000
    Token Name: Buidl Token
    Token Symbol: BDL
-   https://fleep-finance.netlify.app/#bdl-token
+   https://fleep-finance.netlify.app/#flp-token
 
 ## Contribution
 
