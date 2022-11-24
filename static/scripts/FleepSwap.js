@@ -30,7 +30,7 @@ const FleepSwap = {
             return null
         }
     },
-    swap: async function(token0, token1, amount0, poolId) {
+    swap: async function(token0, token1, amount0, address) {
         const instance = await this.getInstance()
 
         if (instance == null) return {
@@ -40,8 +40,8 @@ const FleepSwap = {
         }
 
         try {
-            const trx = await instance.swap(token0, token1, amount0, poolId, {
-                from: userAddress
+            const trx = await instance.swap(token0, token1, amount0, {
+                from: address
             })
             return {
                 message: 'Transaction Hash',

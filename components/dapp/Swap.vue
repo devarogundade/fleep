@@ -85,7 +85,7 @@ export default {
             tokens: [],
             from: {
                 balance: 0,
-                amount: "",
+                amount: "0.00000000000000005",
                 token: {
                     symbol: "Select",
                     image: '',
@@ -171,7 +171,12 @@ export default {
             this.getExchangeRate();
         },
         swap: async function () {
+            if (this.from.amount == '' || this.to.amount == '') return
+            const address = (await Authenticate.getUserAddress(this.network)).address
 
+            console.log(Utils.toWei(this.from.amount));
+            const response = await FleepSwap.swap(this.from.token.address, this.to.token.address, Utils.toWei(this.from.amount), address)
+            console.log(response);
         },
         getBalance: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address

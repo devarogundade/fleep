@@ -99,7 +99,7 @@ contract FleepSwap {
     function getRate(address token0, address token1)
         public
         view
-        returns (int256)
+        returns (uint256)
     {
         return estimate(pairs[token0], pairs[token1], 1);
     }
@@ -145,7 +145,7 @@ contract FleepSwap {
         address token1,
         uint256 amount0
     ) public payable returns (uint256) {
-        require(amount0 < 100, "Amount to swap cannot be lesser than 100 WEI");
+        require(amount0 >= 100, "Amount to swap cannot be lesser than 100 WEI");
         require(
             pairs[token0] != address(0),
             "Pair does not exists, Contact admin"
@@ -249,7 +249,7 @@ contract FleepSwap {
         onlyProvider
         returns (uint256, uint256)
     {
-        require(amount0 > 100, "Amount cannot be lesser than 100 WEI");
+        require(amount0 >= 100, "Amount cannot be lesser than 100 WEI");
 
         address token0 = pools[poolId].token0;
         address token1 = pools[poolId].token1;

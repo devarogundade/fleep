@@ -7,7 +7,7 @@ contract FleepToken is ERC20 {
     uint256 private MAX_ALLOCATION = inWei(50);
 
     // user address => minted amount
-    mapping(address => uint) public allocations;
+    mapping(address => uint256) public allocations;
 
     constructor() ERC20("Fleep Token", "FLP") {
         _mint(msg.sender, inWei(50000000));
@@ -15,14 +15,15 @@ contract FleepToken is ERC20 {
     }
 
     // faucet minting for testing purposes
-    function faucet(address minter, uint256 amount) public {
+    function faucet(uint256 amount) public {
         require(amount > 0, "Amount cannot be zero");
         require(
-            allocations[minter] + amount < MAX_ALLOCATION,
+            allocations[msg.sender] + amount < MAX_ALLOCATION,
             "Cant Mint More Tokens"
         );
-        allocations[minter] += amount;
-        transfer(minter, amount);
+        allocations[msg.sender] += amount;
+        _approve(address(this), msg.sender, amount);
+        transferFrom(address(this), msg.sender, amount);
     }
 
     function inWei(uint256 amount) public view returns (uint256) {

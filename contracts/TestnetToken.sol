@@ -7,21 +7,23 @@ contract TestnetToken is ERC20 {
     uint256 private MAX_ALLOCATION = inWei(10000);
 
     // user address => minted amount
-    mapping(address => uint) public allocations;
+    mapping(address => uint256) public allocations;
 
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {
-        _mint(address(this), inWei(10000000000));
+        _mint(msg.sender, inWei(50000000000));
+        _mint(address(this), inWei(50000000000));
     }
 
     // faucet minting for testing purposes
-    function faucet(address minter, uint256 amount) public {
+    function faucet(uint256 amount) public {
         require(amount > 0, "Amount cannot be zero");
         require(
-            allocations[minter] + amount < MAX_ALLOCATION,
+            allocations[msg.sender] + amount < MAX_ALLOCATION,
             "Cant Mint More Tokens"
         );
-        allocations[minter] += amount;
-        transfer(minter, amount);
+        allocations[msg.sender] += amount;
+        _approve(address(this), msg.sender, amount);
+        transferFrom(address(this), msg.sender, amount);
     }
 
     function inWei(uint256 amount) private view returns (uint256) {
