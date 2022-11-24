@@ -2,9 +2,8 @@
 <section>
     <div class="app-width">
         <div class="creator">
-            <img src="/images/creator.jfif" alt="">
             <div class="flex">
-                <p>Created by <a target="_blank" href="https://linktr.ee/devarogundade">DevArogundade</a></p>
+                <p><img src="/images/creator.jfif" alt=""> <a target="_blank" href="https://linktr.ee/devarogundade">DevArogundade</a> </p>
                 <p>•</p>
                 <p><a target="_blank" href="https://github.com/devarogundade/fleep">GitHub Link</a></p>
                 <p>•</p>
@@ -61,5 +60,12 @@ a {
 
 i {
     margin-top: 6px;
+}
+
+@media screen and (max-width: 700px) {
+    .flex {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 </style>

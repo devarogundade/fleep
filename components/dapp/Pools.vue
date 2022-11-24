@@ -45,6 +45,7 @@ import mainnetTokens from "../../static/tokens/mainnet.json"
 import mainnetPools from "../../static/pools/mainnet.json"
 import testnetPools from "../../static/pools/testnet.json"
 import Network from "../../static/scripts/Network"
+import FleepSwap from '~/static/scripts/FleepSwap'
 
 export default {
     data() {
@@ -64,10 +65,16 @@ export default {
             this.tokens = testnetTokens
             this.pools = testnetPools
         }
+
+        this.findPool(1)
     },
     methods: {
         poolToken: function (address) {
             return this.tokens.filter(token => token.address == address)[0]
+        },
+        findPool: async function (poolId) {
+            const pool = await FleepSwap.getPool(poolId)
+            console.log(pool);
         }
     }
 }

@@ -178,6 +178,14 @@ section h3 {
 }
 
 @media screen and (max-width: 700px) {
+    section {
+        padding: 50px 0;
+    }
+
+    section h3 {
+        font-size: 30px;
+    }
+
     .items {
         margin-top: 60px;
     }

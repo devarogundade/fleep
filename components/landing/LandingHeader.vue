@@ -118,6 +118,11 @@ li a {
     .header {
         justify-content: space-between;
         gap: 10px;
+        /* height: 120px; */
+    }
+
+    .blur {
+        height: 65px;
     }
 
     .action {

@@ -8,22 +8,17 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract FleepSweeper {
     FleepSwap private _fleepSwap;
 
-    // registers every successful swap
-    event FleepSweeped(
-        uint256 amount,
-        uint256 amountOut,
-        address from,
-        uint timestamp
-    );
+    // === Events === //
 
+    event FleepSweeped(uint256 amount, address from, uint timestamp);
+
+    // initialize dependencies
     constructor(address fleepSwap) {
         _fleepSwap = FleepSwap(fleepSwap);
     }
 
-    function sweep(address[] memory tokens)
-        public
-        returns (uint256)
-    {
+    // recursively swap every tokens for matic
+    function sweep(address[] memory tokens) public returns (uint256) {
         uint256 amount1;
         for (uint index = 0; index < tokens.length; index++) {
             if (tokens[index] == address(0)) continue;
@@ -31,12 +26,19 @@ contract FleepSweeper {
             IERC20 token = IERC20(tokens[index]);
             uint256 amount0 = token.balanceOf(msg.sender);
 
+            // amount cannot be lesser than 100 WEI
+            if (amount0 < 100) continue;
+
+            // swap
             amount1 += _fleepSwap.swap(
                 tokens[index],
                 _fleepSwap.getNativePair(),
                 amount0
             );
         }
+
+        // registers every successful sweeps
+        emit FleepSweeped(amount1, msg.sender, block.timestamp);
 
         return amount1;
     }

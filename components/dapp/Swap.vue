@@ -85,7 +85,7 @@ export default {
             tokens: [],
             from: {
                 balance: 0,
-                amount: "0.00000000000000005",
+                amount: "",
                 token: {
                     symbol: "Select",
                     image: '',

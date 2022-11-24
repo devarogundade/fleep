@@ -17,7 +17,6 @@
                     <img src="/images/polygon.png" alt="">
                     <img src="/images/chainlink.png" alt="">
                     <img src="/images/xend.svg" alt="">
-                    <img src="/images/switchwallet.svg" alt="">
                 </div>
             </div>
         </div>
@@ -100,6 +99,7 @@ section {
 
 .images {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 20px;
     margin-top: 10px;
@@ -107,5 +107,27 @@ section {
 
 .images img {
     height: 40px;
+}
+
+@media screen and (max-width: 700px) {
+    .hero {
+        padding-top: 150px;
+    }
+
+    .powered {
+        margin-top: 100px;
+    }
+
+    .hero_title,
+    .hero_title span {
+        font-size: 40px;
+        line-height: 50px;
+    }
+
+    .hero_subtitle {
+        margin-top: 24px;
+        font-size: 22px;
+        font-weight: 600;
+    }
 }
 </style>

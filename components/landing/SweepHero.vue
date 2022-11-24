@@ -99,4 +99,42 @@ section {
 .image img {
     height: 550px;
 }
+
+@media screen and (max-width: 700px) {
+    section {
+        padding: 40px 0;
+    }
+
+    .sweeper {
+        margin-top: 20px;
+    }
+
+    .text {
+        gap: 40px;
+    }
+
+    .text h3 {
+        font-size: 26px;
+        line-height: 36px;
+    }
+
+    .text p {
+        font-size: 16px;
+    }
+
+    .image {
+        padding: 30px;
+    }
+
+    .image img {
+        height: unset;
+        width: 100%;
+    }
+
+    .action {
+        width: 200px;
+        height: 50px;
+        font-size: 16px;
+    }
+}
 </style>

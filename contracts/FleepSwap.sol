@@ -104,6 +104,17 @@ contract FleepSwap {
         return estimate(pairs[token0], pairs[token1], 1);
     }
 
+    // calculates all the size of the liquids
+    // in a pool of token pair
+    function getPoolSize(address token0, address token1)
+        public
+        view
+        returns (uint256, uint256)
+    {
+        uint poolId = _findPool(token0, token1);
+        return _poolSize(poolId);
+    }
+
     // gets the exchanges rates for pair of tokens
     // with accordance to amount of tokens
     function estimate(
@@ -177,9 +188,16 @@ contract FleepSwap {
             // check if contract has enough destination token liquid
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
-            _aggregateLiquids(amount0, amount1, poolSizeToken1, pools[poolId]);
+            uint256 fee = _transferSwappedTokens0(quoteToken, amount1);
+            uint256 providersReward = ((fee * 80) / 100);
 
-            quoteToken.transfer(msg.sender, amount1);
+            _aggregateLiquids(
+                amount0,
+                amount1,
+                poolSizeToken1,
+                pools[poolId],
+                providersReward
+            );
         } else if (pairs[token1] == NATIVE_PAIR) {
             rate = uint256(
                 _priceApi.getExchangeRate(pairs[token0], NATIVE_PAIR)
@@ -193,9 +211,16 @@ contract FleepSwap {
             (uint256 poolSizeToken1, ) = _poolSize(poolId);
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
-            _aggregateLiquids(amount0, amount1, poolSizeToken1, pools[poolId]);
+            uint256 fee = _transferSwappedTokens1(amount1);
+            uint256 providersReward = ((fee * 80) / 100);
 
-            payable(msg.sender).transfer(amount1);
+            _aggregateLiquids(
+                amount0,
+                amount1,
+                poolSizeToken1,
+                pools[poolId],
+                providersReward
+            );
         } else {
             rate = uint256(
                 _priceApi.getExchangeRate(pairs[token0], pairs[token1])
@@ -210,14 +235,21 @@ contract FleepSwap {
             // check if contract has enough destination token liquid
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
-            _aggregateLiquids(amount0, amount1, poolSizeToken1, pools[poolId]);
-
-            _transferSwappedTokens(
+            uint256 fee = _transferSwappedTokens2(
                 baseToken,
                 quoteToken,
                 amount0,
                 amount1,
                 msg.sender
+            );
+            uint256 providersReward = ((fee * 80) / 100);
+
+            _aggregateLiquids(
+                amount0,
+                amount1,
+                poolSizeToken1,
+                pools[poolId],
+                providersReward
             );
         }
 
@@ -375,7 +407,8 @@ contract FleepSwap {
         uint256 amount0,
         uint256 amount1,
         uint256 poolSizeToken1,
-        Pool memory pool
+        Pool memory pool,
+        uint256 fee
     ) private {
         // equally share swap impact on all provider liquids based on their contribution
         for (uint index = 0; index < pool.liquids.length; index++) {
@@ -396,16 +429,48 @@ contract FleepSwap {
 
             // step II
             liquids[liquidId].amount1 -= deductionAmount;
+
+            // reward the liquid provider
+            uint256 reward = ((liquids[liquidId].amount1 * fee) /
+                poolSizeToken1);
+
+            providers[liquids[liquidId].provider].totalEarned += reward;
+            providers[liquids[liquidId].provider].balance += reward;
         }
     }
 
-    function _transferSwappedTokens(
+    function _transferSwappedTokens0(IERC20 token1, uint256 amount1)
+        private
+        returns (uint256)
+    {
+        uint256 _fee = ((amount1 / 100) * swapFee);
+
+        // give user their destination token minus fee
+        token1.transfer(msg.sender, (amount1 - _fee));
+
+        // convert fee to matic
+        return estimate(address(token1), NATIVE_PAIR, _fee);
+    }
+
+    function _transferSwappedTokens1(uint256 amount1)
+        public
+        payable
+        returns (uint256)
+    {
+        uint256 _fee = ((amount1 / 100) * swapFee);
+
+        // give user their destination token minus fee
+        payable(msg.sender).transfer(amount1 - _fee);
+        return _fee;
+    }
+
+    function _transferSwappedTokens2(
         IERC20 token0,
         IERC20 token1,
         uint256 amount0,
         uint256 amount1,
         address owner
-    ) private {
+    ) private returns (uint256) {
         uint256 _fee = ((amount1 / 100) * swapFee);
 
         // tranfers the base token from user to the
@@ -415,9 +480,16 @@ contract FleepSwap {
 
         // give user their destination token minus fee
         token1.transfer(owner, (amount1 - _fee));
+
+        // convert fee to matic
+        return estimate(address(token1), NATIVE_PAIR, _fee);
     }
 
-    function _findPool(address token0, address token1) private view returns (uint) {
+    function _findPool(address token0, address token1)
+        private
+        view
+        returns (uint)
+    {
         require(token0 != address(0) && token1 != address(0), "Invalid");
         for (uint index = 0; index <= POOL_ID; index++) {
             if (
@@ -489,8 +561,6 @@ contract FleepSwap {
         }
         return (amount0, amount1);
     }
-
-    // function _distributeFees(Liquid[] memory liquids) private {}
 
     // === Modifiers === //
 

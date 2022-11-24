@@ -26,7 +26,6 @@
                 <div class="form">
                     <div class="toolbar">
                         <i class="fi fi-rr-refresh"></i>
-                        <i class="fi fi-rr-settings"></i>
                     </div>
 
                     <div class="entity">
@@ -40,14 +39,15 @@
                                     <img :src="to.token.image" alt="" />
                                     <p class="symbol">{{ to.token.symbol }}</p>
                                 </div>
-                                <i class="fi fi-rr-angle-small-down"></i>
+                                <!-- <i class="fi fi-rr-angle-small-down"></i> -->
                             </div>
                             <input v-model="to.amount" type="number" placeholder="0" disabled />
                         </div>
                     </div>
 
                     <div class="button">
-                        <div class="action">Sweep</div>
+                        <div class="action" v-if="!sweeping" v-on:click="sweep()">Sweep</div>
+                        <div class="action" v-else>•••</div>
                         <p>Enter the amount of tokens you want to swap.</p>
                     </div>
 
@@ -85,19 +85,12 @@ export default {
                     image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png"
                 },
             },
-            rate: "•••",
             network: Network.current() == 'true',
 
             // progress
-            findingDusts: true
+            findingDusts: true,
+            sweeping: false
         };
-    },
-    watch: {
-        rate: function (_rate) {
-            if (this.from.amount != "") {
-                this.to.amount = this.from.amount * _rate;
-            }
-        },
     },
     mounted() {
         if (this.network) {
@@ -124,28 +117,6 @@ export default {
             }
 
             this.picker = false;
-            this.getExchangeRate();
-        },
-        getExchangeRate: async function () {
-            this.rate = "•••";
-
-            const response = await FleepSwap.getExchangeRate(
-                this.from.token.baseAddress,
-                this.to.token.baseAddress
-            );
-
-            if (response.status) {
-                this.rate = response.rate / 10 ** 8;
-            }
-        },
-        switchTokens: function () {
-            let tempFrom = this.from;
-
-            this.from = this.to;
-            this.to = tempFrom;
-            tempFrom = null;
-
-            this.getExchangeRate();
         },
         getMaticBalance: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
@@ -176,6 +147,24 @@ export default {
             }
 
             this.findingDusts = false
+        },
+        sweep: async function () {
+            const dusts = this.dusts.filter(d => d.selected)
+
+            const tokens = []
+            dusts.forEach(d => {
+                tokens.push(d.token_address)
+            })
+
+            if (tokens.length == 0) return
+
+            this.sweeping = true
+
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            const response = await FleepSweeper.sweep(tokens, address)
+            console.log(response);
+
+            this.sweeping = false
         }
     },
 };
