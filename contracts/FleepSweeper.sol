@@ -20,12 +20,10 @@ contract FleepSweeper {
         _fleepSwap = FleepSwap(fleepSwap);
     }
 
-    function sweep(address[] memory tokens, uint[] memory pools)
+    function sweep(address[] memory tokens)
         public
         returns (uint256)
     {
-        require(tokens.length == pools.length, "Tokens and Pools Must Map");
-
         uint256 amount1;
         for (uint index = 0; index < tokens.length; index++) {
             if (tokens[index] == address(0)) continue;
@@ -36,8 +34,7 @@ contract FleepSweeper {
             amount1 += _fleepSwap.swap(
                 tokens[index],
                 _fleepSwap.getNativePair(),
-                amount0,
-                pools[index]
+                amount0
             );
         }
 

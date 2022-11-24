@@ -72,6 +72,8 @@ import Network from '~/static/scripts/Network';
 import FleepSwap from "../../static/scripts/FleepSwap";
 import testnetTokens from "../../static/tokens/testnet.json"
 import mainnetTokens from "../../static/tokens/mainnet.json"
+import Authenticate from '~/static/scripts/Authenticate';
+import Utils from '~/static/scripts/Utils';
 
 export default {
     data() {
@@ -110,6 +112,7 @@ export default {
             handler: function (_old, _from) {
                 if (this.rate != '' && this.rate != '•••') {
                     this.to.amount = _from.amount * this.rate
+                    this.getBalance()
                 }
             },
             deep: true
@@ -127,6 +130,7 @@ export default {
         this.from.token = this.tokens[0]
         this.to.token = this.tokens[1]
         this.getExchangeRate()
+        this.getBalance()
     },
     methods: {
         switchCursor: function (cursor) {
@@ -166,8 +170,22 @@ export default {
 
             this.getExchangeRate();
         },
-        swap: async function() {
+        swap: async function () {
 
+        },
+        getBalance: async function () {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            const tokens = await this.$balance.erc20Balances(address, this.network)
+
+            tokens.forEach(token => {
+                if (token.token_address == this.from.token.address) {
+                    this.from.balance = Utils.fromWei(token.balance)
+                }
+
+                if (token.token_address == this.to.token.address) {
+                    this.to.balance = Utils.fromWei(token.balance)
+                }
+            });
         }
     },
 };

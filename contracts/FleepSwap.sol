@@ -101,7 +101,7 @@ contract FleepSwap {
         view
         returns (int256)
     {
-        return _priceApi.getExchangeRate(pairs[token0], pairs[token1]);
+        return estimate(pairs[token0], pairs[token1], 1);
     }
 
     // gets the exchanges rates for pair of tokens
@@ -143,8 +143,7 @@ contract FleepSwap {
     function swap(
         address token0,
         address token1,
-        uint256 amount0,
-        uint poolId
+        uint256 amount0
     ) public payable returns (uint256) {
         require(amount0 < 100, "Amount to swap cannot be lesser than 100 WEI");
         require(
@@ -161,6 +160,7 @@ contract FleepSwap {
 
         uint256 _safeAmount0 = amount0;
 
+        uint poolId = _findPool(token0, token1);
         require(pools[poolId].id > 0, "Pool does not exists");
 
         if (pairs[token0] == NATIVE_PAIR) {
@@ -177,12 +177,7 @@ contract FleepSwap {
             // check if contract has enough destination token liquid
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
-            _aggregateLiquids(
-                amount0,
-                amount1,
-                poolSizeToken1,
-                pools[poolId]
-            );
+            _aggregateLiquids(amount0, amount1, poolSizeToken1, pools[poolId]);
 
             quoteToken.transfer(msg.sender, amount1);
         } else if (pairs[token1] == NATIVE_PAIR) {
@@ -198,12 +193,7 @@ contract FleepSwap {
             (uint256 poolSizeToken1, ) = _poolSize(poolId);
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
-            _aggregateLiquids(
-                amount0,
-                amount1,
-                poolSizeToken1,
-                pools[poolId]
-            );
+            _aggregateLiquids(amount0, amount1, poolSizeToken1, pools[poolId]);
 
             payable(msg.sender).transfer(amount1);
         } else {
@@ -220,12 +210,7 @@ contract FleepSwap {
             // check if contract has enough destination token liquid
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
-            _aggregateLiquids(
-                amount0,
-                amount1,
-                poolSizeToken1,
-                pools[poolId]
-            );
+            _aggregateLiquids(amount0, amount1, poolSizeToken1, pools[poolId]);
 
             _transferSwappedTokens(
                 baseToken,
@@ -430,6 +415,24 @@ contract FleepSwap {
 
         // give user their destination token minus fee
         token1.transfer(owner, (amount1 - _fee));
+    }
+
+    function _findPool(address token0, address token1) private view returns (uint) {
+        require(token0 != address(0) && token1 != address(0), "Invalid");
+        for (uint index = 0; index <= POOL_ID; index++) {
+            if (
+                pools[index].token0 == token0 && pools[index].token1 == token1
+            ) {
+                return index;
+            }
+
+            if (
+                pools[index].token0 == token1 && pools[index].token1 == token0
+            ) {
+                return index;
+            }
+        }
+        return 0;
     }
 
     function _createLiquid(
