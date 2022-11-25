@@ -4,7 +4,7 @@
         <div class="swap">
             <div class="form">
                 <div class="toolbar">
-                    <i class="fi fi-rr-refresh"></i>
+                    <i class="fi fi-rr-refresh" v-on:click="getExchangeRate()"></i>
                     <i class="fi fi-rr-settings"></i>
                 </div>
                 <div class="entity">
@@ -50,7 +50,9 @@
                 </div>
 
                 <div class="button">
-                    <div class="action">Add Liquidity</div>
+                    <div class="action" v-if="(allocations.token0 < from.amount) && AS == 1" v-on:click="approve()">Approve {{ from.token.symbol }}</div>
+                    <div class="action" v-if="(allocations.token1 < to.amount) && AS == 2" v-on:click="approve()">Approve {{ to.token.symbol }}</div>
+                    <div class="action" v-if="!((allocations.token0 <= from.amount) && (allocations.token1 <= to.amount))" v-on:click="provideLiquidity()">Add Liquidity</div>
                     <p>Enter the amount of tokens you want to provide.</p>
                 </div>
 
@@ -70,6 +72,9 @@ import testnetPools from "../../static/pools/testnet.json"
 import testnetTokens from "../../static/tokens/testnet.json"
 import mainnetTokens from "../../static/tokens/mainnet.json"
 import Network from "../../static/scripts/Network"
+import Utils from '~/static/scripts/Utils';
+import Authenticate from '~/static/scripts/Authenticate';
+import ERC20 from '~/static/scripts/ERC20';
 
 export default {
     data() {
@@ -95,7 +100,12 @@ export default {
             rate: "•••",
             poolId: this.$route.params.pool,
             pool: null,
-            network: Network.current() == 'true'
+            network: Network.current() == 'true',
+            allocations: {
+                token0: 0,
+                token1: 0
+            },
+            AS: 1
         };
     },
     watch: {
@@ -133,11 +143,47 @@ export default {
 
         this.getExchangeRate()
         this.getPool()
+        this.getBalance()
+        this.getAllocation()
     },
     methods: {
         getPool: async function () {
             const response = await FleepSwap.getPool(this.poolId)
             console.log(response);
+        },
+        getAllocation: async function () {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+
+            const allocation0 = await ERC20.allocation(address, FleepSwap.address, this.from.token.address)
+            this.allocations.token0 = Utils.fromWei(allocation0)
+
+            const allocation1 = await ERC20.allocation(address, FleepSwap.address, this.to.token.address)
+            this.allocations.token1 = Utils.fromWei(allocation1)
+
+            console.log(this.allocations);
+        },
+        approve: async function () {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            if (this.AS == 1) {
+                console.log('here');
+                await ERC20.approve(
+                    address,
+                    FleepSwap.address,
+                    Utils.toWei(this.from.amount),
+                    this.from.token.address
+                )
+                console.log('here2');
+                this.AS = 2
+            }
+            else if (this.AS == 2) {
+                await ERC20.approve(
+                    address,
+                    FleepSwap.address,
+                    Utils.toWei((Number(this.to.amount) + 1).toFixed()),
+                    this.to.token.address
+                )
+            }
+            this.getAllocation()
         },
         switchCursor: function (cursor) {
             this.picker = true;
@@ -161,12 +207,39 @@ export default {
                 this.to.token.address
             );
 
-            console.log(response);
-
             if (response.status) {
                 this.rate = response.rate / 10 ** 8;
             }
         },
+        provideLiquidity: async function () {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            // const response = await FleepSwap.provideLiquidity(
+            //     Utils.toWei(this.from.amount),
+            //     this.poolId,
+            //     address
+            // )
+            await ERC20.test(
+                address,
+                FleepSwap.address,
+                Utils.toWei(this.from.amount),
+                this.from.token.address
+            )
+
+        },
+        getBalance: async function () {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            const tokens = await this.$balance.erc20Balances(address, this.network)
+
+            tokens.forEach(token => {
+                if (token.token_address == this.from.token.address) {
+                    this.from.balance = Utils.fromWei(token.balance)
+                }
+
+                if (token.token_address == this.to.token.address) {
+                    this.to.balance = Utils.fromWei(token.balance)
+                }
+            });
+        }
     },
 };
 </script>

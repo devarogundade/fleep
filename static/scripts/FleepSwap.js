@@ -1,8 +1,9 @@
 import contract from 'truffle-contract'
-import abi from "../../build/contracts/FleepSwap.json"
+import abi from "~/build/contracts/FleepSwap.json"
 
 const FleepSwap = {
     instance: null,
+    address: '0xf1dA87E80a3a5AE9973B6411482786460DEf0476',
     getInstance: async function() {
         if (this.instance != null) {
             return this.instance
@@ -27,6 +28,17 @@ const FleepSwap = {
         try {
             return await instance.providers(address)
         } catch (error) {
+            return null
+        }
+    },
+    provideLiquidity: async function(amount0, poolId, address) {
+        const instance = await this.getInstance()
+        if (instance == null) return null
+
+        try {
+            return await instance.provideLiquidity(amount0, poolId, { from: address })
+        } catch (error) {
+            console.log(error);
             return null
         }
     },
@@ -66,7 +78,7 @@ const FleepSwap = {
         }
 
         try {
-            const rate = await instance.getRate(from, to)
+            const rate = await instance.estimate(from, to, 1)
             return {
                 message: 'Transaction Hash',
                 rate: rate,

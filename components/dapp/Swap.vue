@@ -51,7 +51,9 @@
                 </div>
 
                 <div class="button">
-                    <div class="action" v-on:click="swap()">Approve and Swap</div>
+                    <div class="action" v-if="allocation < from.amount" v-on:click="approve()">Approve</div>
+                    <div class="action" v-else v-on:click="swap()">Swap</div>
+
                     <p>Enter the amount of tokens you want to swap.</p>
                 </div>
 
@@ -74,6 +76,7 @@ import testnetTokens from "../../static/tokens/testnet.json"
 import mainnetTokens from "../../static/tokens/mainnet.json"
 import Authenticate from '~/static/scripts/Authenticate';
 import Utils from '~/static/scripts/Utils';
+import ERC20 from '~/static/scripts/ERC20';
 
 export default {
     data() {
@@ -84,7 +87,7 @@ export default {
             pickCursor: "from",
             tokens: [],
             from: {
-                balance: 0,
+                balance: '•••',
                 amount: "",
                 token: {
                     symbol: "Select",
@@ -92,7 +95,7 @@ export default {
                 },
             },
             to: {
-                balance: 0,
+                balance: '•••',
                 amount: "",
                 token: {
                     symbol: "Select",
@@ -100,6 +103,7 @@ export default {
                 },
             },
             rate: "•••",
+            allocation: 0
         };
     },
     watch: {
@@ -131,6 +135,7 @@ export default {
         this.to.token = this.tokens[1]
         this.getExchangeRate()
         this.getBalance()
+        this.getAllocation()
     },
     methods: {
         switchCursor: function (cursor) {
@@ -170,24 +175,39 @@ export default {
 
             this.getExchangeRate();
         },
+        getAllocation: async function () {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            const allocation = await ERC20.allocation(address, FleepSwap.address, this.from.token.address)
+            this.allocation = Utils.fromWei(allocation)
+        },
         swap: async function () {
             if (this.from.amount == '' || this.to.amount == '') return
             const address = (await Authenticate.getUserAddress(this.network)).address
 
-            console.log(Utils.toWei(this.from.amount));
             const response = await FleepSwap.swap(this.from.token.address, this.to.token.address, Utils.toWei(this.from.amount), address)
             console.log(response);
+        },
+        approve: async function () {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            console.log(this.from.token);
+            await ERC20.approve(
+                address,
+                FleepSwap.address,
+                Utils.toWei(this.from.amount),
+                this.from.token.address
+            )
+            this.getAllocation()
         },
         getBalance: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
             const tokens = await this.$balance.erc20Balances(address, this.network)
-
             tokens.forEach(token => {
-                if (token.token_address == this.from.token.address) {
+                if (token.token_address.toLowerCase() == this.from.token.address.toLowerCase()) {
                     this.from.balance = Utils.fromWei(token.balance)
+                    console.log(token);
                 }
 
-                if (token.token_address == this.to.token.address) {
+                if (token.token_address.toLowerCase() == this.to.token.address.toLowerCase()) {
                     this.to.balance = Utils.fromWei(token.balance)
                 }
             });

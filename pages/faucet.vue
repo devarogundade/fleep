@@ -41,11 +41,10 @@ export default {
             const web3 = new Web3(ethereum)
             const contract = new web3.eth.Contract(contractJson.abi, token.address)
 
-            const gasPrice = await contract.methods.faucet(address, 1).estimateGas({from: token.address})
+            // const gasPrice = await contract.methods.faucet(address, 1).estimateGas({from: token.address})
 
-            contract.methods.faucet(address, 1).send({
-                from: address,
-                gasPrice: gasPrice
+            contract.methods.faucet(Utils.toWei('100')).send({
+                from: address
             })
 
             this.minting = -1
@@ -57,46 +56,17 @@ export default {
 <style scoped>
 section {
     padding: 150px 0;
+    min-height: 95vh;
 }
 
-.container {
+.token {
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 200px 0;
+    gap: 20px;
 }
 
-.form {
-    width: 450px;
-    border-radius: 30px;
-    padding: 40px;
-    box-shadow: 0 6px 10px #ccc;
-    height: fit-content;
-}
-
-.input {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px #ccc;
-    border-radius: 10px;
-    padding: 10px;
+.token {
     margin-bottom: 20px;
-}
-
-.input input {
-    width: 100%;
-    background: transparent;
-    font-size: 20px;
-    font-weight: 600;
-    padding-right: 20px;
-    height: 100%;
-    border: none;
-    outline: none;
-}
-
-.input .token {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -106,6 +76,8 @@ section {
     border-radius: 6px;
     cursor: pointer;
     user-select: none;
+    display: flex;
+    justify-content: space-between;
 }
 
 .token img {
@@ -135,5 +107,10 @@ section {
     user-select: none;
     font-weight: 600;
     color: #ff9d05;
+}
+
+button {
+    padding: 4px 10px;
+    cursor: pointer;
 }
 </style>

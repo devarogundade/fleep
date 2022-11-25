@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import {PriceApi} from "./PriceApi.sol";
 import {FleepToken} from "./FleepToken.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract FleepSwap {
     PriceApi private _priceApi;
@@ -93,17 +93,6 @@ contract FleepSwap {
         _deployer = msg.sender;
     }
 
-    // gets the exchanges rates for pair of tokens
-    // useful for user knowing the price of swap
-    // before the actually perform a swap
-    function getRate(address token0, address token1)
-        public
-        view
-        returns (uint256)
-    {
-        return estimate(pairs[token0], pairs[token1], 1);
-    }
-
     // calculates all the size of the liquids
     // in a pool of token pair
     function getPoolSize(address token0, address token1)
@@ -181,7 +170,7 @@ contract FleepSwap {
             );
             amount1 = _safeAmount0 * uint256(rate);
 
-            IERC20 quoteToken = IERC20(token1);
+            ERC20 quoteToken = ERC20(token1);
 
             (, uint256 poolSizeToken1) = _poolSize(poolId);
 
@@ -204,8 +193,7 @@ contract FleepSwap {
             );
             amount1 = _safeAmount0 * uint256(rate);
 
-            IERC20 baseToken = IERC20(token0);
-            baseToken.approve(address(this), _safeAmount0);
+            ERC20 baseToken = ERC20(token0);
             baseToken.transferFrom(msg.sender, address(this), _safeAmount0);
 
             (uint256 poolSizeToken1, ) = _poolSize(poolId);
@@ -227,8 +215,8 @@ contract FleepSwap {
             );
             amount1 = _safeAmount0 * uint256(rate);
 
-            IERC20 baseToken = IERC20(token0);
-            IERC20 quoteToken = IERC20(token1);
+            ERC20 baseToken = ERC20(token0);
+            ERC20 quoteToken = ERC20(token1);
 
             (, uint256 poolSizeToken1) = _poolSize(poolId);
 
@@ -313,8 +301,8 @@ contract FleepSwap {
             amount1 = _safeAmount0 * uint256(rate);
 
             // swap involve native token
-            IERC20 quoteToken = IERC20(token1);
-            _nativeStake(quoteToken, amount1);
+            ERC20 quoteToken = ERC20(token1);
+            _nativeStake(quoteToken, amount1, msg.sender);
         } else {
             rate = uint256(
                 _priceApi.getExchangeRate(pairs[token0], pairs[token1])
@@ -322,9 +310,16 @@ contract FleepSwap {
             amount1 = _safeAmount0 * uint256(rate);
 
             // both tokens are ERC20
-            IERC20 baseToken = IERC20(token0);
-            IERC20 quoteToken = IERC20(token1);
-            _stakeTokens(baseToken, quoteToken, _safeAmount0, amount1);
+            ERC20 baseToken = ERC20(token0);
+            ERC20 quoteToken = ERC20(token1);
+
+            _stakeTokens(
+                baseToken,
+                quoteToken,
+                _safeAmount0,
+                amount1,
+                msg.sender
+            );
         }
 
         if (hasLiquid) {
@@ -348,7 +343,28 @@ contract FleepSwap {
         return (_safeAmount0, amount1);
     }
 
-    function removeLiquidity(uint id) public onlyProvider {}
+    function removeLiquidity(uint id) public onlyProvider {
+        require(liquids[id].provider == msg.sender, "Unauthorized");
+
+        Pool memory pool = pools[liquids[id].poolId];
+        ERC20 token0 = ERC20(pool.token0);
+        ERC20 token1 = ERC20(pool.token1);
+
+        token0.transfer(msg.sender, liquids[id].amount0);
+        token1.transfer(msg.sender, liquids[id].amount1);
+
+        emit LiquidityRemoved(
+            address(token0),
+            address(token1),
+            liquids[id].amount0,
+            liquids[id].amount1,
+            msg.sender
+        );
+
+        // delete liquid TO DO
+        liquids[id].amount0 = 0;
+        liquids[id].amount1 = 0;
+    }
 
     function withDrawEarnings(uint256 amount) public onlyProvider {
         require(
@@ -439,7 +455,7 @@ contract FleepSwap {
         }
     }
 
-    function _transferSwappedTokens0(IERC20 token1, uint256 amount1)
+    function _transferSwappedTokens0(ERC20 token1, uint256 amount1)
         private
         returns (uint256)
     {
@@ -465,8 +481,8 @@ contract FleepSwap {
     }
 
     function _transferSwappedTokens2(
-        IERC20 token0,
-        IERC20 token1,
+        ERC20 token0,
+        ERC20 token1,
         uint256 amount0,
         uint256 amount1,
         address owner
@@ -475,7 +491,6 @@ contract FleepSwap {
 
         // tranfers the base token from user to the
         // smart contract
-        token0.approve(address(this), amount0);
         token0.transferFrom(owner, address(this), amount0);
 
         // give user their destination token minus fee
@@ -527,28 +542,27 @@ contract FleepSwap {
         providers[provider].liquids.push(LIQUID_ID);
     }
 
-    function _nativeStake(IERC20 pairedToken, uint256 pairedAmount)
-        public
-        payable
-    {
+    function _nativeStake(
+        ERC20 pairedToken,
+        uint256 pairedAmount,
+        address from
+    ) public payable {
         // stake token0 to smart contract
-        pairedToken.approve(address(this), pairedAmount);
-        pairedToken.transferFrom(msg.sender, address(this), pairedAmount);
+        pairedToken.transferFrom(from, address(this), pairedAmount);
     }
 
     function _stakeTokens(
-        IERC20 token0,
-        IERC20 token1,
+        ERC20 token0,
+        ERC20 token1,
         uint256 amount0,
-        uint amount1
+        uint amount1,
+        address from
     ) private {
         // stake token0 to smart contract
-        token0.approve(address(this), amount0);
-        token0.transferFrom(msg.sender, address(this), amount0);
+        token0.transferFrom(from, address(this), amount0);
 
         // stake token1 to smart contract
-        token1.approve(address(this), amount1);
-        token1.transferFrom(msg.sender, address(this), amount1);
+        token1.transferFrom(from, address(this), amount1);
     }
 
     function _poolSize(uint id) private view returns (uint256, uint256) {

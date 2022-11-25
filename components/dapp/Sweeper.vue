@@ -133,7 +133,7 @@ export default {
 
             if (response) {
                 response.forEach(token => {
-                    let supportedToken = this.supportedTokens.filter(t => t.address == token.token_address)
+                    let supportedToken = this.supportedTokens.filter(t => t.address.toLowerCase() == token.token_address.toLowerCase())
                     if (supportedToken.length > 0) {
                         supportedToken = supportedToken[0]
                         this.dusts.push({
