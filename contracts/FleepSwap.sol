@@ -86,7 +86,6 @@ contract FleepSwap {
         uint[] liquids;
     }
 
-    //  check the price of BNB/SUSHI
     constructor(address priceApI, address fleepToken) {
         _priceApi = PriceApi(priceApI);
         _fleepToken = FleepToken(fleepToken);
@@ -159,23 +158,17 @@ contract FleepSwap {
             "Pair does not exists, Contact admin"
         );
 
-        uint256 rate;
         uint256 amount1;
-
         uint256 _safeAmount0 = amount0;
 
         uint poolId = _findPool(token0, token1);
         require(pools[poolId].id > 0, "Pool does not exists");
 
         if (pairs[token0] == NATIVE_PAIR) {
-            _safeAmount0 = (msg.value - tx.gasprice);
-            rate = uint256(
-                _priceApi.getExchangeRate(NATIVE_PAIR, pairs[token1])
-            );
-            amount1 = _safeAmount0 * uint256(rate);
+            _safeAmount0 = msg.value;
+            amount1 = estimate(NATIVE_PAIR, pairs[token1], _safeAmount0);
 
             IERC20 quoteToken = IERC20(token1);
-
             (, uint256 poolSizeToken1) = _poolSize(poolId);
 
             // check if contract has enough destination token liquid
@@ -192,10 +185,7 @@ contract FleepSwap {
                 providersReward
             );
         } else if (pairs[token1] == NATIVE_PAIR) {
-            rate = uint256(
-                _priceApi.getExchangeRate(pairs[token0], NATIVE_PAIR)
-            );
-            amount1 = _safeAmount0 * uint256(rate);
+            amount1 = estimate(pairs[token0], NATIVE_PAIR, _safeAmount0);
 
             IERC20 baseToken = IERC20(token0);
             baseToken.transferFrom(msg.sender, address(this), _safeAmount0);
@@ -214,10 +204,7 @@ contract FleepSwap {
                 providersReward
             );
         } else {
-            rate = uint256(
-                _priceApi.getExchangeRate(pairs[token0], pairs[token1])
-            );
-            amount1 = _safeAmount0 * uint256(rate);
+            amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
 
             IERC20 baseToken = IERC20(token0);
             IERC20 quoteToken = IERC20(token1);
@@ -257,13 +244,7 @@ contract FleepSwap {
         address token0,
         address token1
     ) public onlyProvider returns (uint) {
-        // create pool id
-        POOL_ID++;
-        // create a new pool from struct
-        Pool memory pool = pools[POOL_ID];
-        // register the pool
-        pools[POOL_ID] = Pool(POOL_ID, token0, token1, pool.liquids);
-        return POOL_ID;
+        return _createPool(token0, token1);
     }
 
     function provideLiquidity(
@@ -288,29 +269,30 @@ contract FleepSwap {
         uint256 _safeAmount0 = amount0;
 
         if (pairs[token0] == NATIVE_PAIR) {
+            require(msg.value > 100, "Matic cannot be lesser than 1OO WEI");
             // only in format of MATIC as pair subject
             // ex MATIC/XEND
+
             _safeAmount0 = msg.value;
-
+            // get the estimate for token1
             amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
-
-            // stake token0 to smart contract
-            IERC20 quoteToken = IERC20(token1);
-            quoteToken.transferFrom(msg.sender, address(this), amount0);
-        } else {
-            amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
-
-            // stake token0 to smart contract
-            IERC20 baseToken = IERC20(token0);
-            baseToken.transferFrom(msg.sender, address(this), _safeAmount0);
             // stake token1 to smart contract
-            IERC20 quoteToken = IERC20(token1);
-            quoteToken.transferFrom(msg.sender, address(this), amount1);
+            IERC20(token1).transferFrom(msg.sender, address(this), amount0);
+        } else {
+            // get the estimate for token1
+            amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
+            // stake tokens to smart contract
+            IERC20(token0).transferFrom(
+                msg.sender,
+                address(this),
+                _safeAmount0
+            );
+            IERC20(token1).transferFrom(msg.sender, address(this), amount1);
         }
 
-        (bool hasLiquid, uint liquidId) = _liquidIndex(poolId, msg.sender);
+        uint liquidId = _liquidIndex(poolId, msg.sender);
 
-        if (hasLiquid) {
+        if (liquidId > 0) {
             // if liquid exist increment the amount
             liquids[liquidId].amount0 += _safeAmount0;
             liquids[liquidId].amount1 += amount1;
@@ -387,16 +369,16 @@ contract FleepSwap {
     function _liquidIndex(
         uint poolId,
         address provider
-    ) private view returns (bool, uint) {
+    ) private view returns (uint) {
         uint256[] memory providerLiquids = providers[provider].liquids;
 
         for (uint index = 0; index < providerLiquids.length; index++) {
             if (liquids[providerLiquids[index]].poolId == poolId) {
-                return (true, liquids[providerLiquids[index]].id);
+                return providerLiquids[index];
             }
         }
 
-        return (false, 0);
+        return 0;
     }
 
     function _aggregateLiquids(
@@ -504,7 +486,7 @@ contract FleepSwap {
         uint256 amount0,
         uint256 amount1,
         address provider
-    ) private onlyProvider {
+    ) private {
         // otherwise create the new liquid
         LIQUID_ID++;
         // create the liquid
@@ -529,6 +511,30 @@ contract FleepSwap {
             amount1 += liquids[liquidId].amount1;
         }
         return (amount0, amount1);
+    }
+
+    function _createPool(
+        address token0,
+        address token1
+    ) private returns (uint) {
+        require(
+            pairs[token0] != address(0),
+            "Pair does not exists, Contact admin"
+        );
+        require(
+            pairs[token1] != address(0),
+            "Pair does not exists, Contact admin"
+        );
+
+        bool exists = _findPool(token0, token1) != 0;
+        if (exists) return 0;
+
+        POOL_ID++;
+        Pool memory pool = pools[POOL_ID];
+
+        pools[POOL_ID] = Pool(POOL_ID, token0, token1, pool.liquids);
+
+        return POOL_ID;
     }
 
     // === Modifiers === //

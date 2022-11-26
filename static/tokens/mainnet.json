@@ -7,8 +7,8 @@
     {
         "symbol": "AAVE",
         "name": "Aave",
-        "address": "",
-        "image": ""
+        "address": "0xd6df932a45c0f255f85145f286ea0b292b21c90b",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/7278.png"
     },
     {
         "symbol": "ADA",
@@ -152,7 +152,7 @@
         "symbol": "CRV",
         "name": "Curve DAO",
         "address": "",
-        "image": ""
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/6538.png"
     },
     {
         "symbol": "CTX",
@@ -169,8 +169,8 @@
     {
         "symbol": "DAI",
         "name": "DAI",
-        "address": "",
-        "image": ""
+        "address": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png"
     },
     {
         "symbol": "DASH",
@@ -227,10 +227,10 @@
         "image": ""
     },
     {
-        "symbol": "ETH",
-        "name": "Ethereum",
-        "address": "",
-        "image": ""
+        "symbol": "WETH",
+        "name": "Wrapped Ethereum",
+        "address": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/2396.png"
     },
     {
         "symbol": "CTX",
@@ -259,8 +259,8 @@
     {
         "symbol": "FRAX",
         "name": "FRAX",
-        "address": "",
-        "image": ""
+        "address": "0x45c32fA6DF82ead1e2EF74d17b76547EDdFaFF89",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/6952.png"
     },
     {
         "symbol": "FTM",
@@ -277,8 +277,8 @@
     {
         "symbol": "GHST",
         "name": "Aavegotchi",
-        "address": "",
-        "image": ""
+        "address": "0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/7046.png"
     },
     {
         "symbol": "GNO",
@@ -290,7 +290,7 @@
         "symbol": "GRT",
         "name": "The Graph",
         "address": "",
-        "image": ""
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/6719.png"
     },
     {
         "symbol": "HBAR",
@@ -337,8 +337,8 @@
     {
         "symbol": "LINK",
         "name": "Chainlink",
-        "address": "",
-        "image": ""
+        "address": "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1975.png"
     },
     {
         "symbol": "LPT",
@@ -356,7 +356,7 @@
         "symbol": "MANA",
         "name": "Decentraland",
         "address": "",
-        "image": ""
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1966.png"
     },
     {
         "symbol": "MATIC",
@@ -404,7 +404,7 @@
         "symbol": "OCEAN",
         "name": "Ocean Protocol",
         "address": "",
-        "image": ""
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3911.png"
     },
     {
         "symbol": "OGN",
@@ -421,8 +421,8 @@
     {
         "symbol": "OM",
         "name": "Mantra DAO",
-        "address": "",
-        "image": ""
+        "address": "0xc3ec80343d2bae2f8e680fdadde7c17e71e114ea",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/6536.png"
     },
     {
         "symbol": "OMG",
@@ -457,8 +457,8 @@
     {
         "symbol": "QUICK",
         "name": "Quickswap",
-        "address": "",
-        "image": ""
+        "address": "0x831753DD7087CaC61aB5644b308642cc1c33Dc13",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/8206.png"
     },
     {
         "symbol": "RAI",
@@ -511,8 +511,8 @@
     {
         "symbol": "SUSHI",
         "name": "Sushi",
-        "address": "",
-        "image": ""
+        "address": "0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/6758.png"
     },
     {
         "symbol": "THETA",
@@ -542,7 +542,7 @@
         "symbol": "UMA",
         "name": "UMA",
         "address": "",
-        "image": ""
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/5617.png"
     },
     {
         "symbol": "UNI",
@@ -577,8 +577,8 @@
     {
         "symbol": "WOO",
         "name": "Woo Network",
-        "address": "",
-        "image": ""
+        "address": "0x1B815d120B3eF02039Ee11dC2d33DE7aA4a8C603",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/7501.png"
     },
     {
         "symbol": "XLM",
