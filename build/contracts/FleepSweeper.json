@@ -78,7 +78,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.16+commit.07a7930e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"fleepSwap\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"FleepSweeped\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"tokens\",\"type\":\"address[]\"},{\"internalType\":\"address\",\"name\":\"wallet\",\"type\":\"address\"}],\"name\":\"estimate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"tokens\",\"type\":\"address[]\"}],\"name\":\"sweep\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/FleepSweeper.sol\":\"FleepSweeper\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":1500},\"remappings\":[]},\"sources\":{\"@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol\":{\"keccak256\":\"0x6e6e4b0835904509406b070ee173b5bc8f677c19421b76be38aea3b1b3d30846\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b3beaa37ee61e4ab615e250fbf01601ae481de843fd0ef55e6b44fd9d5fff8a7\",\"dweb:/ipfs/QmeZUVwd26LzK4Mfp8Zba5JbQNkZFfTzFu1A6FVMMZDg9c\"]},\"@openzeppelin/contracts/token/ERC20/ERC20.sol\":{\"keccak256\":\"0x4ffc0547c02ad22925310c585c0f166f8759e2648a09e9b489100c42f15dd98d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://15f52f51413a9de1ff191e2f6367c62178e1df7806d7880fe857a98b0b66253d\",\"dweb:/ipfs/QmaQG1fwfgUt5E9nu2cccFiV47B2V78MM1tCy1qB7n4MsH\"]},\"@openzeppelin/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34\",\"dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr\"]},\"@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol\":{\"keccak256\":\"0x8de418a5503946cabe331f35fe242d3201a73f67f77aaeb7110acb1f30423aca\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5a376d3dda2cb70536c0a45c208b29b34ac560c4cb4f513a42079f96ba47d2dd\",\"dweb:/ipfs/QmZQg6gn1sUpM8wHzwNvSnihumUCAhxD119MpXeKp8B9s8\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92\",\"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3\"]},\"project:/contracts/FleepSwap.sol\":{\"keccak256\":\"0x83d03d7ca3530c73976678052deb6d8dda4103432a0d893c7685393eb9132761\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://edaf30065ea079d39ff7cfd13db2dc5aab6010b338504886719f68979d636fac\",\"dweb:/ipfs/Qmcr4RsdL72RCjKJm4Eok8bDo9fqy5TUo7BpDUYmjGGX2g\"]},\"project:/contracts/FleepSweeper.sol\":{\"keccak256\":\"0xed774c6fa7fb4895d3f1dfcd7690f10eb749e336b1d3231f73b441b711680472\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://59e4e0758671216fe98619ee216eee01fcaf8afd30f83c384350912c040f68af\",\"dweb:/ipfs/QmXnC6Kw4fc1GrB7bjzhBMS2uMcKErnHfgyc6cQPFvfkvX\"]},\"project:/contracts/FleepToken.sol\":{\"keccak256\":\"0x1214601fd850b7922833d2598533e1198a2090a50cbfaff2aacfaf914bb82fb8\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://483965b83ae92bc84fc33219b1dbfc46d31438333f8b81075ca168405457adea\",\"dweb:/ipfs/QmdmtquaYs9qN6whcrvCaGmC1L6TH3PY4oePWbMHBrqQBY\"]},\"project:/contracts/PriceApi.sol\":{\"keccak256\":\"0x655450bf2051b566f51906cde5f889c660907aea48f41b5b792005917a50a3a0\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://ebfe2a2e82292f63a67ee42f89791ffd27bf2708f7267133538b6867eb48a751\",\"dweb:/ipfs/QmabhhJ2bNGZtjrWYSpS6Tqr7MkbvEHuAhNWyu3QQWoCzs\"]}},\"version\":1}",
@@ -5841,9 +5842,17 @@
     "name": "solc",
     "version": "0.8.16+commit.07a7930e.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "80001": {
+      "events": {},
+      "links": {},
+      "address": "0xD9D8Cc45832B4B9151fE61EB437797024F04914b",
+      "transactionHash": "0xb737b514cb875bb875d30c51ba71d4c4272a481f2a664c5fe26dfcee6eecc02e"
+    }
+  },
   "schemaVersion": "3.4.10",
-  "updatedAt": "2022-11-25T17:35:50.366Z",
+  "updatedAt": "2022-11-26T03:48:35.138Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {},

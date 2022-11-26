@@ -1,18 +1,18 @@
 [{
         "symbol": "BTC",
         "name": "Bitcoin",
-        "address": "0x81A0def28fA9eF3d81C3bc83eE0c34b53fcD5D11",
+        "address": "0xF9D34FE83C25Df7172491E2b94432A5d1b061Cf6",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
     },
     {
         "symbol": "DAI",
         "name": "DAI",
-        "address": "0x6e1652B8f79aEBE70D56f4d985EE4818F689e841",
+        "address": "0xCf96798198aEbf9E7De0A930743e1b56Ef1F6edB",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png"
     }, {
         "symbol": "ETH",
         "name": "Ethereum",
-        "address": "0xDb704759755da8AB2c497e0431C5da5e09C4dAA0",
+        "address": "0x723d4b8491F39dCd27219E62808dF1dA2f74b584",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png"
     },
     {
@@ -23,18 +23,18 @@
     }, {
         "symbol": "SAND",
         "name": "Sandbox",
-        "address": "0xa1C7836762B63048D69e955aD56fbc29ff000ce3",
+        "address": "0x4B00CDe1314c0efCaB0142c306aC0f48F2365076",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/6210.png"
     }, {
         "symbol": "USDC",
         "name": "USDC",
-        "address": "0x5FE75d7A3Ea20EC832B5B29F0EB72501E067DD1e",
+        "address": "0x304379DfA42B7127DE0db93Bce597bEdba18b259",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png"
     },
     {
         "symbol": "USDT",
         "name": "USDT",
-        "address": "0xE119E4345A449ab08b91F365F7b5C0df60a0d617",
+        "address": "0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png"
     }
 ]

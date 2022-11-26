@@ -72,6 +72,7 @@ import Authenticate from '~/static/scripts/Authenticate'
 import FleepSwap from '~/static/scripts/FleepSwap'
 import FleepVault from '~/static/scripts/FleepVault'
 import Network from '~/static/scripts/Network'
+import Utils from '~/static/scripts/Utils'
 
 export default {
     data() {
@@ -86,7 +87,7 @@ export default {
                     symbol: "Matic",
                     image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png"
                 },
-            },
+            }
         }
     },
     mounted() {
@@ -115,7 +116,15 @@ export default {
 
             await FleepSwap.unlockProvider(address)
             this.getUser(address)
-        }
+        },
+        claim: async function () {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            if (this.to.amount == '') return
+            const response = await FleepSwap.claim(Utils.toWei(this.to.amount), address)
+            if (response.status) {
+
+            }
+       }
     }
 }
 </script>
