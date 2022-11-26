@@ -284,8 +284,6 @@ contract FleepSwap {
             "Pair does not exists, Contact admin"
         );
 
-        (bool hasLiquid, uint liquidIndex) = _liquidIndex(poolId, msg.sender);
-
         uint256 amount1;
         uint256 _safeAmount0 = amount0;
 
@@ -310,10 +308,12 @@ contract FleepSwap {
             quoteToken.transferFrom(msg.sender, address(this), amount1);
         }
 
+        (bool hasLiquid, uint liquidId) = _liquidIndex(poolId, msg.sender);
+
         if (hasLiquid) {
             // if liquid exist increment the amount
-            liquids[liquidIndex].amount0 += _safeAmount0;
-            liquids[liquidIndex].amount1 += amount1;
+            liquids[liquidId].amount0 += _safeAmount0;
+            liquids[liquidId].amount1 += amount1;
         } else {
             _createLiquid(poolId, _safeAmount0, amount1, msg.sender);
         }
@@ -388,22 +388,15 @@ contract FleepSwap {
         uint poolId,
         address provider
     ) private view returns (bool, uint) {
-        uint position = 0;
-        bool found = false;
+        uint256[] memory providerLiquids = providers[provider].liquids;
 
-        for (
-            uint index = 0;
-            index < providers[provider].liquids.length;
-            index++
-        ) {
-            if (providers[provider].liquids[index] == poolId) {
-                position = index;
-                found = true;
-                break;
+        for (uint index = 0; index < providerLiquids.length; index++) {
+            if (liquids[providerLiquids[index]].poolId == poolId) {
+                return (true, liquids[providerLiquids[index]].id);
             }
         }
 
-        return (found, position);
+        return (false, 0);
     }
 
     function _aggregateLiquids(
@@ -511,10 +504,10 @@ contract FleepSwap {
         uint256 amount0,
         uint256 amount1,
         address provider
-    ) private {
+    ) private onlyProvider {
         // otherwise create the new liquid
         LIQUID_ID++;
-        // create and register the liquid
+        // create the liquid
         liquids[LIQUID_ID] = Liquid(
             LIQUID_ID,
             poolId,
@@ -522,6 +515,7 @@ contract FleepSwap {
             amount1,
             provider
         );
+        // register the liquid
         pools[poolId].liquids.push(LIQUID_ID);
         providers[provider].liquids.push(LIQUID_ID);
     }

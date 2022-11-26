@@ -8,5 +8,5 @@ module.exports = async function(deployer) {
     await deployer.deploy(PriceApi);
     await deployer.deploy(FleepToken);
     await deployer.deploy(FleepSwap, PriceApi.address, FleepToken.address);
-    await deployer.deploy(FleepSweeper, FleepSwap.address);
+    // await deployer.deploy(FleepSweeper, FleepSwap.address);
 };

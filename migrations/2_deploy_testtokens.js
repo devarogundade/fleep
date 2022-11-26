@@ -7,8 +7,8 @@ const DAI = artifacts.require("TestnetToken");
 // const USDT = artifacts.require("TestnetToken");
 
 module.exports = async function(deployer) {
-    await deployer.deploy(BTC, "Bitcoin", "BTC");
-    await deployer.deploy(DAI, "DAI", "DAI");
+    // await deployer.deploy(BTC, "Bitcoin", "BTC");
+    // await deployer.deploy(DAI, "DAI", "DAI");
     // await deployer.deploy(ETH, "Ethereum", "ETH");
     // await deployer.deploy(SAND, "Sandbox", "SAND");
     // await deployer.deploy(USDC, "USDC", "USDC");
