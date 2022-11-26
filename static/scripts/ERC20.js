@@ -25,18 +25,6 @@ const ERC20 = {
             return false
         }
     },
-    test: async function(address, spender, amount, tokenAddress) {
-        const web3 = new Web3(ethereum)
-        console.log(tokenAddress);
-        const contract = new web3.eth.Contract(this.abi, tokenAddress)
-        try {
-            await contract.methods.transferFrom(address, spender, amount).send({ from: address })
-            return true
-        } catch (error) {
-            console.log(error);
-            return false
-        }
-    },
     allocation: async function(address, spender, tokenAddress) {
         const web3 = new Web3(ethereum)
         const contract = new web3.eth.Contract(this.abi, tokenAddress)

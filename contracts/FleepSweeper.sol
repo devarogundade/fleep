@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import {PriceApi} from "./PriceApi.sol";
 import {FleepSwap} from "./FleepSwap.sol";
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20} from "./standard/ERC20.sol";
 
 contract FleepSweeper {
     FleepSwap private _fleepSwap;

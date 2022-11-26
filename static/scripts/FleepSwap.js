@@ -3,7 +3,6 @@ import abi from "~/build/contracts/FleepSwap.json"
 
 const FleepSwap = {
     instance: null,
-    address: '0xE670376fc6e85672b0d5d514bC1B7E8a6760dE4E',
     getInstance: async function() {
         console.log(abi);
         if (this.instance != null) {
@@ -17,7 +16,6 @@ const FleepSwap = {
 
         try {
             this.instance = await swapContract.deployed()
-            console.log(instance);
             return this.instance
         } catch (error) {
             console.log(error);
@@ -102,6 +100,19 @@ const FleepSwap = {
         try {
             return await instance.pairs(token)
         } catch (error) {
+            return null
+        }
+    },
+    getContractAddress: async function() {
+        const instance = await this.getInstance()
+        if (instance == null) return null
+
+        try {
+            const r = await instance.getContractAddress()
+            console.log('addr', r);
+            return r
+        } catch (error) {
+            console.log(error);
             return null
         }
     },

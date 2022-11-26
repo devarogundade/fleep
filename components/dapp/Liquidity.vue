@@ -52,7 +52,8 @@
                 <div class="button">
                     <div class="action" v-if="(allocations.token0 < from.amount) && AS == 1" v-on:click="approve()">Approve {{ from.token.symbol }}</div>
                     <div class="action" v-if="(allocations.token1 < to.amount) && AS == 2" v-on:click="approve()">Approve {{ to.token.symbol }}</div>
-                    <div class="action" v-if="!((allocations.token0 <= from.amount) && (allocations.token1 <= to.amount))" v-on:click="provideLiquidity()">Add Liquidity</div>
+                    <div class="action" v-if="(allocations.token0 >= from.amount) && (allocations.token1 >= to.amount)" v-on:click="provideLiquidity()">Add Liquidity</div>
+                    <!-- <div class="action" v-on:click="provideLiquidity()">Add Liquidity</div> -->
                     <p>Enter the amount of tokens you want to provide.</p>
                 </div>
 
@@ -154,10 +155,10 @@ export default {
         getAllocation: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
 
-            const allocation0 = await ERC20.allocation(address, FleepSwap.address, this.from.token.address)
+            const allocation0 = await ERC20.allocation(address, await FleepSwap.getContractAddress(), this.from.token.address)
             this.allocations.token0 = Utils.fromWei(allocation0)
 
-            const allocation1 = await ERC20.allocation(address, FleepSwap.address, this.to.token.address)
+            const allocation1 = await ERC20.allocation(address, await FleepSwap.getContractAddress(), this.to.token.address)
             this.allocations.token1 = Utils.fromWei(allocation1)
 
             console.log(this.allocations);
@@ -165,21 +166,18 @@ export default {
         approve: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
             if (this.AS == 1) {
-                console.log('here');
+                this.AS = 2
                 await ERC20.approve(
                     address,
-                    FleepSwap.address,
+                    await FleepSwap.getContractAddress(),
                     Utils.toWei(this.from.amount),
                     this.from.token.address
                 )
-                console.log('here2');
-                this.AS = 2
-            }
-            else if (this.AS == 2) {
+            } else if (this.AS == 2) {
                 await ERC20.approve(
                     address,
-                    FleepSwap.address,
-                    Utils.toWei((Number(this.to.amount) + 1).toFixed()),
+                    await FleepSwap.getContractAddress(),
+                    Utils.toWei((Number(this.to.amount) + 5).toFixed()),
                     this.to.token.address
                 )
             }
@@ -213,18 +211,11 @@ export default {
         },
         provideLiquidity: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
-            // const response = await FleepSwap.provideLiquidity(
-            //     Utils.toWei(this.from.amount),
-            //     this.poolId,
-            //     address
-            // )
-            await ERC20.test(
-                address,
-                FleepSwap.address,
+            const response = await FleepSwap.provideLiquidity(
                 Utils.toWei(this.from.amount),
-                this.from.token.address
+                this.poolId,
+                address
             )
-
         },
         getBalance: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address

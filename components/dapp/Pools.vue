@@ -27,7 +27,7 @@
                     </div>
                     <p class="name">{{ `${poolToken(pool.token0).name} (${poolToken(pool.token0).symbol}) / ${poolToken(pool.token1).name} (${poolToken(pool.token1).symbol})` }}</p>
                     <p class="available" v-if="pool.amount0 && pool.amount1">{{ pool.amount0 }} {{ poolToken(pool.token0).symbol }} / {{ pool.amount1 }} {{ poolToken(pool.token1).symbol }}</p>
-                    <p class="available" v-else>0 {{ poolToken(pool.token0).symbol }} / 0 {{ poolToken(pool.token1).symbol }}</p>
+                    <p class="available" v-else>••• {{ poolToken(pool.token0).symbol }} / ••• {{ poolToken(pool.token1).symbol }}</p>
                     <div class="action">
                         <router-link :to="`/dapp/liquidity/${pool.id}`">
                             <div class="add-liquid">Add Liquidity</div>
@@ -76,12 +76,12 @@ export default {
         findPools: async function () {
             for (let index = 0; index < this.pools.length; index++) {
                 const pool = this.pools[index];
-                const response = await FleepSwap.getPool(pool.id)
+                const response = await FleepSwap.getPoolSize(pool.token0, pool.token1)
                 if (response) {
-
+                    pool.amount0 = Number(response[0])
+                    pool.amount1 = Number(response[1])
+                    console.log(pool);
                 }
-                pool.amount0 = 1
-                pool.amount1 = 16493
             }
         }
     }

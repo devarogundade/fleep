@@ -95,11 +95,10 @@ contract FleepSwap {
 
     // calculates all the size of the liquids
     // in a pool of token pair
-    function getPoolSize(address token0, address token1)
-        public
-        view
-        returns (uint256, uint256)
-    {
+    function getPoolSize(
+        address token0,
+        address token1
+    ) public view returns (uint256, uint256) {
         uint poolId = _findPool(token0, token1);
         return _poolSize(poolId);
     }
@@ -113,6 +112,11 @@ contract FleepSwap {
     ) public view returns (uint256) {
         int256 rate = _priceApi.getExchangeRate(pairs[token0], pairs[token1]);
         return amount0 * uint256(rate);
+    }
+
+    // returns the contract address
+    function getContractAddress() public view returns (address) {
+        return address(this);
     }
 
     // returns the pair address for $MATIC
@@ -249,11 +253,10 @@ contract FleepSwap {
 
     // === Providers === //
 
-    function createPool(address token0, address token1)
-        public
-        onlyProvider
-        returns (uint)
-    {
+    function createPool(
+        address token0,
+        address token1
+    ) public onlyProvider returns (uint) {
         // create pool id
         POOL_ID++;
         // create a new pool from struct
@@ -263,12 +266,10 @@ contract FleepSwap {
         return POOL_ID;
     }
 
-    function provideLiquidity(uint256 amount0, uint poolId)
-        public
-        payable
-        onlyProvider
-        returns (uint256, uint256)
-    {
+    function provideLiquidity(
+        uint256 amount0,
+        uint poolId
+    ) public payable onlyProvider returns (uint256, uint256) {
         require(amount0 >= 100, "Amount cannot be lesser than 100 WEI");
 
         address token0 = pools[poolId].token0;
@@ -285,41 +286,28 @@ contract FleepSwap {
 
         (bool hasLiquid, uint liquidIndex) = _liquidIndex(poolId, msg.sender);
 
-        uint256 rate;
         uint256 amount1;
-
         uint256 _safeAmount0 = amount0;
 
         if (pairs[token0] == NATIVE_PAIR) {
             // only in format of MATIC as pair subject
             // ex MATIC/XEND
-            _safeAmount0 = (msg.value - tx.gasprice);
+            _safeAmount0 = msg.value;
 
-            rate = uint256(
-                _priceApi.getExchangeRate(pairs[token0], pairs[token1])
-            );
-            amount1 = _safeAmount0 * uint256(rate);
+            amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
 
-            // swap involve native token
+            // stake token0 to smart contract
             ERC20 quoteToken = ERC20(token1);
-            _nativeStake(quoteToken, amount1, msg.sender);
+            quoteToken.transferFrom(msg.sender, address(this), amount0);
         } else {
-            rate = uint256(
-                _priceApi.getExchangeRate(pairs[token0], pairs[token1])
-            );
-            amount1 = _safeAmount0 * uint256(rate);
+            amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
 
-            // both tokens are ERC20
+            // stake token0 to smart contract
             ERC20 baseToken = ERC20(token0);
+            baseToken.transferFrom(msg.sender, address(this), _safeAmount0);
+            // stake token1 to smart contract
             ERC20 quoteToken = ERC20(token1);
-
-            _stakeTokens(
-                baseToken,
-                quoteToken,
-                _safeAmount0,
-                amount1,
-                msg.sender
-            );
+            quoteToken.transferFrom(msg.sender, address(this), amount1);
         }
 
         if (hasLiquid) {
@@ -396,11 +384,10 @@ contract FleepSwap {
 
     // === Internal Functions === //
 
-    function _liquidIndex(uint poolId, address provider)
-        private
-        view
-        returns (bool, uint)
-    {
+    function _liquidIndex(
+        uint poolId,
+        address provider
+    ) private view returns (bool, uint) {
         uint position = 0;
         bool found = false;
 
@@ -455,10 +442,10 @@ contract FleepSwap {
         }
     }
 
-    function _transferSwappedTokens0(ERC20 token1, uint256 amount1)
-        private
-        returns (uint256)
-    {
+    function _transferSwappedTokens0(
+        ERC20 token1,
+        uint256 amount1
+    ) private returns (uint256) {
         uint256 _fee = ((amount1 / 100) * swapFee);
 
         // give user their destination token minus fee
@@ -468,11 +455,9 @@ contract FleepSwap {
         return estimate(address(token1), NATIVE_PAIR, _fee);
     }
 
-    function _transferSwappedTokens1(uint256 amount1)
-        public
-        payable
-        returns (uint256)
-    {
+    function _transferSwappedTokens1(
+        uint256 amount1
+    ) public payable returns (uint256) {
         uint256 _fee = ((amount1 / 100) * swapFee);
 
         // give user their destination token minus fee
@@ -500,11 +485,10 @@ contract FleepSwap {
         return estimate(address(token1), NATIVE_PAIR, _fee);
     }
 
-    function _findPool(address token0, address token1)
-        private
-        view
-        returns (uint)
-    {
+    function _findPool(
+        address token0,
+        address token1
+    ) private view returns (uint) {
         require(token0 != address(0) && token1 != address(0), "Invalid");
         for (uint index = 0; index <= POOL_ID; index++) {
             if (
@@ -540,29 +524,6 @@ contract FleepSwap {
         );
         pools[poolId].liquids.push(LIQUID_ID);
         providers[provider].liquids.push(LIQUID_ID);
-    }
-
-    function _nativeStake(
-        ERC20 pairedToken,
-        uint256 pairedAmount,
-        address from
-    ) public payable {
-        // stake token0 to smart contract
-        pairedToken.transferFrom(from, address(this), pairedAmount);
-    }
-
-    function _stakeTokens(
-        ERC20 token0,
-        ERC20 token1,
-        uint256 amount0,
-        uint amount1,
-        address from
-    ) private {
-        // stake token0 to smart contract
-        token0.transferFrom(from, address(this), amount0);
-
-        // stake token1 to smart contract
-        token1.transferFrom(from, address(this), amount1);
     }
 
     function _poolSize(uint id) private view returns (uint256, uint256) {
