@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import {PriceApi} from "./PriceApi.sol";
 import {FleepSwap} from "./FleepSwap.sol";
-import {ERC20} from "./standard/ERC20.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract FleepSweeper {
     FleepSwap private _fleepSwap;
@@ -23,7 +23,7 @@ contract FleepSweeper {
         for (uint index = 0; index < tokens.length; index++) {
             if (tokens[index] == address(0)) continue;
 
-            ERC20 token = ERC20(tokens[index]);
+            IERC20 token = IERC20(tokens[index]);
             uint256 amount0 = token.balanceOf(msg.sender);
 
             // amount cannot be lesser than 100 WEI
@@ -53,7 +53,7 @@ contract FleepSweeper {
         for (uint index = 0; index < tokens.length; index++) {
             if (tokens[index] == address(0)) continue;
 
-            ERC20 token = ERC20(tokens[index]);
+            IERC20 token = IERC20(tokens[index]);
             uint256 amount0 = token.balanceOf(wallet);
 
             amount1 += _fleepSwap.estimate(

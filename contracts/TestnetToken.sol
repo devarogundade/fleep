@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import {ERC20} from "./standard/ERC20.sol";
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract TestnetToken is ERC20 {
     uint256 private MAX_ALLOCATION = inWei(10000);
