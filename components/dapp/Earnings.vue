@@ -97,6 +97,9 @@ export default {
         getUser: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
             const response = await FleepSwap.provider(address)
+
+            if (!response) return
+
             const user = {
                 id: Number(response.id),
                 balance: Number(response.balance),

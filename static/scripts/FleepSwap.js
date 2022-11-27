@@ -1,5 +1,5 @@
 import contract from 'truffle-contract'
-import abi from "~/build/contracts/FleepSwap.json"
+import abi from "~/build/contracts/Swap.json"
 
 const FleepSwap = {
     instance: null,
@@ -16,6 +16,8 @@ const FleepSwap = {
 
         try {
             this.instance = await swapContract.deployed()
+            console.log('token0', await this.instance.pairs("0x3814CF88e2675041504C7d6404f7b8978F8B65B4"));
+            console.log('token1', await this.instance.pairs("0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB"));
             return this.instance
         } catch (error) {
             console.log(error);
@@ -32,15 +34,31 @@ const FleepSwap = {
             return null
         }
     },
-    provideLiquidity: async function(amount0, poolId, address) {
+    provideLiquidity: async function(amount0, poolId, address, value = 0) {
         const instance = await this.getInstance()
-        if (instance == null) return null
+
+        if (instance == null) return {
+            message: 'Failed to Initialize',
+            error: null,
+            status: false
+        }
 
         try {
-            return await instance.provideLiquidity(amount0, poolId, { from: address })
+            const trx = await instance.provideLiquid(poolId, amount0, {
+                from: address,
+                value: value
+            })
+            return {
+                message: 'Transaction Hash',
+                trx: trx,
+                status: true
+            }
         } catch (error) {
-            console.log(error);
-            return null
+            return {
+                message: 'Transaction failed',
+                error: error,
+                status: false
+            }
         }
     },
     swap: async function(token0, token1, amount0, address) {

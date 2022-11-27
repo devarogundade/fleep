@@ -2,12 +2,12 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import {PriceApi} from "./PriceApi.sol";
-import {FleepToken} from "./FleepToken.sol";
+import {Token} from "./Token.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract FleepSwap {
+contract Swap {
     PriceApi private _priceApi;
-    FleepToken private _fleepToken;
+    Token private _token;
 
     // contract admin
     address private _deployer;
@@ -37,7 +37,7 @@ contract FleepSwap {
 
     // === Events === //
 
-    event LiquidityProvided(
+    event LiquidProvided(
         address token0,
         address token1,
         uint256 amount0,
@@ -46,7 +46,7 @@ contract FleepSwap {
         uint timestamp
     );
 
-    event LiquidityRemoved(
+    event LiquidRemoved(
         address token0,
         address token1,
         uint256 amount0,
@@ -86,9 +86,9 @@ contract FleepSwap {
         uint[] liquids;
     }
 
-    constructor(address priceApI, address fleepToken) {
+    constructor(address priceApI, address token) {
         _priceApi = PriceApi(priceApI);
-        _fleepToken = FleepToken(fleepToken);
+        _token = Token(token);
         _deployer = msg.sender;
     }
 
@@ -128,7 +128,7 @@ contract FleepSwap {
         // to become a provider you must hodl at least 10
         // tokens of Fleep Token
         require(
-            _fleepToken.balanceOf(msg.sender) >= _fleepToken.inWei(10),
+            _token.balanceOf(msg.sender) >= _token.inWei(10),
             "You must hodl at least 10 Fleep Tokens"
         );
 
@@ -240,54 +240,60 @@ contract FleepSwap {
 
     // === Providers === //
 
-    function createPool(
-        address token0,
-        address token1
-    ) public onlyProvider returns (uint) {
-        return _createPool(token0, token1);
-    }
-
     function provideLiquidity(
-        uint256 amount0,
-        uint poolId
-    ) public payable onlyProvider returns (uint256, uint256) {
+        uint poolId,
+        uint256 amount0
+    ) public payable onlyProvider {
         require(amount0 >= 100, "Amount cannot be lesser than 100 WEI");
 
-        address token0 = pools[poolId].token0;
-        address token1 = pools[poolId].token1;
-
         require(
-            pairs[token0] != address(0),
+            pairs[pools[poolId].token0] != address(0),
             "Pair does not exists, Contact admin"
         );
         require(
-            pairs[token1] != address(0),
+            pairs[pools[poolId].token1] != address(0),
             "Pair does not exists, Contact admin"
         );
 
         uint256 amount1;
         uint256 _safeAmount0 = amount0;
 
-        if (pairs[token0] == NATIVE_PAIR) {
+        if (pairs[pools[poolId].token0] == NATIVE_PAIR) {
             require(msg.value > 100, "Matic cannot be lesser than 1OO WEI");
             // only in format of MATIC as pair subject
             // ex MATIC/XEND
 
             _safeAmount0 = msg.value;
             // get the estimate for token1
-            amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
+            amount1 = estimate(
+                pairs[pools[poolId].token0],
+                pairs[pools[poolId].token1],
+                _safeAmount0
+            );
             // stake token1 to smart contract
-            IERC20(token1).transferFrom(msg.sender, address(this), amount0);
+            IERC20(pools[poolId].token1).transferFrom(
+                msg.sender,
+                address(this),
+                amount0
+            );
         } else {
             // get the estimate for token1
-            amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
+            amount1 = estimate(
+                pairs[pools[poolId].token0],
+                pairs[pools[poolId].token1],
+                _safeAmount0
+            );
             // stake tokens to smart contract
-            IERC20(token0).transferFrom(
+            IERC20(pools[poolId].token0).transferFrom(
                 msg.sender,
                 address(this),
                 _safeAmount0
             );
-            IERC20(token1).transferFrom(msg.sender, address(this), amount1);
+            IERC20(pools[poolId].token1).transferFrom(
+                msg.sender,
+                address(this),
+                amount1
+            );
         }
 
         uint liquidId = _liquidIndex(poolId, msg.sender);
@@ -297,23 +303,22 @@ contract FleepSwap {
             liquids[liquidId].amount0 += _safeAmount0;
             liquids[liquidId].amount1 += amount1;
         } else {
+            // otherwise create the new liquid
             _createLiquid(poolId, _safeAmount0, amount1, msg.sender);
         }
 
         // store the liquidity data on-chain
-        emit LiquidityProvided(
-            token0,
-            token1,
+        emit LiquidProvided(
+            pools[poolId].token0,
+            pools[poolId].token1,
             _safeAmount0,
             amount1,
             msg.sender,
             block.timestamp
         );
-
-        return (_safeAmount0, amount1);
     }
 
-    function removeLiquidity(uint id) public onlyProvider {
+    function removeLiquid(uint id) public onlyProvider {
         require(liquids[id].provider == msg.sender, "Unauthorized");
 
         Pool memory pool = pools[liquids[id].poolId];
@@ -323,7 +328,7 @@ contract FleepSwap {
         token0.transfer(msg.sender, liquids[id].amount0);
         token1.transfer(msg.sender, liquids[id].amount1);
 
-        emit LiquidityRemoved(
+        emit LiquidRemoved(
             address(token0),
             address(token1),
             liquids[id].amount0,
@@ -334,6 +339,13 @@ contract FleepSwap {
         // delete liquid TO DO
         liquids[id].amount0 = 0;
         liquids[id].amount1 = 0;
+    }
+
+    function createPool(
+        address token0,
+        address token1
+    ) public onlyProvider returns (uint) {
+        return _createPool(token0, token1);
     }
 
     function withDrawEarnings(uint256 amount) public onlyProvider {
@@ -487,7 +499,6 @@ contract FleepSwap {
         uint256 amount1,
         address provider
     ) private {
-        // otherwise create the new liquid
         LIQUID_ID++;
         // create the liquid
         liquids[LIQUID_ID] = Liquid(

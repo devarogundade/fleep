@@ -1,5 +1,5 @@
 import contract from 'truffle-contract'
-import abi from "../../build/contracts/FleepSweeper.json"
+import abi from "~/build/contracts/Sweeper.json"
 
 const FleepSweeper = {
     getInstance: async function() {

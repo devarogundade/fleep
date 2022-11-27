@@ -2,19 +2,19 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import {PriceApi} from "./PriceApi.sol";
-import {FleepSwap} from "./FleepSwap.sol";
+import {Swap} from "./Swap.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract FleepSweeper {
-    FleepSwap private _fleepSwap;
+contract Sweeper {
+    Swap private _swap;
 
     // === Events === //
 
     event FleepSweeped(uint256 amount, address from, uint timestamp);
 
     // initialize dependencies
-    constructor(address fleepSwap) {
-        _fleepSwap = FleepSwap(fleepSwap);
+    constructor(address swap) {
+        _swap = Swap(swap);
     }
 
     // recursively swap every tokens for matic
@@ -30,9 +30,9 @@ contract FleepSweeper {
             if (amount0 < 100) continue;
 
             // swap
-            amount1 += _fleepSwap.swap(
+            amount1 += _swap.swap(
                 tokens[index],
-                _fleepSwap.getNativePair(),
+                _swap.getNativePair(),
                 amount0
             );
         }
@@ -56,9 +56,9 @@ contract FleepSweeper {
             IERC20 token = IERC20(tokens[index]);
             uint256 amount0 = token.balanceOf(wallet);
 
-            amount1 += _fleepSwap.estimate(
+            amount1 += _swap.estimate(
                 tokens[index],
-                _fleepSwap.getNativePair(),
+                _swap.getNativePair(),
                 amount0
             );
         }

@@ -1,13 +1,13 @@
 [{
         "symbol": "BTC",
         "name": "Bitcoin",
-        "address": "0xC49A0C714F5341B854864292EFceDAc93869B645",
+        "address": "0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png"
     },
     {
         "symbol": "DAI",
         "name": "DAI",
-        "address": "0x7F48138558FfF0956fcf21bC01e11c6DDE3bb04b",
+        "address": "0x3814CF88e2675041504C7d6404f7b8978F8B65B4",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png"
     }, {
         "symbol": "ETH",

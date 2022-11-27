@@ -1,0 +1,47 @@
+ uint256 amount1;
+        uint256 _safeAmount0 = amount0;
+
+        if (pairs[token0] == NATIVE_PAIR) {
+            require(msg.value > 100, "Matic cannot be lesser than 1OO WEI");
+            // only in format of MATIC as pair subject
+            // ex MATIC/XEND
+
+            _safeAmount0 = msg.value;
+            // get the estimate for token1
+            amount1 = _safeAmount0;
+            // amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
+            // stake token1 to smart contract
+            IERC20(token1).transferFrom(msg.sender, address(this), amount0);
+        } else {
+            // get the estimate for token1
+            amount1 = _safeAmount0;
+            // amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
+            // stake tokens to smart contract
+            IERC20(token0).transferFrom(
+                msg.sender,
+                address(this),
+                _safeAmount0
+            );
+            IERC20(token1).transferFrom(msg.sender, address(this), amount1);
+        }
+
+        uint liquidId = _liquidIndex(poolId, msg.sender);
+
+        if (liquidId > 0) {
+            // if liquid exist increment the amount
+            liquids[liquidId].amount0 += _safeAmount0;
+            liquids[liquidId].amount1 += amount1;
+        } else {
+            // otherwise create the new liquid
+            _createLiquid(poolId, _safeAmount0, amount1, msg.sender);
+        }
+
+        // store the liquidity data on-chain
+        emit LiquidProvided(
+            token0,
+            token1,
+            _safeAmount0,
+            amount1,
+            msg.sender,
+            block.timestamp
+        );

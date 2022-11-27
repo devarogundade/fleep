@@ -214,8 +214,10 @@ export default {
             const response = await FleepSwap.provideLiquidity(
                 Utils.toWei(this.from.amount),
                 this.poolId,
-                address
+                address,
+                0
             )
+            console.log(response);
         },
         getBalance: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address

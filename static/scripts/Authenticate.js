@@ -40,14 +40,14 @@ const Authenticate = {
                         method: 'wallet_addEthereumChain',
                         params: [{
                             chainId: '0x13881',
-                            chainName: 'Polygon - Mumbai',
+                            chainName: 'Mumbai',
                             nativeCurrency: {
-                                name: 'Matic',
+                                name: 'Polygon',
                                 symbol: 'MATIC', // 2-6 characters long
                                 decimals: 18
                             },
                             blockExplorerUrls: ['https://mumbai.polygonscan.com'],
-                            rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
+                            rpcUrls: ['https://polygon-mumbai.g.alchemy.com/v2/demo'],
                         }, ],
                     });
                 } catch (addError) {
@@ -69,9 +69,9 @@ const Authenticate = {
                         method: 'wallet_addEthereumChain',
                         params: [{
                             chainId: '0x89',
-                            chainName: 'Polygon - Mainnet',
+                            chainName: 'Polygon',
                             nativeCurrency: {
-                                name: 'Matic',
+                                name: 'Polygon',
                                 symbol: 'MATIC', // 2-6 characters long
                                 decimals: 18
                             },
