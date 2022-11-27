@@ -16,6 +16,7 @@ module.exports = {
         testnet: {
             provider: () => new HDWalletProvider(
                 MNEMONIC,
+                // `https://matic-mumbai.chainstacklabs.com`
                 `https://rpc.ankr.com/polygon_mumbai`
                 // `https://rpc-mumbai.maticvigil.com/v1/${MATIC_RPC_ID}`
             ),

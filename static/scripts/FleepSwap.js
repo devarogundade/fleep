@@ -16,13 +16,16 @@ const FleepSwap = {
 
         try {
             this.instance = await swapContract.deployed()
-            console.log('token0', await this.instance.pairs("0x3814CF88e2675041504C7d6404f7b8978F8B65B4"));
-            console.log('token1', await this.instance.pairs("0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB"));
             return this.instance
         } catch (error) {
             console.log(error);
             return null
         }
+    },
+    pairs: async function() {
+        const instance = await this.getInstance()
+        console.log('token0', await instance.pairs("0x3814CF88e2675041504C7d6404f7b8978F8B65B4"));
+        console.log('token1', await instance.pairs("0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB"));
     },
     provider: async function(address) {
         const instance = await this.getInstance()
@@ -34,7 +37,7 @@ const FleepSwap = {
             return null
         }
     },
-    provideLiquidity: async function(amount0, poolId, address, value = 0) {
+    provideLiquidity: async function(poolId, amount0, address, value = 0) {
         const instance = await this.getInstance()
 
         if (instance == null) return {
@@ -44,7 +47,7 @@ const FleepSwap = {
         }
 
         try {
-            const trx = await instance.provideLiquid(poolId, amount0, {
+            const trx = await instance.provideLiquidity(poolId, amount0, {
                 from: address,
                 value: value
             })

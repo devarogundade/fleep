@@ -107,10 +107,10 @@ contract Swap {
     function estimate(
         address token0,
         address token1,
-        uint256 amount0
+        uint256 amount0 // in wei
     ) public view returns (uint256) {
         int256 rate = _priceApi.getExchangeRate(pairs[token0], pairs[token1]);
-        return amount0 * uint256(rate);
+        return (amount0 * uint256(rate)) / (10 ** decimals());
     }
 
     // returns the contract address
@@ -149,14 +149,6 @@ contract Swap {
         uint256 amount0
     ) public payable returns (uint256) {
         require(amount0 >= 100, "Amount to swap cannot be lesser than 100 WEI");
-        require(
-            pairs[token0] != address(0),
-            "Pair does not exists, Contact admin"
-        );
-        require(
-            pairs[token1] != address(0),
-            "Pair does not exists, Contact admin"
-        );
 
         uint256 amount1;
         uint256 _safeAmount0 = amount0;
@@ -166,7 +158,7 @@ contract Swap {
 
         if (pairs[token0] == NATIVE_PAIR) {
             _safeAmount0 = msg.value;
-            amount1 = estimate(NATIVE_PAIR, pairs[token1], _safeAmount0);
+            amount1 = estimate(NATIVE_PAIR, token1, _safeAmount0);
 
             IERC20 quoteToken = IERC20(token1);
             (, uint256 poolSizeToken1) = _poolSize(poolId);
@@ -185,7 +177,7 @@ contract Swap {
                 providersReward
             );
         } else if (pairs[token1] == NATIVE_PAIR) {
-            amount1 = estimate(pairs[token0], NATIVE_PAIR, _safeAmount0);
+            amount1 = estimate(token0, NATIVE_PAIR, _safeAmount0);
 
             IERC20 baseToken = IERC20(token0);
             baseToken.transferFrom(msg.sender, address(this), _safeAmount0);
@@ -246,19 +238,10 @@ contract Swap {
     ) public payable onlyProvider {
         require(amount0 >= 100, "Amount cannot be lesser than 100 WEI");
 
-        require(
-            pairs[pools[poolId].token0] != address(0),
-            "Pair does not exists, Contact admin"
-        );
-        require(
-            pairs[pools[poolId].token1] != address(0),
-            "Pair does not exists, Contact admin"
-        );
-
         uint256 amount1;
         uint256 _safeAmount0 = amount0;
 
-        if (pairs[pools[poolId].token0] == NATIVE_PAIR) {
+        if (pools[poolId].token0 == NATIVE_PAIR) {
             require(msg.value > 100, "Matic cannot be lesser than 1OO WEI");
             // only in format of MATIC as pair subject
             // ex MATIC/XEND
@@ -266,21 +249,21 @@ contract Swap {
             _safeAmount0 = msg.value;
             // get the estimate for token1
             amount1 = estimate(
-                pairs[pools[poolId].token0],
-                pairs[pools[poolId].token1],
+                pools[poolId].token0,
+                pools[poolId].token1,
                 _safeAmount0
             );
             // stake token1 to smart contract
             IERC20(pools[poolId].token1).transferFrom(
                 msg.sender,
                 address(this),
-                amount0
+                amount1
             );
         } else {
             // get the estimate for token1
             amount1 = estimate(
-                pairs[pools[poolId].token0],
-                pairs[pools[poolId].token1],
+                pools[poolId].token0,
+                pools[poolId].token1,
                 _safeAmount0
             );
             // stake tokens to smart contract
@@ -318,7 +301,7 @@ contract Swap {
         );
     }
 
-    function removeLiquid(uint id) public onlyProvider {
+    function removeLiquidity(uint id) public onlyProvider {
         require(liquids[id].provider == msg.sender, "Unauthorized");
 
         Pool memory pool = pools[liquids[id].poolId];
@@ -470,6 +453,10 @@ contract Swap {
 
         // convert fee to matic
         return estimate(address(token1), NATIVE_PAIR, _fee);
+    }
+
+    function decimals() private pure returns (uint8) {
+        return 18;
     }
 
     function _findPool(

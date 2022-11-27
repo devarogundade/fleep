@@ -23,6 +23,10 @@
             <input type="Pair Address" v-model="token0">
             <button v-on:click="updateNativePair()">Update Native Pair</button>
         </div>
+
+        <div class="pairs">
+            <button v-on:click="getPairs()">Pairs</button>
+        </div>
     </div>
 </section>
 </template>
@@ -58,6 +62,9 @@ export default {
         updateNativePair: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
             this.response = await FleepSwap.updateNativePair(this.token0, address)
+        },
+        getPairs: async function () {
+            await FleepSwap.pairs()
         }
     }
 }
