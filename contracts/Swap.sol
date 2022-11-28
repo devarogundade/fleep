@@ -180,7 +180,7 @@ contract Swap {
             amount1 = estimate(
                 token0,
                 NATIVE_PAIR,
-                _safeAmount0 / 10 ** decimals()
+                _safeAmount0
             );
 
             IERC20 baseToken = IERC20(token0);
@@ -203,7 +203,7 @@ contract Swap {
             amount1 = estimate(
                 pairs[token0],
                 pairs[token1],
-                _safeAmount0 / 10 ** decimals()
+                _safeAmount0
             );
 
             IERC20 baseToken = IERC20(token0);
@@ -259,7 +259,7 @@ contract Swap {
             amount1 = estimate(
                 pools[poolId].token0,
                 pools[poolId].token1,
-                _safeAmount0 / 10 ** decimals()
+                _safeAmount0
             );
             // stake token1 to smart contract
             IERC20(pools[poolId].token1).transferFrom(
@@ -272,7 +272,7 @@ contract Swap {
             amount1 = estimate(
                 pools[poolId].token0,
                 pools[poolId].token1,
-                _safeAmount0 / 10 ** decimals()
+                _safeAmount0
             );
             // stake tokens to smart contract
             IERC20(pools[poolId].token0).transferFrom(

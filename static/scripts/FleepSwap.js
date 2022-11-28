@@ -25,8 +25,8 @@ const FleepSwap = {
     },
     pairs: async function() {
         const instance = await this.getInstance()
-        console.log('token0', await instance.pairs("0x3814CF88e2675041504C7d6404f7b8978F8B65B4"));
-        console.log('token1', await instance.pairs("0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB"));
+        console.log('token1', await instance.pairs("0x3814CF88e2675041504C7d6404f7b8978F8B65B4"));
+        console.log('token0', await instance.pairs("0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB"));
     },
     provider: async function(address) {
         const instance = await this.getInstance()

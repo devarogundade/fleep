@@ -16,9 +16,7 @@ module.exports = {
         testnet: {
             provider: () => new HDWalletProvider(
                 MNEMONIC,
-                // `https://matic-mumbai.chainstacklabs.com`
                 `https://rpc.ankr.com/polygon_mumbai`
-                // `https://rpc-mumbai.maticvigil.com/v1/${MATIC_RPC_ID}`
             ),
             network_id: 80001, // Polygon chain testnet id
             confirmations: 2,
@@ -29,8 +27,7 @@ module.exports = {
         mainnet: {
             provider: () => new HDWalletProvider(
                 MNEMONIC,
-                `https://polygon-rpc.com`,
-                // `https://rpc-mainnet.maticvigil.com/v1/${MATIC_RPC_ID}`,
+                `https://polygon-rpc.com`
             ),
             network_id: 80001, // Polygon chain mainnet id
             confirmations: 2,

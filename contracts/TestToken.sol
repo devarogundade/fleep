@@ -27,6 +27,6 @@ contract TestnetToken is ERC20 {
     }
 
     function inWei(uint256 amount) private view returns (uint256) {
-        return amount * 10**decimals();
+        return amount * 10 ** decimals();
     }
 }

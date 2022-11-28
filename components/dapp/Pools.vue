@@ -47,6 +47,7 @@ import mainnetPools from "../../static/pools/mainnet.json"
 import testnetPools from "../../static/pools/testnet.json"
 import Network from "../../static/scripts/Network"
 import FleepSwap from '~/static/scripts/FleepSwap'
+import Utils from '~/static/scripts/Utils'
 
 export default {
     data() {
@@ -78,8 +79,8 @@ export default {
                 const pool = this.pools[index];
                 const response = await FleepSwap.getPoolSize(pool.token0, pool.token1)
                 if (response) {
-                    pool.amount0 = Number(response[0])
-                    pool.amount1 = Number(response[1])
+                    pool.amount0 = Utils.fromWei(response[0])
+                    pool.amount1 = Utils.fromWei(response[1])
                     console.log(pool);
                 }
             }
