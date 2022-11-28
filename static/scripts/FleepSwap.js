@@ -1,5 +1,6 @@
 import contract from 'truffle-contract'
 import abi from "~/build/contracts/Swap.json"
+import Utils from './Utils';
 
 const FleepSwap = {
     instance: null,
@@ -100,7 +101,7 @@ const FleepSwap = {
         }
 
         try {
-            const rate = await instance.estimate(from, to, 1)
+            const rate = await instance.estimate(from, to, Utils.toWei('1'))
             return {
                 message: 'Transaction Hash',
                 rate: rate,

@@ -110,7 +110,7 @@ contract Swap {
         uint256 amount0 // in wei
     ) public view returns (uint256) {
         int256 rate = _priceApi.getExchangeRate(pairs[token0], pairs[token1]);
-        return (amount0 * uint256(rate)) / (10 ** decimals());
+        return (amount0 * uint256(rate));
     }
 
     // returns the contract address
@@ -177,7 +177,11 @@ contract Swap {
                 providersReward
             );
         } else if (pairs[token1] == NATIVE_PAIR) {
-            amount1 = estimate(token0, NATIVE_PAIR, _safeAmount0);
+            amount1 = estimate(
+                token0,
+                NATIVE_PAIR,
+                _safeAmount0 / 10 ** decimals()
+            );
 
             IERC20 baseToken = IERC20(token0);
             baseToken.transferFrom(msg.sender, address(this), _safeAmount0);
@@ -196,7 +200,11 @@ contract Swap {
                 providersReward
             );
         } else {
-            amount1 = estimate(pairs[token0], pairs[token1], _safeAmount0);
+            amount1 = estimate(
+                pairs[token0],
+                pairs[token1],
+                _safeAmount0 / 10 ** decimals()
+            );
 
             IERC20 baseToken = IERC20(token0);
             IERC20 quoteToken = IERC20(token1);
@@ -251,7 +259,7 @@ contract Swap {
             amount1 = estimate(
                 pools[poolId].token0,
                 pools[poolId].token1,
-                _safeAmount0
+                _safeAmount0 / 10 ** decimals()
             );
             // stake token1 to smart contract
             IERC20(pools[poolId].token1).transferFrom(
@@ -264,7 +272,7 @@ contract Swap {
             amount1 = estimate(
                 pools[poolId].token0,
                 pools[poolId].token1,
-                _safeAmount0
+                _safeAmount0 / 10 ** decimals()
             );
             // stake tokens to smart contract
             IERC20(pools[poolId].token0).transferFrom(
