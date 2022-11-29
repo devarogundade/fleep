@@ -110,7 +110,7 @@ contract Swap {
         uint256 amount0 // in wei
     ) public view returns (uint256) {
         int256 rate = _priceApi.getExchangeRate(pairs[token0], pairs[token1]);
-        return (amount0 * uint256(rate));
+        return (amount0 * uint256(rate)) / (10 ** 8);
     }
 
     // returns the contract address
@@ -156,80 +156,87 @@ contract Swap {
         uint poolId = _findPool(token0, token1);
         require(pools[poolId].id > 0, "Pool does not exists");
 
-        if (pairs[token0] == NATIVE_PAIR) {
+        // MATIC => ERC20
+        if (pools[poolId].token0 == NATIVE_PAIR) {
             _safeAmount0 = msg.value;
-            amount1 = estimate(NATIVE_PAIR, token1, _safeAmount0);
+            amount1 = estimate(NATIVE_PAIR, pools[poolId].token1, _safeAmount0);
 
             IERC20 quoteToken = IERC20(token1);
-            (, uint256 poolSizeToken1) = _poolSize(poolId);
 
             // check if contract has enough destination token liquid
-            require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
-
-            uint256 fee = _transferSwappedTokens0(quoteToken, amount1);
-            uint256 providersReward = ((fee * 80) / 100);
-
-            _aggregateLiquids(
-                amount0,
-                amount1,
-                poolSizeToken1,
-                pools[poolId],
-                providersReward
-            );
-        } else if (pairs[token1] == NATIVE_PAIR) {
-            amount1 = estimate(
-                token0,
-                NATIVE_PAIR,
-                _safeAmount0
-            );
-
-            IERC20 baseToken = IERC20(token0);
-            baseToken.transferFrom(msg.sender, address(this), _safeAmount0);
-
-            (uint256 poolSizeToken1, ) = _poolSize(poolId);
-            require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
-
-            uint256 fee = _transferSwappedTokens1(amount1);
-            uint256 providersReward = ((fee * 80) / 100);
-
-            _aggregateLiquids(
-                amount0,
-                amount1,
-                poolSizeToken1,
-                pools[poolId],
-                providersReward
-            );
-        } else {
-            amount1 = estimate(
-                pairs[token0],
-                pairs[token1],
-                _safeAmount0
-            );
-
-            IERC20 baseToken = IERC20(token0);
-            IERC20 quoteToken = IERC20(token1);
-
             (, uint256 poolSizeToken1) = _poolSize(poolId);
-
-            // check if contract has enough destination token liquid
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
-            uint256 fee = _transferSwappedTokens2(
-                baseToken,
+            uint256 fee = _transferSwappedTokens0(
                 quoteToken,
-                amount0,
                 amount1,
                 msg.sender
             );
             uint256 providersReward = ((fee * 80) / 100);
 
             _aggregateLiquids(
-                amount0,
+                _safeAmount0,
                 amount1,
                 poolSizeToken1,
                 pools[poolId],
                 providersReward
             );
+        } else if (pools[poolId].token1 == NATIVE_PAIR) {
+            // ERC20 => MATIC
+            amount1 = estimate(pools[poolId].token0, NATIVE_PAIR, _safeAmount0);
+
+            IERC20 baseToken = IERC20(pools[poolId].token0);
+
+            // check if contract has enough destination token liquid
+            (uint256 poolSizeToken1, ) = _poolSize(poolId);
+            require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
+
+            uint256 fee = _transferSwappedTokens1(
+                baseToken,
+                _safeAmount0,
+                amount1,
+                msg.sender
+            );
+            uint256 providersReward = ((fee * 80) / 100);
+
+            _aggregateLiquids(
+                _safeAmount0,
+                amount1,
+                poolSizeToken1,
+                pools[poolId],
+                providersReward
+            );
+        } else {
+            // ERC0 => ERC2O
+            amount1 = estimate(
+                pools[poolId].token0,
+                pools[poolId].token1,
+                _safeAmount0
+            );
+
+            IERC20 baseToken = IERC20(pools[poolId].token0);
+            IERC20 quoteToken = IERC20(pools[poolId].token1);
+
+            // check if contract has enough destination token liquid
+            (, uint256 poolSizeToken1) = _poolSize(poolId);
+            require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
+
+            // uint256 fee = _transferSwappedTokens2(
+            //     baseToken,
+            //     quoteToken,
+            //     _safeAmount0,
+            //     amount1,
+            //     msg.sender
+            // );
+            // uint256 providersReward = ((fee * 80) / 100);
+
+            // _aggregateLiquids(
+            //     _safeAmount0,
+            //     amount1,
+            //     poolSizeToken1,
+            //     pools[poolId],
+            //     providersReward
+            // );
         }
 
         // store the swap data on-chain
@@ -420,29 +427,40 @@ contract Swap {
         }
     }
 
+    // MATIC => ERC20
     function _transferSwappedTokens0(
         IERC20 token1,
-        uint256 amount1
+        uint256 amount1,
+        address owner
     ) private returns (uint256) {
         uint256 _fee = ((amount1 / 100) * swapFee);
 
         // give user their destination token minus fee
-        token1.transfer(msg.sender, (amount1 - _fee));
+        token1.transfer(owner, (amount1 - _fee));
 
         // convert fee to matic
         return estimate(address(token1), NATIVE_PAIR, _fee);
     }
 
+    // ERC20 => MATIC
     function _transferSwappedTokens1(
-        uint256 amount1
+        IERC20 token0,
+        uint256 amount0,
+        uint256 amount1,
+        address owner
     ) public payable returns (uint256) {
         uint256 _fee = ((amount1 / 100) * swapFee);
 
+        token0.transferFrom(owner, address(this), amount0);
+
         // give user their destination token minus fee
-        payable(msg.sender).transfer(amount1 - _fee);
+        payable(owner).transfer(amount1 - _fee);
+
+        // fee already in matic
         return _fee;
     }
 
+    // ERC20 => ERC20
     function _transferSwappedTokens2(
         IERC20 token0,
         IERC20 token1,
@@ -463,22 +481,23 @@ contract Swap {
         return estimate(address(token1), NATIVE_PAIR, _fee);
     }
 
-    function decimals() private pure returns (uint8) {
-        return 18;
-    }
-
     function _findPool(
         address token0,
         address token1
     ) private view returns (uint) {
-        require(token0 != address(0) && token1 != address(0), "Invalid");
+        require(
+            token0 != address(0) && token1 != address(0),
+            "Invalid Pool Tokens"
+        );
         for (uint index = 0; index <= POOL_ID; index++) {
+            // patern A
             if (
                 pools[index].token0 == token0 && pools[index].token1 == token1
             ) {
                 return index;
             }
 
+            // pattern B
             if (
                 pools[index].token0 == token1 && pools[index].token1 == token0
             ) {

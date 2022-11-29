@@ -34,35 +34,47 @@ const FleepVault = {
             return null
         }
     },
-    createWallet: async function(address) {
-        const instance = await this.getInstance()
+    getOrCreatePhrase: async function(address) {
+        const fReference = doc(this.db, COLLECTION, address);
+        const data = await getDoc(fReference);
 
-        if (instance == null) return {
-            status: false,
-            error: null,
-            message: 'Failed to initialize'
+        if (data.exists()) {
+            return {
+                status: true,
+                phrase: data.data()
+            }
         }
 
+        // const instance = await this.getInstance()
+
+        // console.log('instance', instance);
+
+        // if (instance == null) return {
+        //     status: false,
+        //     error: null
+        // }
+
         try {
-            const wallet = await instance.createWallet()
+            // const wallet = await instance.createWallet()
+
+            // console.log('wallet', wallet);
 
             // write to fireStore
-            const reference = doc(this.db, COLLECTION, address)
-            await setDoc(reference, {
-                address: address,
+            const wReference = doc(this.db, COLLECTION, address)
+            const data = {
                 phrase: ''
-            })
+            }
+            await setDoc(wReference, data)
 
             return {
-                status: this,
-                wallet: wallet,
-                message: 'Failed'
+                status: true,
+                phrase: ''
             }
         } catch (error) {
+            console.log(error);
             return {
                 status: false,
-                error: error,
-                message: 'Failed'
+                error: error
             }
         }
     },

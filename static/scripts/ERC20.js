@@ -15,7 +15,6 @@ const ERC20 = {
     },
     approve: async function(address, spender, amount, tokenAddress) {
         const web3 = new Web3(ethereum)
-        console.log(tokenAddress);
         const contract = new web3.eth.Contract(this.abi, tokenAddress)
         try {
             await contract.methods.approve(spender, amount).send({ from: address })

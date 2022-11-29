@@ -47,9 +47,6 @@ export default {
             network: Network.current() == 'true'
         }
     },
-    async mounted() {
-        await FleepVault.createWallet()
-    },
     methods: {
         createPair: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address

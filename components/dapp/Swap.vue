@@ -87,7 +87,7 @@ export default {
             pickCursor: "from",
             tokens: [],
             from: {
-                balance: '•••',
+                balance: '0',
                 amount: "",
                 token: {
                     symbol: "Select",
@@ -95,7 +95,7 @@ export default {
                 },
             },
             to: {
-                balance: '•••',
+                balance: '0',
                 amount: "",
                 token: {
                     symbol: "Select",
@@ -133,6 +133,7 @@ export default {
 
         this.from.token = this.tokens[0]
         this.to.token = this.tokens[1]
+
         this.getExchangeRate()
         this.getBalance()
         this.getAllocation()
@@ -163,7 +164,7 @@ export default {
             console.log(response);
 
             if (response.status) {
-                this.rate = response.rate / 10 ** 8;
+                this.rate = response.rate;
             }
         },
         switchTokens: function () {
@@ -177,14 +178,23 @@ export default {
         },
         getAllocation: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
-            const allocation = await ERC20.allocation(address, FleepSwap.address, this.from.token.address)
+            const allocation = await ERC20.allocation(
+                address,
+                await FleepSwap.getContractAddress(),
+                this.from.token.address
+            )
             this.allocation = Utils.fromWei(allocation)
         },
         swap: async function () {
             if (this.from.amount == '' || this.to.amount == '') return
             const address = (await Authenticate.getUserAddress(this.network)).address
 
-            const response = await FleepSwap.swap(this.from.token.address, this.to.token.address, Utils.toWei(this.from.amount), address)
+            const response = await FleepSwap.swap(
+                this.from.token.address,
+                this.to.token.address,
+                Utils.toWei(this.from.amount),
+                address
+            )
             console.log(response);
         },
         approve: async function () {
@@ -192,7 +202,7 @@ export default {
             console.log(this.from.token);
             await ERC20.approve(
                 address,
-                FleepSwap.address,
+                await FleepSwap.getContractAddress(),
                 Utils.toWei(this.from.amount),
                 this.from.token.address
             )
@@ -201,6 +211,7 @@ export default {
         getBalance: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
             const tokens = await this.$balance.erc20Balances(address, this.network)
+            console.log(tokens);
             tokens.forEach(token => {
                 if (token.token_address.toLowerCase() == this.from.token.address.toLowerCase()) {
                     this.from.balance = Utils.fromWei(token.balance)

@@ -104,7 +104,7 @@ const FleepSwap = {
             const rate = await instance.estimate(from, to, Utils.toWei('1'))
             return {
                 message: 'Transaction Hash',
-                rate: rate,
+                rate: Utils.fromWei(rate),
                 status: true
             }
         } catch (error) {

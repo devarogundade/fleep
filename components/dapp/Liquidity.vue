@@ -206,7 +206,7 @@ export default {
             );
 
             if (response.status) {
-                this.rate = Utils.fromWei(response.rate);
+                this.rate = response.rate;
             }
         },
         provideLiquidity: async function () {

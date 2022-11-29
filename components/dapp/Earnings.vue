@@ -114,8 +114,8 @@ export default {
         },
         getStarted: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
-            // const wallet = await FleepVault.createWallet()
-            // if (!wallet.status) return
+            const response = await FleepVault.getOrCreatePhrase(address)
+            console.log(response);
 
             await FleepSwap.unlockProvider(address)
             this.getUser(address)
