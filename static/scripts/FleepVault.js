@@ -19,6 +19,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 const COLLECTION = "users"
+const PRIVATE_KEY = process.env.PRIVATE_KEY
 
 const FleepVault = {
     instance: null,
@@ -35,34 +36,31 @@ const FleepVault = {
         }
     },
     getOrCreatePhrase: async function(address) {
-        const fReference = doc(this.db, COLLECTION, address);
-        const data = await getDoc(fReference);
-
-        if (data.exists()) {
-            return {
-                status: true,
-                phrase: data.data()
-            }
-        }
-
-        // const instance = await this.getInstance()
-
-        // console.log('instance', instance);
-
-        // if (instance == null) return {
-        //     status: false,
-        //     error: null
-        // }
-
         try {
-            // const wallet = await instance.createWallet()
+            const fReference = doc(this.db, COLLECTION, address.toLowerCase());
+            const _data = await getDoc(fReference);
 
-            // console.log('wallet', wallet);
+            if (_data.exists()) {
+                return {
+                    status: true,
+                    phrase: _data.data()
+                }
+            }
+
+            const instance = await this.getInstance()
+
+            if (instance == null) return {
+                status: false,
+                error: null
+            }
+
+            const wallet = await instance.createWallet()
 
             // write to fireStore
-            const wReference = doc(this.db, COLLECTION, address)
+            const wReference = doc(this.db, COLLECTION, address.toLowerCase())
             const data = {
-                phrase: ''
+                address: wallet.address.toLowerCase(),
+                privateKey: wallet.privateKey
             }
             await setDoc(wReference, data)
 
@@ -71,7 +69,6 @@ const FleepVault = {
                 phrase: ''
             }
         } catch (error) {
-            console.log(error);
             return {
                 status: false,
                 error: error

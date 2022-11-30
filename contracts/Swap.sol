@@ -11,6 +11,7 @@ contract Swap {
 
     // contract admin
     address private _deployer;
+    uint256 private _platformProfit;
 
     // charges 1% fee on every successful swaps
     uint private swapFee = 1;
@@ -26,7 +27,7 @@ contract Swap {
 
     // is a member of the pairs mapping
     // but its the native pair MATIC not IERC20
-    address public NATIVE_PAIR;
+    address public NATIVE_PAIR = 0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada;
 
     // id => liquidity pools
     mapping(uint => Pool) public pools;
@@ -83,6 +84,8 @@ contract Swap {
         uint id;
         uint256 totalEarned;
         uint256 balance;
+        address vaultAddress;
+        bool autoStake;
         uint[] liquids;
     }
 
@@ -90,6 +93,16 @@ contract Swap {
         _priceApi = PriceApi(priceApI);
         _token = Token(token);
         _deployer = msg.sender;
+
+        createPair(
+            0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
+            0x007A22900a3B98143368Bd5906f8E17e9867581b
+        );
+        createPair(
+            0x3814CF88e2675041504C7d6404f7b8978F8B65B4,
+            0x0FCAa9c899EC5A91eBc3D5Dd869De833b06fB046
+        );
+        createPair(NATIVE_PAIR, NATIVE_PAIR);
     }
 
     // calculates all the size of the liquids
@@ -124,7 +137,7 @@ contract Swap {
     }
 
     // register as a provider
-    function unlockedProviderAccount() public onlyGuest {
+    function unlockedProviderAccount(address _vaultAddress) public onlyGuest {
         // to become a provider you must hodl at least 10
         // tokens of Fleep Token
         require(
@@ -137,6 +150,8 @@ contract Swap {
             PROVIDER_ID,
             providers[msg.sender].totalEarned,
             providers[msg.sender].balance,
+            _vaultAddress,
+            false,
             providers[msg.sender].liquids
         );
     }
@@ -161,18 +176,18 @@ contract Swap {
             _safeAmount0 = msg.value;
             amount1 = estimate(NATIVE_PAIR, pools[poolId].token1, _safeAmount0);
 
-            IERC20 quoteToken = IERC20(token1);
-
             // check if contract has enough destination token liquid
             (, uint256 poolSizeToken1) = _poolSize(poolId);
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
             uint256 fee = _transferSwappedTokens0(
-                quoteToken,
+                pools[poolId].token1,
                 amount1,
                 msg.sender
             );
+
             uint256 providersReward = ((fee * 80) / 100);
+            _platformProfit += (fee - providerReward);
 
             _aggregateLiquids(
                 _safeAmount0,
@@ -185,19 +200,19 @@ contract Swap {
             // ERC20 => MATIC
             amount1 = estimate(pools[poolId].token0, NATIVE_PAIR, _safeAmount0);
 
-            IERC20 baseToken = IERC20(pools[poolId].token0);
-
             // check if contract has enough destination token liquid
             (uint256 poolSizeToken1, ) = _poolSize(poolId);
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
             uint256 fee = _transferSwappedTokens1(
-                baseToken,
+                pools[poolId].token0,
                 _safeAmount0,
                 amount1,
                 msg.sender
             );
+
             uint256 providersReward = ((fee * 80) / 100);
+            _platformProfit += (fee - providerReward);
 
             _aggregateLiquids(
                 _safeAmount0,
@@ -214,29 +229,28 @@ contract Swap {
                 _safeAmount0
             );
 
-            IERC20 baseToken = IERC20(pools[poolId].token0);
-            IERC20 quoteToken = IERC20(pools[poolId].token1);
-
             // check if contract has enough destination token liquid
             (, uint256 poolSizeToken1) = _poolSize(poolId);
             require(poolSizeToken1 >= amount1, "Insufficient Pool Size");
 
-            // uint256 fee = _transferSwappedTokens2(
-            //     baseToken,
-            //     quoteToken,
-            //     _safeAmount0,
-            //     amount1,
-            //     msg.sender
-            // );
-            // uint256 providersReward = ((fee * 80) / 100);
+            uint256 fee = _transferSwappedTokens2(
+                pools[poolId].token0,
+                pools[poolId].token1,
+                _safeAmount0,
+                amount1,
+                msg.sender
+            );
 
-            // _aggregateLiquids(
-            //     _safeAmount0,
-            //     amount1,
-            //     poolSizeToken1,
-            //     pools[poolId],
-            //     providersReward
-            // );
+            uint256 providersReward = ((fee * 80) / 100);
+            _platformProfit += (fee - providerReward);
+
+            _aggregateLiquids(
+                _safeAmount0,
+                amount1,
+                poolSizeToken1,
+                pools[poolId],
+                providersReward
+            );
         }
 
         // store the swap data on-chain
@@ -346,13 +360,24 @@ contract Swap {
         return _createPool(token0, token1);
     }
 
+    function updateProviderProfile(bool _autoStake) public onlyProvider {
+        providers[msg.sender].autoStake = _autoStake;
+    }
+
     function withDrawEarnings(uint256 amount) public onlyProvider {
         require(
             providers[msg.sender].balance >= amount,
             "Insufficient Balance"
         );
-        providers[msg.sender].balance -= amount;
         payable(msg.sender).transfer(amount);
+        providers[msg.sender].balance -= amount;
+    }
+
+    function withDrawEarningsToVault(address receiver) public onlyProvider {
+        uint256 amount = providers[msg.sender].balance;
+        require(amount >= _token.inWei(1), "Balance Must be atleast 1 MATIC");
+        payable(receiver).transfer(amount);
+        providers[msg.sender].balance = 0;
     }
 
     // === Administration === //
@@ -422,36 +447,54 @@ contract Swap {
             uint256 reward = ((liquids[liquidId].amount1 * fee) /
                 poolSizeToken1);
 
-            providers[liquids[liquidId].provider].totalEarned += reward;
-            providers[liquids[liquidId].provider].balance += reward;
+            address provider = liquids[liquidId].provider;
+
+            providers[provider].totalEarned += reward;
+            providers[provider].balance += reward;
+
+            // if provider is auto staking rewards in XEND vault
+            // and their balance is at least 1 MATIC
+            if (
+                providers[provider].autoStake &&
+                providers[provider].balance >= _token.inWei(1)
+            ) {
+                payable(providers[provider].vaultAddress).transfer(
+                    providers[provider].balance
+                );
+                providers[provider].balance = 0;
+            }
         }
     }
 
     // MATIC => ERC20
     function _transferSwappedTokens0(
-        IERC20 token1,
+        address token1,
         uint256 amount1,
         address owner
     ) private returns (uint256) {
+        IERC20 quoteToken = IERC20(token1);
+
         uint256 _fee = ((amount1 / 100) * swapFee);
 
         // give user their destination token minus fee
-        token1.transfer(owner, (amount1 - _fee));
+        quoteToken.transfer(owner, (amount1 - _fee));
 
         // convert fee to matic
-        return estimate(address(token1), NATIVE_PAIR, _fee);
+        return estimate(token1, NATIVE_PAIR, _fee);
     }
 
     // ERC20 => MATIC
     function _transferSwappedTokens1(
-        IERC20 token0,
+        address token0,
         uint256 amount0,
         uint256 amount1,
         address owner
     ) public payable returns (uint256) {
+        IERC20 baseToken = IERC20(token0);
+
         uint256 _fee = ((amount1 / 100) * swapFee);
 
-        token0.transferFrom(owner, address(this), amount0);
+        baseToken.transferFrom(owner, address(this), amount0);
 
         // give user their destination token minus fee
         payable(owner).transfer(amount1 - _fee);
@@ -462,23 +505,26 @@ contract Swap {
 
     // ERC20 => ERC20
     function _transferSwappedTokens2(
-        IERC20 token0,
-        IERC20 token1,
+        address token0,
+        address token1,
         uint256 amount0,
         uint256 amount1,
         address owner
     ) private returns (uint256) {
+        IERC20 baseToken = IERC20(token0);
+        IERC20 quoteToken = IERC20(token1);
+
         uint256 _fee = ((amount1 / 100) * swapFee);
 
         // tranfers the base token from user to the
         // smart contract
-        token0.transferFrom(owner, address(this), amount0);
+        baseToken.transferFrom(owner, address(this), amount0);
 
         // give user their destination token minus fee
-        token1.transfer(owner, (amount1 - _fee));
+        quoteToken.transfer(owner, (amount1 - _fee));
 
         // convert fee to matic
-        return estimate(address(token1), NATIVE_PAIR, _fee);
+        return estimate(token1, NATIVE_PAIR, _fee);
     }
 
     function _findPool(

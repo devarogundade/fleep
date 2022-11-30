@@ -102,8 +102,8 @@ export default {
 
             const user = {
                 id: Number(response.id),
-                balance: Number(response.balance),
-                totalEarned: Number(response.totalEarned)
+                balance: Utils.fromWei(response.balance),
+                totalEarned: Utils.fromWei(response.totalEarned)
             }
 
             if (user.id > 0) {
