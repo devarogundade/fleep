@@ -51,8 +51,13 @@
                 </div>
 
                 <div class="button">
-                    <div class="action" v-if="allocation < from.amount" v-on:click="approve()">Approve</div>
-                    <div class="action" v-else v-on:click="swap()">Swap</div>
+                    <div v-if="!swapping">
+                        <div class="action" v-if="allocation < from.amount" v-on:click="approve()">Approve</div>
+                        <div class="action" v-else v-on:click="swap()">Swap</div>
+                    </div>
+                    <div class="action" v-else>
+                        <TinyProgress />
+                    </div>
 
                     <p>Enter the amount of tokens you want to swap.</p>
                 </div>
@@ -103,7 +108,10 @@ export default {
                 },
             },
             rate: "•••",
-            allocation: 0
+            allocation: 0,
+
+            // progress
+            swapping: false
         };
     },
     watch: {
@@ -161,8 +169,6 @@ export default {
                 this.to.token.address
             );
 
-            console.log(response);
-
             if (response.status) {
                 this.rate = response.rate;
             }
@@ -189,23 +195,33 @@ export default {
             if (this.from.amount == '' || this.to.amount == '') return
             const address = (await Authenticate.getUserAddress(this.network)).address
 
+            this.swapping = true
+
             const response = await FleepSwap.swap(
                 this.from.token.address,
                 this.to.token.address,
                 Utils.toWei(this.from.amount),
                 address
             )
-            console.log(response);
+
+            this.swapping = false
+
+            this.getBalance()
         },
         approve: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
-            console.log(this.from.token);
+
+            this.swapping = true
+
             await ERC20.approve(
                 address,
                 await FleepSwap.getContractAddress(),
                 Utils.toWei(this.from.amount),
                 this.from.token.address
             )
+
+            this.swapping = false
+
             this.getAllocation()
         },
         getBalance: async function () {

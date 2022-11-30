@@ -50,10 +50,14 @@
                 </div>
 
                 <div class="button">
-                    <div class="action" v-if="(allocations.token0 < from.amount) && AS == 1" v-on:click="approve()">Approve {{ from.token.symbol }}</div>
-                    <div class="action" v-if="(allocations.token1 < to.amount) && AS == 2" v-on:click="approve()">Approve {{ to.token.symbol }}</div>
-                    <div class="action" v-if="(allocations.token0 >= from.amount) && (allocations.token1 >= to.amount)" v-on:click="provideLiquidity()">Add Liquidity</div>
-                    <!-- <div class="action" v-on:click="provideLiquidity()">Add Liquidity</div> -->
+                    <div v-if="!providing">
+                        <div class="action" v-if="(allocations.token0 < from.amount) && AS == 1" v-on:click="approve()">Approve {{ from.token.symbol }}</div>
+                        <div class="action" v-if="(allocations.token1 < to.amount) && AS == 2" v-on:click="approve()">Approve {{ to.token.symbol }}</div>
+                        <div class="action" v-if="(allocations.token0 >= from.amount) && (allocations.token1 >= to.amount)" v-on:click="provideLiquidity()">Add Liquidity</div>
+                    </div>
+                    <div class="action" v-else>
+                        <TinyProgress />
+                    </div>
                     <p>Enter the amount of tokens you want to provide.</p>
                 </div>
 
@@ -106,7 +110,10 @@ export default {
                 token0: 0,
                 token1: 0
             },
-            AS: 1
+            AS: 1,
+
+            // progress
+            providing: false
         };
     },
     watch: {
@@ -165,6 +172,9 @@ export default {
         },
         approve: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
+
+            this.providing = true
+
             if (this.AS == 1) {
                 this.AS = 2
                 await ERC20.approve(
@@ -181,6 +191,9 @@ export default {
                     this.to.token.address
                 )
             }
+
+            this.providing = false
+
             this.getAllocation()
         },
         switchCursor: function (cursor) {
@@ -211,13 +224,17 @@ export default {
         },
         provideLiquidity: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
+
+            this.providing = true
+
             const response = await FleepSwap.provideLiquidity(
                 this.poolId,
                 Utils.toWei(this.from.amount),
                 address,
                 0
             )
-            console.log(response);
+
+            this.providing = false
         },
         getBalance: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address

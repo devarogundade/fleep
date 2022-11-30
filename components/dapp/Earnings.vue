@@ -20,7 +20,10 @@
                 </div>
 
                 <div class="button">
-                    <div class="action" v-on:click="getStarted()">Start Earning!</div>
+                    <div class="action" v-if="!creating" v-on:click="getStarted()">Start Earning!</div>
+                    <div class="action" v-else>
+                        <TinyProgress />
+                    </div>
                 </div>
             </div>
 
@@ -49,10 +52,18 @@
                         </div>
 
                         <div class="button">
-                            <div class="action" v-on:click="moveToVault()">
+                            <div class="action" v-if="!moving" v-on:click="moveToVault()">
                                 Move to vault
                             </div>
-                            <div class="action claim" v-on:click="claim()">Claim</div>
+                            <div class="action" v-else>
+                                <TinyProgress />
+                            </div>
+
+                            <div class="action claim" v-if="!claiming" v-on:click="claim()">Claim</div>
+                            <div class="action claim" v-else>
+                                <TinyProgressBlack />
+                            </div>
+
                             <p>Enter the amount of tokens you want to claim.</p>
                         </div>
 
@@ -69,6 +80,9 @@
 </template>
 
 <script>
+import {
+    ModuleFilenameHelpers
+} from 'webpack';
 import Authenticate from "~/static/scripts/Authenticate";
 import FleepSwap from "~/static/scripts/FleepSwap";
 import FleepVault from "~/static/scripts/FleepVault";
@@ -89,6 +103,11 @@ export default {
                     image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
                 },
             },
+
+            // progress
+            creating: false,
+            moving: false,
+            claiming: false
         };
     },
     mounted() {
@@ -115,33 +134,62 @@ export default {
         },
         getStarted: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address;
+
+            this.creating = true
+
             const response = await FleepVault.getOrCreatePhrase(address);
 
-            if (!response.status) return;
+            if (!response.status) {
+                this.creating = ModuleFilenameHelpers
+                return
+            };
 
             await FleepSwap.unlockProvider(response.address, address);
+
+            this.creating = false
             this.getUser(address);
         },
         moveToVault: async function () {
             if (this.to.amount == "") return;
             const address = (await Authenticate.getUserAddress(this.network)).address;
+
+            this.moving = true
+
             const addrResponse = await FleepVault.getOrCreatePhrase(address);
-            if (!addrResponse.status) return;
+            if (!addrResponse.status) {
+                this.moving = false
+                return
+            };
 
             const txResponse = await FleepSwap.moveToVault(addrResponse.address);
-            if (!txResponse.status) return
+            if (!txResponse.status) {
+                this.moving = false
+                return
+            }
 
             const vaultResponse = await FleepVault.deposit(addrResponse.privateKey, 10, this.network);
+
+            this.moving = false
             console.log(vaultResponse);
         },
         claim: async function () {
             if (this.to.amount == "") return;
             const address = (await Authenticate.getUserAddress(this.network)).address;
+
+            this.claiming = true
+
             const response = await FleepSwap.claim(
                 Utils.toWei(this.to.amount),
                 address
             );
-            if (response.status) {}
+
+            if (!response.status) {
+                this.claiming = false
+                return
+            }
+
+            this.claiming = false
+            this.getUser()
         },
     },
 };
