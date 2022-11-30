@@ -80,9 +80,6 @@
 </template>
 
 <script>
-import {
-    ModuleFilenameHelpers
-} from 'webpack';
 import Authenticate from "~/static/scripts/Authenticate";
 import FleepSwap from "~/static/scripts/FleepSwap";
 import FleepVault from "~/static/scripts/FleepVault";
