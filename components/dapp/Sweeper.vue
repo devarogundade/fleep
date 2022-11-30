@@ -118,11 +118,14 @@ export default {
 
             this.picker = false;
         },
+        estimate: async function() {
+
+        },
         getMaticBalance: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
             const response = await this.$balance.maticBalance(address, this.network)
             if (response) {
-                this.to.balance = Number(Utils.fromWei(response.balance)).toFixed(4)
+                this.to.balance = Utils.toMoney(Utils.fromWei(response.balance), 4)
             }
         },
         findDusts: async function () {

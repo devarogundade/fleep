@@ -11,7 +11,7 @@
                 <div class="entity">
                     <div class="label">
                         <p>From</p>
-                        <p>Available: {{ from.balance }}</p>
+                        <p>Available: {{ toMoney(from.balance) }}</p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('from')">
@@ -32,7 +32,7 @@
                 <div class="entity">
                     <div class="label">
                         <p>To</p>
-                        <p>Available: {{ to.balance }}</p>
+                        <p>Available: {{ toMoney(to.balance) }}</p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('to')">
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="rate">
-                    <p>1 {{ from.token.symbol }} = {{ rate }} {{ to.token.symbol }}</p>
+                    <p>1 {{ from.token.symbol }} = {{ toMoney(rate) }} {{ to.token.symbol }}</p>
                 </div>
 
                 <div class="button">
@@ -107,7 +107,7 @@ export default {
                     image: '',
                 },
             },
-            rate: "•••",
+            rate: 0,
             allocation: 0,
 
             // progress
@@ -162,7 +162,7 @@ export default {
             this.getExchangeRate();
         },
         getExchangeRate: async function () {
-            this.rate = "•••";
+            this.rate = 0;
 
             const response = await FleepSwap.getExchangeRate(
                 this.from.token.address,
@@ -170,7 +170,7 @@ export default {
             );
 
             if (response.status) {
-                this.rate = Utils.toMoney(response.rate);
+                this.rate = response.rate;
             }
         },
         switchTokens: function () {
@@ -227,17 +227,21 @@ export default {
         getBalance: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address
             const tokens = await this.$balance.erc20Balances(address, this.network)
-            console.log(tokens);
+
+            if (!tokens) return
+
             tokens.forEach(token => {
                 if (token.token_address.toLowerCase() == this.from.token.address.toLowerCase()) {
-                    this.from.balance = Utils.toMoney(Utils.fromWei(token.balance))
-                    console.log(token);
+                    this.from.balance = Utils.fromWei(token.balance)
                 }
 
                 if (token.token_address.toLowerCase() == this.to.token.address.toLowerCase()) {
-                    this.to.balance = Utils.toMoney(Utils.fromWei(token.balance))
+                    this.to.balance = Utils.fromWei(token.balance)
                 }
             });
+        },
+        toMoney: function (amount) {
+            return Utils.toMoney(amount)
         }
     },
 };

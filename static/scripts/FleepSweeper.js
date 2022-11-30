@@ -2,17 +2,30 @@ import contract from 'truffle-contract'
 import abi from "~/build/contracts/Sweeper.json"
 
 const FleepSweeper = {
+    instance: null,
     getInstance: async function() {
+        if (this.instance) return this.instance
+
         if (typeof ethereum === 'undefined') return null
 
         const sweepContract = contract(abi)
         sweepContract.setProvider(ethereum)
 
         try {
-            return await sweepContract.deployed()
+            this.instance = await sweepContract.deployed()
+            return this.instance
         } catch (error) {
             return null
         }
+    },
+    estimate: async function(tokens) {
+        const instance = await this.getInstance()
+        if (instance == null) return 0
+
+        return await instance.estimate(tokens)
+    },
+    isDust: async function(address, amount) {
+
     },
     sweep: async function(tokens, address) {
         const instance = this.getInstance()

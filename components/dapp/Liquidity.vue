@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="rate">
-                    <p>1 {{ from.token.symbol }} = {{ rate }} {{ to.token.symbol }}</p>
+                    <p>1 {{ from.token.symbol }} = {{ toMoney(rate) }} {{ to.token.symbol }}</p>
                 </div>
 
                 <div class="button">
@@ -102,7 +102,7 @@ export default {
                     image: '',
                 },
             },
-            rate: "•••",
+            rate: 0,
             poolId: this.$route.params.pool,
             pool: null,
             network: Network.current() == 'true',
@@ -219,7 +219,7 @@ export default {
             );
 
             if (response.status) {
-                this.rate = Utils.toMoney(response.rate);
+                this.rate = response.rate;
             }
         },
         provideLiquidity: async function () {

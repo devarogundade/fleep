@@ -187,7 +187,7 @@ contract Swap {
             );
 
             uint256 providersReward = ((fee * 80) / 100);
-            _platformProfit += (fee - providerReward);
+            _platformProfit += (fee - providersReward);
 
             _aggregateLiquids(
                 _safeAmount0,
@@ -212,7 +212,7 @@ contract Swap {
             );
 
             uint256 providersReward = ((fee * 80) / 100);
-            _platformProfit += (fee - providerReward);
+            _platformProfit += (fee - providersReward);
 
             _aggregateLiquids(
                 _safeAmount0,
@@ -242,7 +242,7 @@ contract Swap {
             );
 
             uint256 providersReward = ((fee * 80) / 100);
-            _platformProfit += (fee - providerReward);
+            _platformProfit += (fee - providersReward);
 
             _aggregateLiquids(
                 _safeAmount0,
@@ -397,6 +397,15 @@ contract Swap {
         require(token != address(0), "Invalid Token Address");
         require(pair != address(0), "Invalid Pair Address");
         pairs[token] = pair;
+    }
+
+    function withDrawPlaformEarnings(
+        uint256 amount,
+        address receiver
+    ) public onlyDeployer {
+        require(_platformProfit >= amount, "Insufficient Balance");
+        payable(receiver).transfer(amount);
+        _platformProfit -= amount;
     }
 
     // === Internal Functions === //

@@ -35,11 +35,11 @@ const Utils = {
 
         return `${day} ${monthsInWord[month]}, ${year}`
     },
-    toMoney: function(amount) {
+    toMoney: function(amount, mF = 2) {
         const formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
-            //minimumFractionDigits: 0,
+            minimumFractionDigits: mF,
             //maximumFractionDigits: 0,
         });
         return formatter.format(amount).replace('$', '')
