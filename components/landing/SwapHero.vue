@@ -8,7 +8,9 @@
                     <h3>Exchange Your ERC20 Tokens to Other Assets</h3>
                     <p>PIP Button allows anyone to embed crypto payment buttons on their website.</p>
                 </div>
-                <div class="action">Swap Now</div>
+                <router-link to="/dapp">
+                    <div class="action">Swap Now</div>
+                </router-link>
             </div>
             <div class="image">
                 <img src="/images/swap.png" alt="">
@@ -46,7 +48,7 @@ section {
     align-items: center;
 }
 
-.text div:first-child {
+.text>div {
     width: 600px;
     max-width: 100%;
 }

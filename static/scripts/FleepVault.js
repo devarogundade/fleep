@@ -77,27 +77,28 @@ const FleepVault = {
         }
     },
     deposit: async function(privateKey, amount, network = false) {
-        // try {
-        //     const config = network ? { chainId: 137, env: 'mainnet' } : { chainId: 8002, env: 'testnet' }
-        //     const { xAuto } = await XF(config.chainId, privateKey, { env: config.env });
+        try {
+            const config = network ? { chainId: 137, env: 'mainnet' } : { chainId: 8002, env: 'testnet' }
+            const { xAuto } = await XF(config.chainId, privateKey, { env: config.env });
 
-        //     const approval = await xAuto.approve("MATIC", amount);
+            const approval = await xAuto.approve("MATIC", amount);
 
-        //     if (!approval || !approval.status) return {
-        //         status: false
-        //     }
+            if (!approval || !approval.status) return {
+                status: false
+            }
 
-        //     const response = await xAuto.deposit("MATIC", amount);
-        //     console.log(response);
-        //     return {
-        //         status: true
-        //     };
-        // } catch (error) {
-        //     return {
-        //         status: false,
-        //         error: error
-        //     }
-        // }
+            const response = await xAuto.deposit("MATIC", amount);
+            console.log(response);
+            return {
+                status: true,
+                deposit: ''
+            };
+        } catch (error) {
+            return {
+                status: false,
+                error: error
+            }
+        }
     }
 }
 

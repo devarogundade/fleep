@@ -10,7 +10,7 @@
                 <div class="entity">
                     <div class="label">
                         <p>Base</p>
-                        <p>Available: {{ from.balance }}</p>
+                        <p>Available: {{ toMoney(from.balance) }}</p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('from')">
@@ -31,7 +31,7 @@
                 <div class="entity">
                     <div class="label">
                         <p>Quote</p>
-                        <p>Available: {{ to.balance }}</p>
+                        <p>Available: {{ toMoney(to.balance) }}</p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('to')">
@@ -219,7 +219,7 @@ export default {
             );
 
             if (response.status) {
-                this.rate = response.rate;
+                this.rate = Utils.toMoney(response.rate);
             }
         },
         provideLiquidity: async function () {
@@ -241,14 +241,17 @@ export default {
             const tokens = await this.$balance.erc20Balances(address, this.network)
 
             tokens.forEach(token => {
-                if (token.token_address == this.from.token.address) {
+                if (token.token_address.toLowerCase() == this.from.token.address.toLowerCase()) {
                     this.from.balance = Utils.fromWei(token.balance)
                 }
 
-                if (token.token_address == this.to.token.address) {
+                if (token.token_address.toLowerCase() == this.to.token.address.toLowerCase()) {
                     this.to.balance = Utils.fromWei(token.balance)
                 }
             });
+        },
+        toMoney: function (amount) {
+            return Utils.toMoney(amount)
         }
     },
 };

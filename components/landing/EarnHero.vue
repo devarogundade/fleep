@@ -8,7 +8,9 @@
                     <h3>Provide Liquidity to Earn $MATIC + Up to 15% Annual Interest</h3>
                     <p>You will earn $MATIC tokens for providing liquidity, and also earn upto 15% interest on it annually.</p>
                 </div>
-                <div class="action">Provide Liquidity</div>
+                <router-link to="/dapp/pools">
+                    <div class="action">Provide Liquidity</div>
+                </router-link>
             </div>
             <div class="image">
                 <img src="/images/swap.png" alt="">
@@ -46,7 +48,7 @@ section {
     align-items: center;
 }
 
-.text div:first-child {
+.text>div {
     width: 600px;
     max-width: 100%;
 }

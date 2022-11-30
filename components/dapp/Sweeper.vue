@@ -139,7 +139,7 @@ export default {
                         this.dusts.push({
                             data0: token,
                             data1: supportedToken,
-                            balance: Number(Utils.fromWei(token.balance)).toFixed(2),
+                            balance: Utils.toMoney(Utils.fromWei(token.balance)),
                             selected: true
                         })
                     }

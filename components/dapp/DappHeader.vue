@@ -64,6 +64,9 @@ export default {
             network: Network.current() == 'true'
         }
     },
+    created() {
+        this.connectWallet()
+    },
     methods: {
         onDrawer: function () {
             this.$refs["handburger"].classList.toggle("open")

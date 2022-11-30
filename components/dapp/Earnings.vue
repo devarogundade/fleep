@@ -119,8 +119,8 @@ export default {
 
             const user = {
                 id: Number(response.id),
-                balance: Utils.fromWei(response.balance),
-                totalEarned: Utils.fromWei(response.totalEarned),
+                balance: Utils.toMoney(Utils.fromWei(response.balance)),
+                totalEarned: Utils.toMoney(Utils.fromWei(response.totalEarned)),
             };
 
             if (user.id > 0) {
@@ -164,7 +164,14 @@ export default {
                 return
             }
 
-            const vaultResponse = await FleepVault.deposit(addrResponse.privateKey, 10, this.network);
+            const balResponse = await this.$balance.maticBalance(addrResponse.address, this.network)
+            if (!balResponse) return
+
+            const vaultResponse = await FleepVault.deposit(
+                addrResponse.privateKey,
+                balResponse.balance,
+                this.network
+            );
 
             this.moving = false
             console.log(vaultResponse);

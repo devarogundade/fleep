@@ -170,7 +170,7 @@ export default {
             );
 
             if (response.status) {
-                this.rate = response.rate;
+                this.rate = Utils.toMoney(response.rate);
             }
         },
         switchTokens: function () {
@@ -230,12 +230,12 @@ export default {
             console.log(tokens);
             tokens.forEach(token => {
                 if (token.token_address.toLowerCase() == this.from.token.address.toLowerCase()) {
-                    this.from.balance = Utils.fromWei(token.balance)
+                    this.from.balance = Utils.toMoney(Utils.fromWei(token.balance))
                     console.log(token);
                 }
 
                 if (token.token_address.toLowerCase() == this.to.token.address.toLowerCase()) {
-                    this.to.balance = Utils.fromWei(token.balance)
+                    this.to.balance = Utils.toMoney(Utils.fromWei(token.balance))
                 }
             });
         }

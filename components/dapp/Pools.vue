@@ -79,9 +79,8 @@ export default {
                 const pool = this.pools[index];
                 const response = await FleepSwap.getPoolSize(pool.token0, pool.token1)
                 if (response) {
-                    pool.amount0 = Utils.fromWei(response[0])
-                    pool.amount1 = Utils.fromWei(response[1])
-                    console.log(pool);
+                    pool.amount0 = Utils.toMoney(Utils.fromWei(response[0]))
+                    pool.amount1 = Utils.toMoney(Utils.fromWei(response[1]))
                 }
             }
         }

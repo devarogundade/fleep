@@ -34,6 +34,15 @@ const Utils = {
         const year = date.getUTCFullYear()
 
         return `${day} ${monthsInWord[month]}, ${year}`
+    },
+    toMoney: function(amount) {
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            //minimumFractionDigits: 0,
+            //maximumFractionDigits: 0,
+        });
+        return formatter.format(amount).replace('$', '')
     }
 }
 

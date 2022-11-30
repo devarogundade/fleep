@@ -8,7 +8,9 @@
                     <h3>Covert Your Low-Value Assets to $MATIC</h3>
                     <p>With a single click on a button, swap all your assets lesser than $20 dollars to $MATIC.</p>
                 </div>
-                <div class="action">Sweep Dusts</div>
+                <router-link to="/dapp/sweep">
+                    <div class="action">Sweep Dusts</div>
+                </router-link>
             </div>
             <div class="image">
                 <img src="/images/swap.png" alt="">
@@ -50,7 +52,7 @@ section {
     align-items: center;
 }
 
-.text div:first-child {
+.text>div {
     width: 600px;
     max-width: 100%;
 }
