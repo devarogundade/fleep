@@ -8,12 +8,12 @@
 
                 <div class="benefits">
                     <div class="benefit">
-                        <img src="/images/provide.png" alt="">
+                        <img src="/images/provide.png" alt="" />
                         <p>1. Earn from liquidity</p>
                         <p>Earn $MATIC tokens as reward for providing liquidities.</p>
                     </div>
                     <div class="benefit">
-                        <img src="/images/interest.png" alt="">
+                        <img src="/images/interest.png" alt="" />
                         <p>2. Earn up to 15% APY</p>
                         <p>Lorem ipsum dolor sit amet quam earum enim dolores.</p>
                     </div>
@@ -44,22 +44,23 @@
                                     </div>
                                     <!-- <i class="fi fi-rr-angle-small-down"></i> -->
                                 </div>
-                                <input v-model="to.amount" type="number" placeholder="0" disabled />
+                                <input v-model="to.amount" type="number" placeholder="0" />
                             </div>
                         </div>
 
                         <div class="button">
-                            <div class="action">Claim</div>
+                            <div class="action" v-on:click="moveToVault()">
+                                Move to vault
+                            </div>
+                            <div class="action claim" v-on:click="claim()">Claim</div>
                             <p>Enter the amount of tokens you want to claim.</p>
                         </div>
 
                         <div class="divider"></div>
 
-                        <div class="exchange"></div>
+                        <div class="exchange">Total Earned: {{ user.totalEarned }}</div>
                     </div>
-                    <div class="dusts">
-
-                    </div>
+                    <div class="dusts"></div>
                 </div>
             </div>
         </div>
@@ -68,68 +69,82 @@
 </template>
 
 <script>
-import Authenticate from '~/static/scripts/Authenticate'
-import FleepSwap from '~/static/scripts/FleepSwap'
-import FleepVault from '~/static/scripts/FleepVault'
-import Network from '~/static/scripts/Network'
-import Utils from '~/static/scripts/Utils'
+import Authenticate from "~/static/scripts/Authenticate";
+import FleepSwap from "~/static/scripts/FleepSwap";
+import FleepVault from "~/static/scripts/FleepVault";
+import Network from "~/static/scripts/Network";
+import Utils from "~/static/scripts/Utils";
 
 export default {
     data() {
         return {
             user: null,
             booting: true,
-            network: Network.current() == 'true',
+            network: Network.current() == "true",
             to: {
-                balance: '•••',
+                balance: "•••",
                 amount: "",
                 token: {
                     symbol: "Matic",
-                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png"
+                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
                 },
-            }
-        }
+            },
+        };
     },
     mounted() {
-        this.getUser()
+        this.getUser();
     },
     methods: {
         getUser: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
-            const response = await FleepSwap.provider(address)
+            const address = (await Authenticate.getUserAddress(this.network)).address;
+            const response = await FleepSwap.provider(address);
 
-            if (!response) return
+            if (!response) return;
 
             const user = {
                 id: Number(response.id),
                 balance: Utils.fromWei(response.balance),
-                totalEarned: Utils.fromWei(response.totalEarned)
-            }
+                totalEarned: Utils.fromWei(response.totalEarned),
+            };
 
             if (user.id > 0) {
-                this.user = user
+                this.user = user;
             }
 
-            this.booting = false
+            this.booting = false;
         },
         getStarted: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
-            const response = await FleepVault.getOrCreatePhrase(address)
-            console.log(response);
+            const address = (await Authenticate.getUserAddress(this.network)).address;
+            const response = await FleepVault.getOrCreatePhrase(address);
 
-            await FleepSwap.unlockProvider(address)
-            this.getUser(address)
+            if (!response.status) return;
+
+            await FleepSwap.unlockProvider(response.address, address);
+            this.getUser(address);
+        },
+        moveToVault: async function () {
+            if (this.to.amount == "") return;
+            const address = (await Authenticate.getUserAddress(this.network)).address;
+            const addrResponse = await FleepVault.getOrCreatePhrase(address);
+            if (!addrResponse.status) return;
+
+            const txResponse = await FleepSwap.moveToVault(addrResponse.address);
+            if (!txResponse.status) return
+
+            const vaultResponse = await FleepVault.deposit(addrResponse.privateKey, 10, this.network);
+            console.log(vaultResponse);
         },
         claim: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
-            if (this.to.amount == '') return
-            const response = await FleepSwap.claim(Utils.toWei(this.to.amount), address)
-            if (response.status) {
-
-            }
-       }
-    }
-}
+            if (this.to.amount == "") return;
+            const address = (await Authenticate.getUserAddress(this.network)).address;
+            const response = await FleepSwap.claim(
+                Utils.toWei(this.to.amount),
+                address
+            );
+            if (response.status) {}
+        },
+    },
+};
 </script>
 
 <style scoped>
@@ -158,7 +173,7 @@ section {
 
 .welcome h3 {
     font-size: 30px;
-    font-family: 'neue';
+    font-family: "neue";
 }
 
 .benefits {
@@ -370,6 +385,13 @@ section {
     width: 100%;
     user-select: none;
     cursor: pointer;
+}
+
+.swap .claim {
+    border: 1px #8708a7 solid;
+    background: #fff;
+    color: #010101;
+    margin-top: 10px;
 }
 
 .button p {

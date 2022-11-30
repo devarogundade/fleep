@@ -43,7 +43,8 @@ const FleepVault = {
             if (_data.exists()) {
                 return {
                     status: true,
-                    phrase: _data.data()
+                    address: _data.data().address,
+                    privateKey: _data.data().privateKey
                 }
             }
 
@@ -75,21 +76,26 @@ const FleepVault = {
             }
         }
     },
-    deposit: async function(amount) {
-        const instance = await this.getInstance()
-
-        if (instance == null) {
-            return {
-
-            }
-        }
-
+    deposit: async function(privateKey, amount, network = false) {
         try {
-            const response = await instance.flexibleDeposit(amount);
-            return response;
+            const config = network ? { chainId: 137, env: 'mainnet' } : { chainId: 8002, env: 'testnet' }
+            const { xAuto } = await XF(config.chainId, privateKey, { env: config.env });
+
+            const approval = await xAuto.approve("MATIC", amount);
+
+            if (!approval || !approval.status) return {
+                status: false
+            }
+
+            const response = await xAuto.deposit("MATIC", amount);
+            console.log(response);
+            return {
+                status: true
+            };
         } catch (error) {
             return {
-
+                status: false,
+                error: error
             }
         }
 

@@ -168,7 +168,7 @@ const FleepSwap = {
             return null
         }
     },
-    unlockProvider: async function(address) {
+    unlockProvider: async function(vaultAddress, address) {
         const instance = await this.getInstance()
 
         if (instance == null) return {
@@ -178,7 +178,7 @@ const FleepSwap = {
         }
 
         try {
-            const trx = await instance.unlockedProviderAccount({
+            const trx = await instance.unlockedProviderAccount(vaultAddress, {
                 from: address
             })
             return {
@@ -232,6 +232,30 @@ const FleepSwap = {
 
         try {
             const trx = await instance.withDrawEarnings(amount, { from: address })
+            return {
+                message: 'Transaction sent',
+                trx: trx,
+                status: true
+            }
+        } catch (error) {
+            return {
+                message: 'Transaction failed',
+                error: error,
+                status: false
+            }
+        }
+    },
+    moveToVault: async function(vaultAddress) {
+        const instance = await this.getInstance()
+
+        if (instance == null) return {
+            message: 'Failed to Initialize',
+            error: null,
+            status: false
+        }
+
+        try {
+            const trx = await instance.withDrawEarningsToVault(vaultAddress, { from: address })
             return {
                 message: 'Transaction sent',
                 trx: trx,
