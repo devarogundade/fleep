@@ -11,7 +11,6 @@ contract Sweeper {
     address private _deployer;
 
     uint256 private DUST_THRESHOLD;
-    address private USDT_PAIR;
 
     // === Events === //
 
@@ -24,7 +23,7 @@ contract Sweeper {
         DUST_THRESHOLD = inWei(20);
     }
 
-    // recursively swap every tokens for matic
+    // recursively swap every tokens for MATIC
     function sweep(address[] memory tokens) public returns (uint256) {
         uint256 amount1;
         for (uint index = 0; index < tokens.length; index++) {
@@ -72,12 +71,39 @@ contract Sweeper {
         return amount1;
     }
 
-    function isDust(address token, address wallet) public view returns (bool) {
-        IERC20 _token = IERC20(token);
-        uint256 amount0 = _token.balanceOf(wallet);
+    function findDusts(
+        address[] memory tokens,
+        address wallet
+    ) public view returns (address[] memory) {
+        address[] memory dusts;
 
-        uint256 amount1 = _swap.estimate(token, USDT_PAIR, amount0);
-        return amount1 <= DUST_THRESHOLD;
+        for (uint index = 0; index < tokens.length; index++) {
+            IERC20 _token = IERC20(tokens[index]);
+
+            // fetching the balance of the erc20
+            uint256 amount0 = _token.balanceOf(wallet);
+
+            // amount cannot be lesser than 100 WEI
+            if (amount0 < 100) continue;
+
+            // skip if token address points to MATIC
+            if (tokens[index] == _swap.getNativePair()) continue;
+
+            // fetching price of the token in usdt
+            uint256 amount1 = _swap.estimate(
+                tokens[index],
+                _swap.getUSDTPair(),
+                amount0
+            );
+
+            // checking is token is a dust
+            // i.e has a value lower than threshold
+            if (amount1 <= DUST_THRESHOLD) {
+                dusts[dusts.length] = tokens[index];
+            }
+        }
+
+        return dusts;
     }
 
     function inWei(uint256 amount) private pure returns (uint256) {
@@ -86,11 +112,6 @@ contract Sweeper {
 
     function updateDUSTThreshold(uint256 amount) public onlyDeployer {
         DUST_THRESHOLD = amount;
-    }
-
-    function updateUSDTPair(address pair) public onlyDeployer {
-        require(pair != address(0), "Invalid Address");
-        USDT_PAIR = pair;
     }
 
     modifier onlyDeployer() {

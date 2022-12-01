@@ -30,24 +30,24 @@ export default {
             show: -1,
             faqs: [{
                     question: 'What is dusts sweeping?',
-                    answer: 'You will be able to buy Lucky Cats when listed on Pancakeswap.'
+                    answer: 'Dusts sweeping simply means converting all your low value assets(<$20) to MATIC all at once.'
                 },
                 {
-                    question: 'How can I earn from this DAPP?',
-                    answer: 'You can buy Lucky Cats at a cheap rate now on Private sale.'
+                    question: 'How can I start earning?',
+                    answer: 'When you provide liquidities to a fleep pool, you\'ll earn a share in MATIC whenever a swap is perform on the pool, plus up to 15% Interest on your earnings per annual.'
                 }, {
                     question: 'What is assets swapping?',
-                    answer: 'Contract address is 0x683bbaa70fd8e2cf62617e48b100a7609ee48946.'
+                    answer: 'Assets swapping simply means exchanging one asset for another with exact same market value.'
                 }, {
-                    question: 'How do I earn interests on liquidity earnings?',
-                    answer: 'We recommend going with 5% slippage, the slippage tax deduction will feed our jackpot pools and our liquidity.'
+                    question: 'What is AutoYield?',
+                    answer: 'AutoYield is a Xend Finance infrastructure based on two layer-2 DeFi protocols called xVault and xAuto protocol.'
                 },
                 {
                     question: 'Which chains and networks are supported?',
                     answer: 'Fleep works on both polygon testnet and mainnet.'
                 }, {
                     question: 'Can I create a new pool or liquidity bucket?',
-                    answer: 'No – only admins can create pools or liquidity buckets.'
+                    answer: 'Go to earnings, click on \'Start Earning\' if you are new, then go to pools to new pools or liquidity buckets.'
                 }
             ]
         }

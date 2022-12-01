@@ -26,6 +26,7 @@ contract Swap {
     // is a member of the pairs mapping
     // but its the native pair MATIC not IERC20
     address public NATIVE_PAIR;
+    address public USDT_PAIR;
 
     // id => liquidity pools
     mapping(uint => Pool) public pools;
@@ -123,6 +124,10 @@ contract Swap {
     // returns the pair address for $MATIC
     function getNativePair() public view returns (address) {
         return NATIVE_PAIR;
+    }
+
+    function getUSDTPair() public view returns (address) {
+        return USDT_PAIR;
     }
 
     // register as a provider
@@ -353,13 +358,24 @@ contract Swap {
             providers[msg.sender].balance >= amount,
             "Insufficient Balance"
         );
+        require(
+            address(this).balance >= amount,
+            "Contract: Insufficient Balance"
+        );
+
         payable(msg.sender).transfer(amount);
         providers[msg.sender].balance -= amount;
     }
 
     function withDrawEarningsToVault(address receiver) public onlyProvider {
         uint256 amount = providers[msg.sender].balance;
+
         require(amount >= _inWei(1), "Balance Must be atleast 1 MATIC");
+        require(
+            address(this).balance >= amount,
+            "Contract: Insufficient Balance"
+        );
+
         payable(receiver).transfer(amount);
         providers[msg.sender].balance = 0;
     }
@@ -369,6 +385,11 @@ contract Swap {
     function updateNativePair(address pair) public onlyDeployer {
         require(pair != address(0), "Invalid Pair Address");
         NATIVE_PAIR = pair;
+    }
+
+    function updateUSDTPair(address pair) public onlyDeployer {
+        require(pair != address(0), "Invalid Pair Address");
+        USDT_PAIR = pair;
     }
 
     function updateSwapFee(uint fee) public onlyDeployer {
@@ -388,6 +409,11 @@ contract Swap {
         address receiver
     ) public onlyDeployer {
         require(_platformProfit >= amount, "Insufficient Balance");
+        require(
+            address(this).balance >= amount,
+            "Contract: Insufficient Balance"
+        );
+
         payable(receiver).transfer(amount);
         _platformProfit -= amount;
     }
@@ -491,6 +517,10 @@ contract Swap {
         baseToken.transferFrom(owner, address(this), amount0);
 
         // give user their destination token minus fee
+        require(
+            address(this).balance >= amount1,
+            "Contract: Insufficient Balance"
+        );
         payable(owner).transfer(amount1 - _fee);
 
         // fee already in matic
@@ -609,6 +639,7 @@ contract Swap {
     // calls in the constructor
     function testnetHelper() private onlyDeployer {
         updateNativePair(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
+        updateUSDTPair(0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864);
 
         // BTC
         createPair(
