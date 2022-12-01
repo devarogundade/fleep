@@ -1,6 +1,6 @@
 *This Project has been hosted on a free host. You might experience a little delay at cold laod*
 
-# Fleep - A Layer-2 Decentralized Swap, Sweeper and AutoYield
+# Fleep Finance - A Layer-2 Decentralized Swap, Sweeper and AutoYield
 ## _A Xend Finance X Polygon Hackathon Project_
 
 About fleep here
