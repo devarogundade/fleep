@@ -11,8 +11,8 @@ contract Swap {
     address private _deployer;
     uint256 private _platformProfit;
 
-    // charges 1% fee on every successful swaps
-    uint private swapFee = 1;
+    // charges 0.25% fee on every successful swaps
+    uint private swapFee = 25;
 
     // ids to avoid conflicts
     uint256 private POOL_ID;
@@ -394,7 +394,7 @@ contract Swap {
 
     function updateSwapFee(uint fee) public onlyDeployer {
         require(fee > 0, "Platform fee cannot be zero");
-        require(fee < 100, "Platform fee cannot be a hundred");
+        require(fee < 1000, "Platform fee cannot be a hundred");
         swapFee = fee;
     }
 
@@ -494,7 +494,7 @@ contract Swap {
     ) private returns (uint256) {
         IERC20 quoteToken = IERC20(token1);
 
-        uint256 _fee = ((amount1 / 100) * swapFee);
+        uint256 _fee = ((amount1 / 1000) * swapFee);
 
         // give user their destination token minus fee
         quoteToken.transfer(owner, (amount1 - _fee));
@@ -512,7 +512,7 @@ contract Swap {
     ) public payable returns (uint256) {
         IERC20 baseToken = IERC20(token0);
 
-        uint256 _fee = ((amount1 / 100) * swapFee);
+        uint256 _fee = ((amount1 / 1000) * swapFee);
 
         baseToken.transferFrom(owner, address(this), amount0);
 
@@ -538,7 +538,7 @@ contract Swap {
         IERC20 baseToken = IERC20(token0);
         IERC20 quoteToken = IERC20(token1);
 
-        uint256 _fee = ((amount1 / 100) * swapFee);
+        uint256 _fee = ((amount1 / 1000) * swapFee);
 
         // tranfers the base token from user to the
         // smart contract

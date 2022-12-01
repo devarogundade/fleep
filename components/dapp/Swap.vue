@@ -45,6 +45,7 @@
                         <input v-model="to.amount" type="number" placeholder="0" disabled />
                     </div>
                 </div>
+                <p>Fee: {{ to.amount }}</p>
 
                 <div class="rate">
                     <p>1 {{ from.token.symbol }} = {{ toMoney(rate) }} {{ to.token.symbol }}</p>
