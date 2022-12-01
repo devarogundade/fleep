@@ -4,14 +4,17 @@
         <div class="sweep">
             <div class="head">
                 <h3>{{ dusts.length }} dusts was found</h3>
-                <p><i class="fi fi-rr-info"></i> Dusts are referred to assets worth less than $20.</p>
+                <p>
+                    <i class="fi fi-rr-info"></i> Dusts are referred to assets worth
+                    less than $20.
+                </p>
             </div>
             <div class="swap">
                 <div class="dusts">
                     <div class="loading" v-if="findingDusts">Finding Dusts...</div>
                     <div class="dust" v-for="(dust, index) in dusts" :key="index">
                         <div>
-                            <img :src="dust.data1.image" alt="">
+                            <img :src="dust.data1.image" alt="" />
                             <div class="name">
                                 <p>{{ dust.data0.name }}</p>
                                 <p>{{ dust.balance }} {{ dust.data0.symbol }}</p>
@@ -19,7 +22,7 @@
                         </div>
                         <div>
                             <p class="balance">$10</p>
-                            <input type="checkbox" v-model="dust.selected">
+                            <input type="checkbox" v-model="dust.selected" />
                         </div>
                     </div>
                 </div>
@@ -46,7 +49,9 @@
                     </div>
 
                     <div class="button">
-                        <div class="action" v-if="!sweeping" v-on:click="sweep()">Sweep</div>
+                        <div class="action" v-if="!sweeping" v-on:click="sweep()">
+                            Sweep
+                        </div>
                         <div class="action" v-else>•••</div>
                         <p>Enter the amount of tokens you want to swap.</p>
                     </div>
@@ -62,9 +67,9 @@
 </template>
 
 <script>
-import Authenticate from '~/static/scripts/Authenticate';
-import Network from '~/static/scripts/Network';
-import Utils from '~/static/scripts/Utils';
+import Authenticate from "~/static/scripts/Authenticate";
+import Network from "~/static/scripts/Network";
+import Utils from "~/static/scripts/Utils";
 import testnetTokens from "../../static/tokens/testnet.json";
 import mainnetTokens from "../../static/tokens/mainnet.json";
 import FleepSweeper from "../../static/scripts/FleepSweeper";
@@ -77,32 +82,32 @@ export default {
             dusts: [],
             supportedTokens: [],
             to: {
-                balance: '•••',
+                balance: "•••",
                 amount: "",
                 token: {
                     symbol: "Matic",
                     baseAddress: "0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada",
-                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png"
+                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
                 },
             },
-            network: Network.current() == 'true',
+            network: Network.current() == "true",
 
             // progress
             findingDusts: true,
-            sweeping: false
+            sweeping: false,
         };
     },
     mounted() {
         if (this.network) {
             // mainnet
-            this.supportedTokens = mainnetTokens
+            this.supportedTokens = mainnetTokens;
         } else {
             // testnet
-            this.supportedTokens = testnetTokens
+            this.supportedTokens = testnetTokens;
         }
 
-        this.getMaticBalance()
-        this.findDusts()
+        this.getMaticBalance();
+        this.findDusts();
     },
     methods: {
         switchCursor: function (cursor) {
@@ -118,57 +123,70 @@ export default {
 
             this.picker = false;
         },
-        estimate: async function() {
-
-        },
+        estimate: async function () {},
         getMaticBalance: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
-            const response = await this.$balance.maticBalance(address, this.network)
+            const address = (await Authenticate.getUserAddress(this.network)).address;
+            const response = await this.$balance.maticBalance(address, this.network);
             if (response) {
-                this.to.balance = Utils.toMoney(Utils.fromWei(response.balance), 4)
+                this.to.balance = Utils.toMoney(Utils.fromWei(response.balance), 4);
             }
         },
         findDusts: async function () {
-            this.findingDusts = true
+            this.findingDusts = true;
 
-            const address = (await Authenticate.getUserAddress(this.network)).address
+            const address = (await Authenticate.getUserAddress(this.network)).address;
             const response = await this.$balance.erc20Balances(address, this.network)
 
-            if (response) {
-                response.forEach(token => {
-                    let supportedToken = this.supportedTokens.filter(t => t.address.toLowerCase() == token.token_address.toLowerCase())
-                    if (supportedToken.length > 0) {
-                        supportedToken = supportedToken[0]
-                        this.dusts.push({
-                            data0: token,
-                            data1: supportedToken,
-                            balance: Utils.toMoney(Utils.fromWei(token.balance)),
-                            selected: true
-                        })
-                    }
-                })
-            }
+            const addresses = [];
 
-            this.findingDusts = false
+            this.supportedTokens.forEach((token) => {
+                if (token.address != "0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada") {
+                    addresses.push(token.address);
+                }
+            });
+
+            const fResponse = await FleepSweeper.findDusts(addresses, address)
+            console.log(fResponse);
+
+            // if (response) {
+            //     response.forEach(token => {
+            //         let supportedToken = this.supportedTokens.filter(t => t.address.toLowerCase() == token.token_address.toLowerCase())
+            //         if (supportedToken.length > 0) {
+            //             addresses.push(token.token_address)
+            //             supportedToken = supportedToken[0]
+            //             this.dusts.push({
+            //                 data0: token,
+            //                 data1: supportedToken,
+            //                 balance: Utils.toMoney(Utils.fromWei(token.balance)),
+            //                 selected: true
+            //             })
+            //         }
+            //     })
+            // }
+
+            this.findingDusts = false;
+
+            const estimate = await FleepSweeper.estimate(addresses, address);
+            this.to.amount = Utils.toMoney(Utils.fromWei(estimate), 4);
         },
         sweep: async function () {
-            const dusts = this.dusts.filter(d => d.selected)
+            const dusts = this.dusts.filter((d) => d.selected);
 
-            const tokens = []
-            dusts.forEach(d => {
-                tokens.push(d.token_address)
-            })
+            const tokens = [];
+            dusts.forEach((d) => {
+                tokens.push(d.token_address);
+            });
 
-            if (tokens.length == 0) return
+            if (tokens.length == 0) return;
 
-            this.sweeping = true
+            this.sweeping = true;
 
-            const address = (await Authenticate.getUserAddress(this.network)).address
-            const response = await FleepSweeper.sweep(tokens, address)
+            const address = (await Authenticate.getUserAddress(this.network)).address;
+            const response = await FleepSweeper.sweep(tokens, address);
             console.log(response);
 
-            this.sweeping = false
-        }
+            this.sweeping = false;
+        },
     },
 };
 </script>
@@ -176,7 +194,7 @@ export default {
 <style scoped>
 section {
     background: #fff;
-    background-image: url('/images/liquid.svg');
+    background-image: url("/images/liquid.svg");
     background-size: cover;
 }
 
@@ -196,7 +214,7 @@ section {
 
 .head h3 {
     font-size: 24px;
-    font-family: 'neue';
+    font-family: "neue";
 }
 
 .head p {
@@ -223,7 +241,7 @@ section {
 
 .dusts h3 {
     font-size: 24px;
-    font-family: 'neue';
+    font-family: "neue";
 }
 
 .dusts {

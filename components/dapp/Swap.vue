@@ -21,7 +21,7 @@
                             </div>
                             <i class="fi fi-rr-angle-small-down"></i>
                         </div>
-                        <input v-model="from.amount" type="number" placeholder="0" />
+                        <input min="0" v-model="from.amount" type="number" placeholder="0" />
                     </div>
                 </div>
 
@@ -45,7 +45,7 @@
                         <input v-model="to.amount" type="number" placeholder="0" disabled />
                     </div>
                 </div>
-                <p>Fee: {{ to.amount }}</p>
+                <p class="fee" v-if="to.amount != ''">Swap fee: {{ (to.amount / 1000) * 25 }} {{ to.token.symbol }}</p>
 
                 <div class="rate">
                     <p>1 {{ from.token.symbol }} = {{ toMoney(rate) }} {{ to.token.symbol }}</p>
@@ -416,5 +416,11 @@ section {
 .divider {
     border-top: 1px #010101 solid;
     margin: 20px 0;
+}
+
+.fee {
+    color: #D20808;
+    font-size: 14px;
+    text-align: right;
 }
 </style>

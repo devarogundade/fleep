@@ -18,14 +18,17 @@ const FleepSweeper = {
             return null
         }
     },
-    estimate: async function(tokens) {
+    estimate: async function(tokens, address) {
         const instance = await this.getInstance()
         if (instance == null) return 0
 
-        return await instance.estimate(tokens)
+        return await instance.estimate(tokens, address)
     },
-    isDust: async function(address, amount) {
+    findDusts: async function(address, amount) {
+        const instance = await this.getInstance()
+        if (instance == null) return []
 
+        return await instance.findDusts(address, amount)
     },
     sweep: async function(tokens, address) {
         const instance = this.getInstance()

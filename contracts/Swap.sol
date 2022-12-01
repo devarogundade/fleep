@@ -3,6 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import {PriceApi} from "./PriceApi.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+// import {xUSDT} from "./xend/XUSDT.sol";
 
 contract Swap {
     PriceApi private _priceApi;
@@ -26,6 +27,7 @@ contract Swap {
     // is a member of the pairs mapping
     // but its the native pair MATIC not IERC20
     address public NATIVE_PAIR;
+    // paired address to USDT
     address public USDT_PAIR;
 
     // id => liquidity pools
@@ -46,14 +48,6 @@ contract Swap {
         uint timestamp
     );
 
-    event LiquidRemoved(
-        address token0,
-        address token1,
-        uint256 amount0,
-        uint256 amount1,
-        address provider
-    );
-
     event FleepSwaped(
         uint256 amount,
         uint256 amountOut,
@@ -64,6 +58,8 @@ contract Swap {
 
     // === Structs === //
 
+    // pool consists of liquids
+    // from n numbers providers
     struct Pool {
         uint id;
         address token0;
@@ -71,6 +67,8 @@ contract Swap {
         uint[] liquids;
     }
 
+    // liquid belongs to a provider
+    // also belongs to a pool
     struct Liquid {
         uint id;
         uint poolId;
@@ -79,6 +77,8 @@ contract Swap {
         address provider;
     }
 
+    // provider properties
+    // owns n numbers of liquids
     struct Provider {
         uint id;
         uint256 totalEarned;
@@ -126,6 +126,7 @@ contract Swap {
         return NATIVE_PAIR;
     }
 
+    // returns the pair address for $USDT
     function getUSDTPair() public view returns (address) {
         return USDT_PAIR;
     }
@@ -134,7 +135,10 @@ contract Swap {
     function unlockedProviderAccount(address vaultAddress) public onlyGuest {
         require(vaultAddress != address(0), "Invalid Vault Address");
 
+        // create new unique id
         PROVIDER_ID++;
+
+        // provider with default entries
         providers[msg.sender] = Provider(
             PROVIDER_ID,
             providers[msg.sender].totalEarned,
@@ -185,8 +189,9 @@ contract Swap {
                 pools[poolId],
                 providersReward
             );
-        } else if (pools[poolId].token1 == NATIVE_PAIR) {
-            // ERC20 => MATIC
+        }
+        // ERC20 => MATIC
+        else if (pools[poolId].token1 == NATIVE_PAIR) {
             amount1 = estimate(pools[poolId].token0, NATIVE_PAIR, _safeAmount0);
 
             // check if contract has enough destination token liquid
@@ -210,8 +215,9 @@ contract Swap {
                 pools[poolId],
                 providersReward
             );
-        } else {
-            // ERC0 => ERC2O
+        }
+        // ERC0 => ERC2O
+        else {
             amount1 = estimate(
                 pools[poolId].token0,
                 pools[poolId].token1,
@@ -328,14 +334,6 @@ contract Swap {
 
         token0.transfer(msg.sender, liquids[id].amount0);
         token1.transfer(msg.sender, liquids[id].amount1);
-
-        emit LiquidRemoved(
-            address(token0),
-            address(token1),
-            liquids[id].amount0,
-            liquids[id].amount1,
-            msg.sender
-        );
 
         // delete liquid TO DO
         liquids[id].amount0 = 0;
