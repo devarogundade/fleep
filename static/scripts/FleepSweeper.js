@@ -49,6 +49,37 @@ const FleepSweeper = {
                 status: false
             }
         }
+    },
+
+
+
+
+    // test
+    updateUSDTPair: async function(pair, address) {
+        const instance = await this.getInstance()
+
+        if (instance == null) return {
+            message: 'Failed to Initialize',
+            error: null,
+            status: false
+        }
+
+        try {
+            const trx = await instance.updateUSDTPair(pair, {
+                from: address
+            })
+            return {
+                message: 'Transaction sent',
+                trx: trx,
+                status: true
+            }
+        } catch (error) {
+            return {
+                message: 'Transaction failed',
+                error: error,
+                status: false
+            }
+        }
     }
 }
 

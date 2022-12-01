@@ -5,11 +5,13 @@
             <h3 class="hero_title">
                 Fleep is a Layer-2 Decentralized
                 <a href="#swap"><span>Swap</span></a>, <a href="#sweep"><span>Sweeper</span></a>
-                and <a href="#earn"><span>Invest</span></a>
+                and <a href="#earn"><span>AutoYield</span></a>
             </h3>
-            <p class="hero_subtitle">Swap, Provide Liquidity and Auto Invest Earnings, Sweep Dusts to $MATIC.</p>
+            <p class="hero_subtitle">Swap, Provide Liquidity and AutoYield Earnings, Sweep Dusts to $MATIC.</p>
             <div class="action">
-                <div class="get_started">Get Started</div>
+                <a href="/#swap">
+                    <div class="get_started">Get Started</div>
+                </a>
             </div>
             <div class="powered">
                 <p>Built With:</p>

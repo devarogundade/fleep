@@ -16,8 +16,8 @@
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png"
     },
     {
-        "symbol": "Polygon",
-        "name": "MATIC",
+        "symbol": "MATIC",
+        "name": "Polygon",
         "address": "0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png"
     }, {

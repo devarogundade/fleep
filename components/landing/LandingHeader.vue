@@ -10,7 +10,7 @@
             <ul ref="menu">
                 <li><a href="/#swap">Swap</a></li>
                 <li><a href="/#sweep">Dusts Sweeper</a></li>
-                <li><a href="/#earn">Earn & Yield Farming</a></li>
+                <li><a href="/#earn">Liquidity & AutoYield Farming</a></li>
                 <!-- <li><a href="/#earn"></a></li> -->
                 <li><a href="/#faqs">FAQs</a></li>
             </ul>

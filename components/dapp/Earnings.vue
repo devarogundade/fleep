@@ -4,7 +4,11 @@
     <div v-else class="app-width">
         <div class="earnings">
             <div class="welcome" v-if="!user">
-                <h3>Hi, 0xb57...b897e</h3>
+                <h3 v-if="address">Hi, {{
+                  address.substring(0, 5) +
+                  "..." +
+                  address.substring(address.length - 5, address.length)
+                }}</h3>
 
                 <div class="benefits">
                     <div class="benefit">
@@ -15,7 +19,7 @@
                     <div class="benefit">
                         <img src="/images/interest.png" alt="" />
                         <p>2. Earn up to 15% APY</p>
-                        <p>Lorem ipsum dolor sit amet quam earum enim dolores.</p>
+                        <p>Boost your liquidity earning up to 15% per annual with vault.</p>
                     </div>
                 </div>
 
@@ -107,6 +111,7 @@ export default {
                     image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
                 },
             },
+            address: null,
 
             // progress
             creating: false,
@@ -119,8 +124,8 @@ export default {
     },
     methods: {
         getUser: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address;
-            const response = await FleepSwap.provider(address);
+            this.address = (await Authenticate.getUserAddress(this.network)).address;
+            const response = await FleepSwap.provider(this.address);
 
             if (!response) return;
 

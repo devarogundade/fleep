@@ -160,6 +160,8 @@ export default {
 
             this.picker = false;
             this.getExchangeRate();
+            this.getBalance()
+            this.getAllocation()
         },
         getExchangeRate: async function () {
             this.rate = 0;
@@ -181,6 +183,8 @@ export default {
             tempFrom = null;
 
             this.getExchangeRate();
+            this.getBalance()
+            this.getAllocation()
         },
         getAllocation: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address

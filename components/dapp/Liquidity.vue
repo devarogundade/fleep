@@ -46,14 +46,26 @@
                 </div>
 
                 <div class="rate">
-                    <p>1 {{ from.token.symbol }} = {{ toMoney(rate) }} {{ to.token.symbol }}</p>
+                    <p>
+                        1 {{ from.token.symbol }} = {{ toMoney(rate) }}
+                        {{ to.token.symbol }}
+                    </p>
                 </div>
 
                 <div class="button">
                     <div v-if="!providing">
-                        <div class="action" v-if="(allocations.token0 < from.amount) && AS == 1" v-on:click="approve()">Approve {{ from.token.symbol }}</div>
-                        <div class="action" v-if="(allocations.token1 < to.amount) && AS == 2" v-on:click="approve()">Approve {{ to.token.symbol }}</div>
-                        <div class="action" v-if="(allocations.token0 >= from.amount) && (allocations.token1 >= to.amount)" v-on:click="provideLiquidity()">Add Liquidity</div>
+                        <div class="action" v-if="allocations.token0 < from.amount && AS == 1" v-on:click="approve()">
+                            Approve {{ from.token.symbol }}
+                        </div>
+                        <div class="action" v-if="allocations.token1 < to.amount && AS == 2" v-on:click="approve()">
+                            Approve {{ to.token.symbol }}
+                        </div>
+                        <div class="action" v-if="
+                  allocations.token0 >= from.amount &&
+                  allocations.token1 >= to.amount
+                " v-on:click="provideLiquidity()">
+                            Add Liquidity
+                        </div>
                     </div>
                     <div class="action" v-else>
                         <TinyProgress />
@@ -72,14 +84,14 @@
 
 <script>
 import FleepSwap from "../../static/scripts/FleepSwap";
-import mainnetPools from "../../static/pools/mainnet.json"
-import testnetPools from "../../static/pools/testnet.json"
-import testnetTokens from "../../static/tokens/testnet.json"
-import mainnetTokens from "../../static/tokens/mainnet.json"
-import Network from "../../static/scripts/Network"
-import Utils from '~/static/scripts/Utils';
-import Authenticate from '~/static/scripts/Authenticate';
-import ERC20 from '~/static/scripts/ERC20';
+import mainnetPools from "../../static/pools/mainnet.json";
+import testnetPools from "../../static/pools/testnet.json";
+import testnetTokens from "../../static/tokens/testnet.json";
+import mainnetTokens from "../../static/tokens/mainnet.json";
+import Network from "../../static/scripts/Network";
+import Utils from "~/static/scripts/Utils";
+import Authenticate from "~/static/scripts/Authenticate";
+import ERC20 from "~/static/scripts/ERC20";
 
 export default {
     data() {
@@ -91,7 +103,7 @@ export default {
                 amount: "",
                 token: {
                     symbol: "Select",
-                    image: '',
+                    image: "",
                 },
             },
             to: {
@@ -99,21 +111,21 @@ export default {
                 amount: "",
                 token: {
                     symbol: "Select",
-                    image: '',
+                    image: "",
                 },
             },
             rate: 0,
             poolId: this.$route.params.pool,
             pool: null,
-            network: Network.current() == 'true',
+            network: Network.current() == "true",
             allocations: {
                 token0: 0,
-                token1: 0
+                token1: 0,
             },
             AS: 1,
 
             // progress
-            providing: false
+            providing: false,
         };
     },
     watch: {
@@ -124,77 +136,83 @@ export default {
         },
         from: {
             handler: function (_old, _from) {
-                if (this.rate != '' && this.rate != '•••') {
-                    this.to.amount = _from.amount * this.rate
+                if (this.rate != "" && this.rate != "•••") {
+                    this.to.amount = _from.amount * this.rate;
                 }
             },
-            deep: true
-        }
+            deep: true,
+        },
     },
     mounted() {
         let pools, tokens;
         if (this.network) {
             // mainnet
-            pools = mainnetPools
-            tokens = mainnetTokens
+            pools = mainnetPools;
+            tokens = mainnetTokens;
         } else {
             // testnet
-            pools = testnetPools
-            tokens = testnetTokens
+            pools = testnetPools;
+            tokens = testnetTokens;
         }
 
-        this.pool = pools.filter(p => p.id == this.poolId)[0]
+        this.pool = pools.filter((p) => p.id == this.poolId)[0];
         console.log(this.pool);
 
-        this.from.token = tokens.filter(t => t.address == this.pool.token0)[0]
-        this.to.token = tokens.filter(t => t.address == this.pool.token1)[0]
+        this.from.token = tokens.filter((t) => t.address == this.pool.token0)[0];
+        this.to.token = tokens.filter((t) => t.address == this.pool.token1)[0];
 
-        this.getExchangeRate()
-        this.getPool()
-        this.getBalance()
-        this.getAllocation()
+        this.getExchangeRate();
+        this.getPool();
+        this.getBalance();
+        this.getAllocation();
     },
     methods: {
         getPool: async function () {
-            const response = await FleepSwap.getPool(this.poolId)
+            const response = await FleepSwap.getPool(this.poolId);
             console.log(response);
         },
         getAllocation: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
+            const address = (await Authenticate.getUserAddress(this.network)).address;
 
-            const allocation0 = await ERC20.allocation(address, await FleepSwap.getContractAddress(), this.from.token.address)
-            this.allocations.token0 = Utils.fromWei(allocation0)
+            const allocation0 = await ERC20.allocation(
+                address,
+                await FleepSwap.getContractAddress(),
+                this.from.token.address
+            );
+            this.allocations.token0 = Utils.fromWei(allocation0);
 
-            const allocation1 = await ERC20.allocation(address, await FleepSwap.getContractAddress(), this.to.token.address)
-            this.allocations.token1 = Utils.fromWei(allocation1)
+            const allocation1 = await ERC20.allocation(
+                address,
+                await FleepSwap.getContractAddress(),
+                this.to.token.address
+            );
+            this.allocations.token1 = Utils.fromWei(allocation1);
 
             console.log(this.allocations);
         },
         approve: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
-
-            this.providing = true
+            const address = (await Authenticate.getUserAddress(this.network)).address;
 
             if (this.AS == 1) {
-                this.AS = 2
+                this.AS = 2;
                 await ERC20.approve(
                     address,
                     await FleepSwap.getContractAddress(),
                     Utils.toWei(this.from.amount),
                     this.from.token.address
-                )
+                );
             } else if (this.AS == 2) {
+                this.providing = true;
                 await ERC20.approve(
                     address,
                     await FleepSwap.getContractAddress(),
                     Utils.toWei((Number(this.to.amount) + 5).toFixed()),
                     this.to.token.address
-                )
+                );
+                this.providing = false;
             }
 
-            this.providing = false
-
-            this.getAllocation()
+            this.getAllocation();
         },
         switchCursor: function (cursor) {
             this.picker = true;
@@ -223,36 +241,42 @@ export default {
             }
         },
         provideLiquidity: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
+            const address = (await Authenticate.getUserAddress(this.network)).address;
 
-            this.providing = true
+            this.providing = true;
 
             const response = await FleepSwap.provideLiquidity(
                 this.poolId,
                 Utils.toWei(this.from.amount),
                 address,
                 0
-            )
+            );
 
-            this.providing = false
+            this.providing = false;
         },
         getBalance: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
-            const tokens = await this.$balance.erc20Balances(address, this.network)
+            const address = (await Authenticate.getUserAddress(this.network)).address;
+            const tokens = await this.$balance.erc20Balances(address, this.network);
 
-            tokens.forEach(token => {
-                if (token.token_address.toLowerCase() == this.from.token.address.toLowerCase()) {
-                    this.from.balance = Utils.fromWei(token.balance)
+            tokens.forEach((token) => {
+                if (
+                    token.token_address.toLowerCase() ==
+                    this.from.token.address.toLowerCase()
+                ) {
+                    this.from.balance = Utils.fromWei(token.balance);
                 }
 
-                if (token.token_address.toLowerCase() == this.to.token.address.toLowerCase()) {
-                    this.to.balance = Utils.fromWei(token.balance)
+                if (
+                    token.token_address.toLowerCase() ==
+                    this.to.token.address.toLowerCase()
+                ) {
+                    this.to.balance = Utils.fromWei(token.balance);
                 }
             });
         },
         toMoney: function (amount) {
-            return Utils.toMoney(amount)
-        }
+            return Utils.toMoney(amount);
+        },
     },
 };
 </script>

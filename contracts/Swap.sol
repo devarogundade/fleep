@@ -2,12 +2,10 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import {PriceApi} from "./PriceApi.sol";
-import {Token} from "./Token.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Swap {
     PriceApi private _priceApi;
-    Token private _token;
 
     // contract admin
     address private _deployer;
@@ -27,7 +25,7 @@ contract Swap {
 
     // is a member of the pairs mapping
     // but its the native pair MATIC not IERC20
-    address public NATIVE_PAIR = 0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada;
+    address public NATIVE_PAIR;
 
     // id => liquidity pools
     mapping(uint => Pool) public pools;
@@ -89,20 +87,11 @@ contract Swap {
         uint[] liquids;
     }
 
-    constructor(address priceApI, address token) {
+    constructor(address priceApI) {
         _priceApi = PriceApi(priceApI);
-        _token = Token(token);
         _deployer = msg.sender;
 
-        createPair(
-            0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
-            0x007A22900a3B98143368Bd5906f8E17e9867581b
-        );
-        createPair(
-            0x3814CF88e2675041504C7d6404f7b8978F8B65B4,
-            0x0FCAa9c899EC5A91eBc3D5Dd869De833b06fB046
-        );
-        createPair(NATIVE_PAIR, NATIVE_PAIR);
+        testnetHelper();
     }
 
     // calculates all the size of the liquids
@@ -137,20 +126,15 @@ contract Swap {
     }
 
     // register as a provider
-    function unlockedProviderAccount(address _vaultAddress) public onlyGuest {
-        // to become a provider you must hodl at least 10
-        // tokens of Fleep Token
-        require(
-            _token.balanceOf(msg.sender) >= _token.inWei(10),
-            "You must hodl at least 10 Fleep Tokens"
-        );
+    function unlockedProviderAccount(address vaultAddress) public onlyGuest {
+        require(vaultAddress != address(0), "Invalid Vault Address");
 
         PROVIDER_ID++;
         providers[msg.sender] = Provider(
             PROVIDER_ID,
             providers[msg.sender].totalEarned,
             providers[msg.sender].balance,
-            _vaultAddress,
+            vaultAddress,
             false,
             providers[msg.sender].liquids
         );
@@ -375,7 +359,7 @@ contract Swap {
 
     function withDrawEarningsToVault(address receiver) public onlyProvider {
         uint256 amount = providers[msg.sender].balance;
-        require(amount >= _token.inWei(1), "Balance Must be atleast 1 MATIC");
+        require(amount >= _inWei(1), "Balance Must be atleast 1 MATIC");
         payable(receiver).transfer(amount);
         providers[msg.sender].balance = 0;
     }
@@ -465,12 +449,13 @@ contract Swap {
             // and their balance is at least 1 MATIC
             if (
                 providers[provider].autoStake &&
-                providers[provider].balance >= _token.inWei(1)
+                providers[provider].balance >= _inWei(1)
             ) {
-                payable(providers[provider].vaultAddress).transfer(
-                    providers[provider].balance
-                );
-                providers[provider].balance = 0;
+                // TO DO
+                // payable(providers[provider].vaultAddress).transfer(
+                //     providers[provider].balance
+                // );
+                // providers[provider].balance = 0;
             }
         }
     }
@@ -534,6 +519,10 @@ contract Swap {
 
         // convert fee to matic
         return estimate(token1, NATIVE_PAIR, _fee);
+    }
+
+    function _inWei(uint256 amount) private pure returns (uint256) {
+        return amount * 10 ** 18;
     }
 
     function _findPool(
@@ -615,6 +604,95 @@ contract Swap {
         pools[POOL_ID] = Pool(POOL_ID, token0, token1, pool.liquids);
 
         return POOL_ID;
+    }
+
+    // calls in the constructor
+    function testnetHelper() private onlyDeployer {
+        updateNativePair(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
+
+        // BTC
+        createPair(
+            0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
+            0x007A22900a3B98143368Bd5906f8E17e9867581b
+        );
+
+        // DAI
+        createPair(
+            0x3814CF88e2675041504C7d6404f7b8978F8B65B4,
+            0x0FCAa9c899EC5A91eBc3D5Dd869De833b06fB046
+        );
+
+        // WETH
+        createPair(
+            0x60D4A61940Ac5e59cbdaF05E7F702B26048320bF,
+            0x0715A7794a1dc8e42615F059dD6e406A6594651A
+        );
+
+        // MATIC
+        createPair(NATIVE_PAIR, NATIVE_PAIR);
+
+        // SAND
+        createPair(
+            0x00F5153e9608217DBa32C6C706fef5aD97016842,
+            0x9dd18534b8f456557d11B9DDB14dA89b2e52e308
+        );
+
+        // USDC
+        createPair(
+            0x304379DfA42B7127DE0db93Bce597bEdba18b259,
+            0x572dDec9087154dC5dfBB1546Bb62713147e0Ab0
+        );
+
+        // USDT
+        createPair(
+            0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864,
+            0x92C09849638959196E976289418e5973CC96d645
+        );
+    }
+
+    // called by any provider
+    function testnetHelper2() public {
+        createPool(
+            0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
+            0x3814CF88e2675041504C7d6404f7b8978F8B65B4
+        ); // BTC => DAI : 1
+        createPool(
+            0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
+            0x60D4A61940Ac5e59cbdaF05E7F702B26048320bF
+        ); // BTC => WETH : 2
+        createPool(
+            0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
+            0x00F5153e9608217DBa32C6C706fef5aD97016842
+        ); // BTC => SAND : 3
+        createPool(
+            0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
+            0x304379DfA42B7127DE0db93Bce597bEdba18b259
+        ); // BTC => USDC : 4
+        createPool(
+            0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
+            0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864
+        ); // BTC => USDT : 5
+        createPool(
+            0x60D4A61940Ac5e59cbdaF05E7F702B26048320bF,
+            0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864
+        ); // WETH => USDT : 6
+        createPool(
+            0x60D4A61940Ac5e59cbdaF05E7F702B26048320bF,
+            0x00F5153e9608217DBa32C6C706fef5aD97016842
+        ); // WETH => SAND : 7
+        createPool(
+            0x00F5153e9608217DBa32C6C706fef5aD97016842,
+            0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864
+        ); // SAND => USDT : 8
+        createPool(
+            0x00F5153e9608217DBa32C6C706fef5aD97016842,
+            0x3814CF88e2675041504C7d6404f7b8978F8B65B4
+        ); // SAND => DAI : 9
+        createPool(
+            0x3814CF88e2675041504C7d6404f7b8978F8B65B4,
+            0x60D4A61940Ac5e59cbdaF05E7F702B26048320bF
+        ); // DAI => WETH : 10
+        createPool(NATIVE_PAIR, 0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864); // MATIC => USDT : 11
     }
 
     // === Modifiers === //

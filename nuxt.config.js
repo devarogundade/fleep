@@ -16,7 +16,7 @@ export default {
     },
 
     head: {
-        title: 'Fleep | Polygon Swap and Dusts Sweeper',
+        title: 'Fleep Finance | Layer-2 DAPP',
         htmlAttrs: {
             lang: 'en'
         },
