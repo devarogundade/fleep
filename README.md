@@ -1,35 +1,36 @@
 *This Project has been hosted on a free host. You might experience a little delay at cold laod*
 
-# Fleep - A Layer-2 Decentralized Swap, Sweeper and Yeild Farming
+# Fleep - A Layer-2 Decentralized Swap, Sweeper and AutoYield
 ## _A Xend Finance X Polygon Hackathon Project_
 
 About fleep here
 
 ## Core Features
-- # Asset Swapping
+- # Assets Swapping
     Sample Description
     
 - # Dusts Sweeping
     Sample Description
 
-- # Liquidity Earning and Yield Farming
+- # Liquidity Earning and AutoYield Farming
     Sample Description
 
 ## Revenue Model
-- We deduct 20% out of 1% of swapping fee, and 80% is shared among liquidity providers.
+- We deduct 20% out of 0.25% of swapping fee, and 80% is shared among liquidity providers.
 
 ## Hackathon Track
 - Beginner
   
-
 ## Tech Stacks
 
 - Polygon (Testnet & Mainnet)
+- ChainLink
 - Xend Finance SDK [#](https://github.com/devarogundade/fleep/tree/master/)
 - Solidity (Smart Contract) [#](https://github.com/devarogundade/fleep/tree/master/contracts)
 - Nuxtjs (Frontend)
-- Nodejs (Backend) 
 - Truffle
+- Web3js
+- Moralis API
 
 ## Demo
 
@@ -41,16 +42,9 @@ About fleep here
 
 ## Other Services
 - Netlify
-- Heroku
 
 ## Roadmap
    https://fleep-finance.netlify.app/#roadmap
-
-## Tokenomics
-   Total Supply: 1,000,000,000
-   Token Name: Buidl Token
-   Token Symbol: BDL
-   https://fleep-finance.netlify.app/#flp-token
 
 ## Contribution
 
