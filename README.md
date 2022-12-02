@@ -25,8 +25,8 @@ About fleep here
 
 - Polygon (Testnet & Mainnet)
 - ChainLink
-- Xend Finance SDK [#](https://github.com/devarogundade/fleep/tree/master/)
-- Solidity (Smart Contract) [#](https://github.com/devarogundade/fleep/tree/master/contracts)
+- Xend Finance
+- Solidity (Smart Contract)
 - Nuxtjs (Frontend)
 - Truffle
 - Web3js
