@@ -1,0 +1,29 @@
+[{
+        "apy": 0,
+        "locked": 0,
+        "vaultBalance": 0,
+        "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "contractAddress": "0x143afc138978Ad681f7C7571858FAAA9D426CecE"
+    },
+    {
+        "apy": 0,
+        "locked": 0,
+        "vaultBalance": 0,
+        "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        "contractAddress": "0xd01a0971F03D0ddC8D621048d92A1632b2dB7356"
+    },
+    {
+        "apy": 0,
+        "locked": 0,
+        "vaultBalance": 0,
+        "address": "0xd6df932a45c0f255f85145f286ea0b292b21c90b",
+        "contractAddress": "0xDD3afc5D5476FC327812B84ae2ccf66C011e6d67"
+    },
+    {
+        "apy": 0,
+        "locked": 0,
+        "vaultBalance": 0,
+        "address": "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+        "contractAddress": "0x0b26E76D8617b20Ec9fe0811BE2dCbF3438cc27F"
+    }
+]

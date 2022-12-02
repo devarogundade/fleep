@@ -1,5 +1,5 @@
 /* contracts */
-const BTC = artifacts.require("TestnetToken");
+const WBTC = artifacts.require("TestnetToken");
 const DAI = artifacts.require("TestnetToken");
 // const ETH = artifacts.require("TestnetToken");
 // const SAND = artifacts.require("TestnetToken");
@@ -7,7 +7,7 @@ const DAI = artifacts.require("TestnetToken");
 // const USDT = artifacts.require("TestnetToken");
 
 module.exports = async function(deployer) {
-    // await deployer.deploy(BTC, "Bitcoin", "BTC");
+    // await deployer.deploy(WBTC, "Bitcoin", "WBTC");
     // await deployer.deploy(DAI, "DAI", "DAI");
     // await deployer.deploy(ETH, "Ethereum", "ETH");
     // await deployer.deploy(SAND, "Sandbox", "SAND");

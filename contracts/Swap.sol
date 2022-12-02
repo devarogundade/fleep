@@ -615,7 +615,7 @@ contract Swap {
         updateNativePair(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
         updateUSDTPair(0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864);
 
-        // BTC
+        // WBTC
         createPair(
             0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
             0x007A22900a3B98143368Bd5906f8E17e9867581b
@@ -660,23 +660,23 @@ contract Swap {
         createPool(
             0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
             0x3814CF88e2675041504C7d6404f7b8978F8B65B4
-        ); // BTC => DAI : 1
+        ); // WBTC => DAI : 1
         createPool(
             0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
             0x60D4A61940Ac5e59cbdaF05E7F702B26048320bF
-        ); // BTC => WETH : 2
+        ); // WBTC => WETH : 2
         createPool(
             0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
             0x00F5153e9608217DBa32C6C706fef5aD97016842
-        ); // BTC => SAND : 3
+        ); // WBTC => SAND : 3
         createPool(
             0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
             0x304379DfA42B7127DE0db93Bce597bEdba18b259
-        ); // BTC => USDC : 4
+        ); // WBTC => USDC : 4
         createPool(
             0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB,
             0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864
-        ); // BTC => USDT : 5
+        ); // WBTC => USDT : 5
         createPool(
             0x60D4A61940Ac5e59cbdaF05E7F702B26048320bF,
             0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864

@@ -119,10 +119,10 @@
         "image": ""
     },
     {
-        "symbol": "BTC",
-        "name": "Bitcoin",
-        "address": "",
-        "image": ""
+        "symbol": "WBTC",
+        "name": "Wrapped Bitcoin",
+        "address": "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3717.png"
     },
     {
         "symbol": "BUSD",
@@ -553,8 +553,8 @@
     {
         "symbol": "USDC",
         "name": "Circle USD",
-        "address": "",
-        "image": ""
+        "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png"
     },
     {
         "symbol": "CTX",
@@ -565,8 +565,8 @@
     {
         "symbol": "USDT",
         "name": "Tether USD",
-        "address": "",
-        "image": ""
+        "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+        "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png"
     },
     {
         "symbol": "VET",

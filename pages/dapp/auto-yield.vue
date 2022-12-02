@@ -1,6 +1,6 @@
 <template>
 <div class="auto-yield">
-    <Liquidities />
+    <AutoYield />
 </div>
 </template>
 

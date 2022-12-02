@@ -1,31 +1,29 @@
 import Web3 from "web3"
-import tokenAbi from "~/static/xend/usdt.json";
-import contractAbi from "~/static/xend/usdt-xauto.json"
+import tokenAbi from "~/static/vault/token.json";
+import contractAbi from "~/static/vault/xauto.json"
 
 const FleepVault = {
-    tokenAddress: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
-    contractAddress: '0x143afc138978Ad681f7C7571858FAAA9D426CecE',
-    getToken: function() {
+    getToken: function(tokenAddress) {
         const web3 = new Web3(ethereum)
-        return new web3.eth.Contract(tokenAbi, this.tokenAddress)
+        return new web3.eth.Contract(tokenAbi, tokenAddress)
     },
-    getContract: function() {
+    getContract: function(contractAddress) {
         const web3 = new Web3(ethereum)
-        return new web3.eth.Contract(contractAbi, this.contractAddress)
+        return new web3.eth.Contract(contractAbi, contractAddress)
     },
-    approve: async function(amount, address) {
+    approve: async function(amount, address, tokenAddress, contractAddress) {
         try {
-            const contract = this.getToken()
-            await contract.methods.approve(this.contractAddress, amount).send({ from: address })
+            const contract = this.getToken(tokenAddress)
+            await contract.methods.approve(contractAddress, amount).send({ from: address })
             return true
         } catch (error) {
             console.log(error);
             return false
         }
     },
-    deposit: async function(amount, address) {
+    deposit: async function(amount, address, contractAddress) {
         try {
-            const contract = this.getContract()
+            const contract = this.getContract(contractAddress)
             await contract.methods.deposit(amount).send({ from: address })
             return true
         } catch (error) {
@@ -33,9 +31,9 @@ const FleepVault = {
             return false
         }
     },
-    withdraw: async function(amount, address) {
+    withdraw: async function(amount, address, contractAddress) {
         try {
-            const contract = this.getContract()
+            const contract = this.getContract(contractAddress)
             const sharePrice = await contract.methods.getPricePerFullShare()
             const withdrawAmountInShares = ((amount * 10 ** 24) / sharePrice)
             await contract.methods.withdraw(parseInt(String(withdrawAmountInShares), 10))
@@ -46,18 +44,18 @@ const FleepVault = {
             return false
         }
     },
-    balance: async function(address) {
+    balance: async function(address, tokenAddress) {
         try {
-            const contract = this.getToken()
+            const contract = this.getToken(tokenAddress)
             return await contract.methods.balanceOf(address)
         } catch (error) {
             console.log(error);
             return 0
         }
     },
-    savings: async function(address) {
+    savings: async function(address, contractAddress) {
         try {
-            const contract = this.getContract()
+            const contract = this.getContract(contractAddress)
             const share = await contract.methods.balanceOf(address)
             const sharePrice = await contract.methods.getPricePerFullShare()
             return ((share * sharePrice) / 10 ** 24);
