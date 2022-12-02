@@ -15,7 +15,7 @@ About fleep here
 - # Liquidity Earning and AutoYield Farming
     Sample Description
     
-## How To Earning
+## How To Earn
 - # Provide Liquidity
 
 - # AutoYield Investing
