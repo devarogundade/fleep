@@ -12,7 +12,7 @@ About fleep here
 - # Dusts Sweeping
     Sample Description
 
-- # Liquidity Earning and AutoYield Farming
+- # Liquidity Earning and AutoYield
     Sample Description
     
 ## How To Earn
