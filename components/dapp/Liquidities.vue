@@ -14,7 +14,7 @@
                     <div class="benefit">
                         <img src="/images/provide.png" alt="" />
                         <p>1. Earn from liquidity</p>
-                        <p>Earn $MATIC tokens as reward for providing liquidities.</p>
+                        <p>Earn $USDT tokens as reward for providing liquidities.</p>
                     </div>
                     <div class="benefit">
                         <img src="/images/interest.png" alt="" />
@@ -36,7 +36,7 @@
                     <div class="form">
                         <div class="toolbar">
                             <div class="av" v-if="user">
-                                <p>Auto Vault <i class="fi fi-rr-info"></i></p>
+                                <p>AutoYield <i class="fi fi-rr-info"></i></p>
                                 <label class="switch">
                                     <input type="checkbox" v-model="user.autoStake" v-on:change="updateProfile($event)">
                                     <span class="slider round"></span>
@@ -64,7 +64,7 @@
 
                         <div class="button">
                             <div class="action" v-if="!moving" v-on:click="moveToVault()">
-                                Move to vault
+                                Withdraw to AutoYield
                             </div>
                             <div class="action" v-else>
                                 <TinyProgress />
@@ -80,7 +80,10 @@
 
                         <div class="divider"></div>
 
-                        <div class="exchange">Total Earned: {{ user.totalEarned }}</div>
+                        <div class="exchange">
+                            <p>Total Earned:</p>
+                            <p>{{ user.totalEarned }} USDT</p>
+                        </div>
                     </div>
                     <div class="dusts"></div>
                 </div>
@@ -542,5 +545,12 @@ input:checked+.slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+.exchange {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
 }
 </style>

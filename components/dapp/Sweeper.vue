@@ -56,10 +56,6 @@
                         <div class="action" v-else>•••</div>
                         <p>Enter the amount of tokens you want to swap.</p>
                     </div>
-
-                    <div class="divider"></div>
-
-                    <div class="exchange"></div>
                 </div>
             </div>
         </div>
@@ -85,7 +81,7 @@ export default {
             dusts: [],
             supportedTokens: [],
             to: {
-                balance: "•••",
+                balance: "0",
                 amount: "",
                 token: {
                     symbol: "USDT",

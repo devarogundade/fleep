@@ -5,8 +5,8 @@
         <div class="sweeper">
             <div class="text">
                 <div>
-                    <h3>Provide Liquidity to Earn $MATIC + Up to 15% Annual Interest</h3>
-                    <p>You will earn $MATIC tokens for providing liquidity, and also earn upto 15% interest on it annually.</p>
+                    <h3>Provide Liquidity to Earn and Up to 15% Annual Interest</h3>
+                    <p>You will earn $USDT, $MATIC, etc for providing liquidity, and can also earn upto 15% interest on it annually.</p>
                 </div>
                 <router-link to="/dapp/pools">
                     <div class="action">Provide Liquidity</div>

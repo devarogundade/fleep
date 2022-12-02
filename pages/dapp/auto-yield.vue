@@ -1,6 +1,6 @@
 <template>
-<div class="swap">
-    <Earnings />
+<div class="auto-yield">
+    <Liquidities />
 </div>
 </template>
 

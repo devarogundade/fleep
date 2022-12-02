@@ -4,7 +4,7 @@
         <div class="swap">
             <div class="form">
                 <div class="toolbar">
-                    <i class="fi fi-rr-history" v-on:click="history = !history"></i>
+                    <i class="fi fi-rr-time-past" v-on:click="history = !history"></i>
                     <i class="fi fi-rr-refresh"></i>
                     <i class="fi fi-rr-settings"></i>
                 </div>
@@ -62,10 +62,6 @@
 
                     <p>Enter the amount of tokens you want to swap.</p>
                 </div>
-
-                <div class="divider"></div>
-
-                <div class="exchange"></div>
             </div>
         </div>
     </div>

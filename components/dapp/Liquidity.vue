@@ -72,10 +72,6 @@
                     </div>
                     <p>Enter the amount of tokens you want to provide.</p>
                 </div>
-
-                <div class="divider"></div>
-
-                <div class="exchange"></div>
             </div>
         </div>
     </div>

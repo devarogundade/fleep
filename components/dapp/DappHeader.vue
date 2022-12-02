@@ -20,7 +20,10 @@
                             <router-link :class="($route.name == 'dapp-pools' || $route.name == 'dapp-liquidity-pool') ? 'active' : ''" to="/dapp/pools">Pools</router-link>
                         </li>
                         <li>
-                            <router-link :class="$route.name == 'dapp-earnings' ? 'active' : ''" to="/dapp/earnings">Earnings</router-link>
+                            <router-link :class="$route.name == 'dapp-liquidities' ? 'active' : ''" to="/dapp/liquidities">Liquidities</router-link>
+                        </li>
+                           <li>
+                            <router-link :class="$route.name == 'dapp-auto-yield' ? 'active' : ''" to="/dapp/auto-yield">AutoYield</router-link>
                         </li>
                     </ul>
                 </div>
