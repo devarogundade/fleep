@@ -12,8 +12,13 @@ About fleep here
 - # Dusts Sweeping
     Sample Description
 
-- # Liquidity Earning and AutoYield Farming
+- # Liquidity Earning and AutoYield
     Sample Description
+    
+## How To Earn
+- # Provide Liquidity
+
+- # AutoYield Investing
 
 ## Revenue Model
 - We deduct 20% out of 0.25% of swapping fee, and 80% is shared among liquidity providers.
@@ -24,27 +29,29 @@ About fleep here
 ## Tech Stacks
 
 - Polygon (Testnet & Mainnet)
-- ChainLink
-- Xend Finance SDK [#](https://github.com/devarogundade/fleep/tree/master/)
-- Solidity (Smart Contract) [#](https://github.com/devarogundade/fleep/tree/master/contracts)
+- ChainLink (AggregatorV3)
+- Xend Finance (xAuto)
 - Nuxtjs (Frontend)
-- Truffle
+- Truffle (Smart Contract)
 - Web3js
-- Moralis API
+- Moralis (Web3 APIs)
 
 ## Demo
 
 - See mode at https://fleep-finance.netflify.app/
-- Faucet https://fleep-finance.netlify.app/faucet
+- Test tokens faucet https://fleep-finance.netlify.app/faucet
 
 ## Sneak peaks
    
-
-## Other Services
-- Netlify
-
 ## Roadmap
-   https://fleep-finance.netlify.app/#roadmap
+- Phase1: Minimul Viable Product (MVP)
+- Phase2: Restructing and Improvement
+- Phase3: Community building and Testing
+- Phase4: Launch on mainnet
+- Phase5: Scaling
+- Phase6: Fleep token and tokenomics
+- Phase7: Crosschain support
+- Phase8: Fiat to crypto with xendbridge 
 
 ## Contribution
 
