@@ -17,8 +17,9 @@
                 <p>Built With:</p>
                 <div class="images">
                     <img src="/images/polygon.png" alt="">
-                    <img src="/images/chainlink.png" alt="">
                     <img src="/images/xend.svg" alt="">
+                    <img src="/images/chainlink.png" alt="">
+                    <img src="/images/xendbridge.svg" alt="">
                     <img src="/images/moralis.png" alt="">
                 </div>
             </div>

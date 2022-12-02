@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import axios from "vue-axios"
+import axios from "axios"
 
 const Utils = {
     fromWei: function(value) {
