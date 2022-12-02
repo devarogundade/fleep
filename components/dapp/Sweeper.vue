@@ -17,11 +17,11 @@
                             <img :src="dust.data1.image" alt="" />
                             <div class="name">
                                 <p>{{ dust.data0.name }}</p>
-                                <p>{{ dust.balance }} {{ dust.data0.symbol }}</p>
+                                <p>{{ fromWeiMoney(dust.balance) }} {{ dust.data0.symbol }}</p>
                             </div>
                         </div>
                         <div>
-                            <p class="balance">$10</p>
+                            <p class="balance">$ {{ dust.amount }}</p>
                             <input type="checkbox" v-model="dust.selected" />
                         </div>
                     </div>
@@ -47,6 +47,7 @@
                             <input v-model="to.amount" type="number" placeholder="0" disabled />
                         </div>
                     </div>
+                    <p class="fee" v-if="to.amount != ''">Sweep fee: {{ (to.amount / 1000) * 25 }} {{ to.token.symbol }}</p>
 
                     <div class="button">
                         <div class="action" v-if="!sweeping" v-on:click="sweep()">
@@ -73,6 +74,8 @@ import Utils from "~/static/scripts/Utils";
 import testnetTokens from "../../static/tokens/testnet.json";
 import mainnetTokens from "../../static/tokens/mainnet.json";
 import FleepSweeper from "../../static/scripts/FleepSweeper";
+import ERC20 from '~/static/scripts/ERC20';
+import FleepSwap from '~/static/scripts/FleepSwap';
 
 export default {
     data() {
@@ -85,9 +88,8 @@ export default {
                 balance: "•••",
                 amount: "",
                 token: {
-                    symbol: "Matic",
-                    baseAddress: "0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada",
-                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
+                    symbol: "USDT",
+                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png",
                 },
             },
             network: Network.current() == "true",
@@ -106,7 +108,6 @@ export default {
             this.supportedTokens = testnetTokens;
         }
 
-        this.getMaticBalance();
         this.findDusts();
     },
     methods: {
@@ -123,19 +124,11 @@ export default {
 
             this.picker = false;
         },
-        estimate: async function () {},
-        getMaticBalance: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address;
-            const response = await this.$balance.maticBalance(address, this.network);
-            if (response) {
-                this.to.balance = Utils.toMoney(Utils.fromWei(response.balance), 4);
-            }
-        },
         findDusts: async function () {
             this.findingDusts = true;
 
             const address = (await Authenticate.getUserAddress(this.network)).address;
-            const response = await this.$balance.erc20Balances(address, this.network)
+            const tResponse = await this.$balance.erc20Balances(address, this.network)
 
             const addresses = [];
 
@@ -145,48 +138,70 @@ export default {
                 }
             });
 
-            const fResponse = await FleepSweeper.findDusts(addresses, address)
-            console.log(fResponse);
+            const response = await FleepSweeper.findDusts(addresses, address)
+            const dusts = response[0]
+            const amountsInUSDT = response[1]
 
-            // if (response) {
-            //     response.forEach(token => {
-            //         let supportedToken = this.supportedTokens.filter(t => t.address.toLowerCase() == token.token_address.toLowerCase())
-            //         if (supportedToken.length > 0) {
-            //             addresses.push(token.token_address)
-            //             supportedToken = supportedToken[0]
-            //             this.dusts.push({
-            //                 data0: token,
-            //                 data1: supportedToken,
-            //                 balance: Utils.toMoney(Utils.fromWei(token.balance)),
-            //                 selected: true
-            //             })
-            //         }
-            //     })
-            // }
+            if (tResponse) {
+                for (let index = 0; index < dusts.length; index++) {
+                    const dust = dusts[index];
+                    let token = tResponse.filter(token => dust.toLowerCase() == token.token_address.toLowerCase())
+                    let detail = this.supportedTokens.filter(s => dust.toLowerCase() == s.address.toLowerCase())
+                    if (token.length > 0 && detail.length > 0) {
+                        this.dusts.push({
+                            data0: token[0],
+                            data1: detail[0],
+                            amount: Utils.toMoney(Utils.fromWei(amountsInUSDT[index])),
+                            balance: token[0].balance,
+                            selected: true
+                        })
+                    }
+                }
+            }
 
             this.findingDusts = false;
 
-            const estimate = await FleepSweeper.estimate(addresses, address);
-            this.to.amount = Utils.toMoney(Utils.fromWei(estimate), 4);
+            const estimate = await FleepSweeper.estimate(dusts, address);
+            this.to.amount = Utils.fromWei(estimate);
         },
         sweep: async function () {
             const dusts = this.dusts.filter((d) => d.selected);
 
             const tokens = [];
             dusts.forEach((d) => {
-                tokens.push(d.token_address);
+                tokens.push(d.data1.address);
             });
 
             if (tokens.length == 0) return;
 
+            const address = (await Authenticate.getUserAddress(this.network)).address;
             this.sweeping = true;
 
-            const address = (await Authenticate.getUserAddress(this.network)).address;
+            for (let index = 0; index < tokens.length; index++) {
+                const allocation = await ERC20.allocation(
+                    address,
+                    await FleepSwap.getContractAddress(),
+                    tokens[index]
+                )
+
+                if (allocation >= dusts[index].balance) continue
+
+                await ERC20.approve(
+                    address,
+                    await FleepSwap.getContractAddress(),
+                    dusts[index].balance,
+                    tokens[index]
+                )
+            }
+
             const response = await FleepSweeper.sweep(tokens, address);
             console.log(response);
 
             this.sweeping = false;
         },
+        fromWeiMoney: function (amount) {
+            return Utils.toMoney(Utils.fromWei(amount))
+        }
     },
 };
 </script>
@@ -456,5 +471,11 @@ section {
 .divider {
     border-top: 1px #010101 solid;
     margin: 20px 0;
+}
+
+.fee {
+    color: #D20808;
+    font-size: 14px;
+    text-align: right;
 }
 </style>

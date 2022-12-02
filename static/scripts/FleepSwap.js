@@ -163,7 +163,7 @@ const FleepSwap = {
             return null
         }
     },
-    unlockProvider: async function(vaultAddress, address) {
+    unlockProvider: async function(address) {
         const instance = await this.getInstance()
 
         if (instance == null) return {
@@ -173,7 +173,7 @@ const FleepSwap = {
         }
 
         try {
-            const trx = await instance.unlockedProviderAccount(vaultAddress, {
+            const trx = await instance.unlockedProviderAccount({
                 from: address
             })
             return {

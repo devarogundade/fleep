@@ -1,31 +1,42 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import {PriceApi} from "./PriceApi.sol";
 import {Swap} from "./Swap.sol";
+import {PriceApi} from "./PriceApi.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Sweeper {
+    // dependecies
     Swap private _swap;
 
     address private _deployer;
 
+    // dust price threshold
     uint256 private DUST_THRESHOLD;
 
     // === Events === //
 
     event FleepSweeped(uint256 amount, address from, uint timestamp);
 
-    // initialize dependencies
     constructor(address swap) {
         _swap = Swap(swap);
         _deployer = msg.sender;
+
+        // default is 20 USDT
         DUST_THRESHOLD = inWei(20);
     }
 
-    // recursively swap every tokens for MATIC
-    function sweep(address[] memory tokens) public returns (uint256) {
+    // recursively swap every tokens for USDT
+    function sweep(
+        address[] memory tokens /* address destinationPair */
+    ) public returns (uint256) {
         uint256 amount1;
+
+        // TO DO for next iteration
+        // user should able to choose the destination
+        // asset but for now, you can only sweep to USDT
+        address destinationPair = _swap.getUSDTPair();
+
         for (uint index = 0; index < tokens.length; index++) {
             if (tokens[index] == address(0)) continue;
 
@@ -34,13 +45,11 @@ contract Sweeper {
 
             // amount cannot be lesser than 100 WEI
             if (amount0 < 100) continue;
+            // dust is already in destination assets
+            if (tokens[index] == destinationPair) continue;
 
-            // swap
-            amount1 += _swap.swap(
-                tokens[index],
-                _swap.getNativePair(),
-                amount0
-            );
+            // swap to USDT
+            amount1 += _swap.swap(tokens[index], destinationPair, amount0);
         }
 
         // registers every successful sweeps
@@ -51,21 +60,26 @@ contract Sweeper {
 
     function estimate(
         address[] memory tokens,
-        address wallet
+        address wallet /* address destinationPair */
     ) public view returns (uint256) {
         uint256 amount1;
+
+        // TO DO for next iteration
+        // user should able to choose the destination
+        // asset but for now, you can only estimate for USDT
+        address destinationPair = _swap.getUSDTPair();
 
         for (uint index = 0; index < tokens.length; index++) {
             if (tokens[index] == address(0)) continue;
 
+            // skip if token address points to MATIC
+            // Native coin (MATIC) is not considered as dust
+            if (tokens[index] == _swap.getNativePair()) continue;
+
             IERC20 token = IERC20(tokens[index]);
             uint256 amount0 = token.balanceOf(wallet);
 
-            amount1 += _swap.estimate(
-                tokens[index],
-                _swap.getNativePair(),
-                amount0
-            );
+            amount1 += _swap.estimate(tokens[index], destinationPair, amount0);
         }
 
         return amount1;
@@ -74,19 +88,21 @@ contract Sweeper {
     function findDusts(
         address[] memory tokens,
         address wallet
-    ) public view returns (address[] memory) {
-        address[] memory dusts;
+    ) public view returns (address[] memory, uint256[] memory) {
+        address[] memory dusts = new address[](tokens.length);
+        uint256[] memory amountsInUSDT = new uint256[](tokens.length);
 
         for (uint index = 0; index < tokens.length; index++) {
-            IERC20 _token = IERC20(tokens[index]);
+            if (tokens[index] == address(0)) continue;
 
-            // fetching the balance of the erc20
-            uint256 amount0 = _token.balanceOf(wallet);
+            IERC20 token = IERC20(tokens[index]);
+            uint256 amount0 = token.balanceOf(wallet);
 
             // amount cannot be lesser than 100 WEI
             if (amount0 < 100) continue;
 
             // skip if token address points to MATIC
+            // Native coin (MATIC) is not considered as dust
             if (tokens[index] == _swap.getNativePair()) continue;
 
             // fetching price of the token in usdt
@@ -99,11 +115,12 @@ contract Sweeper {
             // checking is token is a dust
             // i.e has a value lower than threshold
             if (amount1 <= DUST_THRESHOLD) {
-                dusts[dusts.length] = tokens[index];
+                dusts[index] = tokens[index];
+                amountsInUSDT[index] = amount1;
             }
         }
 
-        return dusts;
+        return (dusts, amountsInUSDT);
     }
 
     function inWei(uint256 amount) private pure returns (uint256) {

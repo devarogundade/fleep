@@ -3,6 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import {PriceApi} from "./PriceApi.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 // import {xUSDT} from "./xend/XUSDT.sol";
 
 contract Swap {
@@ -83,7 +84,6 @@ contract Swap {
         uint id;
         uint256 totalEarned;
         uint256 balance;
-        address vaultAddress;
         bool autoStake;
         uint[] liquids;
     }
@@ -132,9 +132,7 @@ contract Swap {
     }
 
     // register as a provider
-    function unlockedProviderAccount(address vaultAddress) public onlyGuest {
-        require(vaultAddress != address(0), "Invalid Vault Address");
-
+    function unlockedProviderAccount() public onlyGuest {
         // create new unique id
         PROVIDER_ID++;
 
@@ -143,7 +141,6 @@ contract Swap {
             PROVIDER_ID,
             providers[msg.sender].totalEarned,
             providers[msg.sender].balance,
-            vaultAddress,
             false,
             providers[msg.sender].liquids
         );
@@ -356,26 +353,11 @@ contract Swap {
             providers[msg.sender].balance >= amount,
             "Insufficient Balance"
         );
-        require(
-            address(this).balance >= amount,
-            "Contract: Insufficient Balance"
-        );
 
-        payable(msg.sender).transfer(amount);
+        // USDT as reward token
+        IERC20(USDT_PAIR).transfer(msg.sender, amount);
+
         providers[msg.sender].balance -= amount;
-    }
-
-    function withDrawEarningsToVault(address receiver) public onlyProvider {
-        uint256 amount = providers[msg.sender].balance;
-
-        require(amount >= _inWei(1), "Balance Must be atleast 1 MATIC");
-        require(
-            address(this).balance >= amount,
-            "Contract: Insufficient Balance"
-        );
-
-        payable(receiver).transfer(amount);
-        providers[msg.sender].balance = 0;
     }
 
     // === Administration === //
@@ -407,12 +389,10 @@ contract Swap {
         address receiver
     ) public onlyDeployer {
         require(_platformProfit >= amount, "Insufficient Balance");
-        require(
-            address(this).balance >= amount,
-            "Contract: Insufficient Balance"
-        );
 
-        payable(receiver).transfer(amount);
+        // USDT as reward token
+        IERC20(USDT_PAIR).transfer(receiver, amount);
+
         _platformProfit -= amount;
     }
 
@@ -475,11 +455,7 @@ contract Swap {
                 providers[provider].autoStake &&
                 providers[provider].balance >= _inWei(1)
             ) {
-                // TO DO
-                // payable(providers[provider].vaultAddress).transfer(
-                //     providers[provider].balance
-                // );
-                // providers[provider].balance = 0;
+
             }
         }
     }
@@ -497,8 +473,8 @@ contract Swap {
         // give user their destination token minus fee
         quoteToken.transfer(owner, (amount1 - _fee));
 
-        // convert fee to matic
-        return estimate(token1, NATIVE_PAIR, _fee);
+        // convert fee to USDT
+        return estimate(token1, USDT_PAIR, _fee);
     }
 
     // ERC20 => MATIC
@@ -521,8 +497,8 @@ contract Swap {
         );
         payable(owner).transfer(amount1 - _fee);
 
-        // fee already in matic
-        return _fee;
+        // convert fee to USDT
+        return estimate(NATIVE_PAIR, USDT_PAIR, _fee);
     }
 
     // ERC20 => ERC20
@@ -545,8 +521,8 @@ contract Swap {
         // give user their destination token minus fee
         quoteToken.transfer(owner, (amount1 - _fee));
 
-        // convert fee to matic
-        return estimate(token1, NATIVE_PAIR, _fee);
+        // convert fee to USDT
+        return estimate(token1, USDT_PAIR, _fee);
     }
 
     function _inWei(uint256 amount) private pure returns (uint256) {

@@ -6,7 +6,8 @@
                 <div class="token" v-for="token in tokens" :key="token.symbol">
                     <img :src="token.image" alt="">
                     <p>{{ token.name }} ({{ token.symbol }})</p>
-                    <p>{{ 1000 }}</p>
+                    <p>100</p>
+                    <p>{{ token.address }}</p>
                     <button v-on:click="faucetMint(token)">Mint</button>
                 </div>
             </div>
@@ -27,11 +28,8 @@ export default {
     data() {
         return {
             minting: -1,
-            tokens: testnetTokens
+            tokens: testnetTokens.filter(t => t.address != '0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada')
         };
-    },
-    mounted() {
-        console.log(contractJson.abi);
     },
     methods: {
         faucetMint: async function (token) {
@@ -75,7 +73,6 @@ section {
     border: 1px solid #ccc;
     border-radius: 6px;
     cursor: pointer;
-    user-select: none;
     display: flex;
     justify-content: space-between;
 }

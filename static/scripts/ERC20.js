@@ -30,7 +30,7 @@ const ERC20 = {
         try {
             return await contract.methods.allowance(address, spender).call();
         } catch (error) {
-            return -1
+            return 0
         }
     }
 }

@@ -31,7 +31,8 @@ const FleepSweeper = {
         return await instance.findDusts(address, amount)
     },
     sweep: async function(tokens, address) {
-        const instance = this.getInstance()
+        const instance = await this.getInstance()
+
         if (instance == null) return {
             message: 'Failed to initialize',
             error: null,

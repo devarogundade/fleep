@@ -107,8 +107,8 @@ export default {
                 balance: "•••",
                 amount: "",
                 token: {
-                    symbol: "Matic",
-                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
+                    symbol: "USDT",
+                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png",
                 },
             },
             address: null,
@@ -145,52 +145,39 @@ export default {
         },
         getStarted: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address;
-
             this.creating = true
 
-            const response = await FleepVault.getOrCreatePhrase(address);
-
-            if (!response.status) {
-                this.creating = ModuleFilenameHelpers
-                return
-            };
-
-            await FleepSwap.unlockProvider(response.address, address);
-
+            const response = await FleepSwap.unlockProvider(address);
             this.creating = false
+
             this.getUser(address);
         },
         moveToVault: async function () {
+            // if connection is not on mainnet
+            if (!this.network) {
+                alert('Switch to Mainnet')
+                return
+            }
+
             if (this.to.amount == "") return;
             const address = (await Authenticate.getUserAddress(this.network)).address;
 
             this.moving = true
 
-            const addrResponse = await FleepVault.getOrCreatePhrase(address);
-            if (!addrResponse.status) {
-                this.moving = false
-                return
-            };
-
-            const txResponse = await FleepSwap.moveToVault(addrResponse.address);
-            if (!txResponse.status) {
-                this.moving = false
-                return
-            }
-
-            const balResponse = await this.$balance.maticBalance(addrResponse.address, this.network)
-            if (!balResponse) return
-
-            const vaultResponse = await FleepVault.deposit(
-                addrResponse.privateKey,
-                balResponse.balance,
-                this.network
-            );
+            const deposit = await FleepVault.deposit(
+                Utils.toWei(this.to.amount), address
+            )
 
             this.moving = false
             console.log(vaultResponse);
         },
         claim: async function () {
+            // if connection is not on mainnet
+            if (!this.network) {
+                alert('Switch to Mainnet')
+                return
+            }
+
             if (this.to.amount == "") return;
             const address = (await Authenticate.getUserAddress(this.network)).address;
 
@@ -210,8 +197,8 @@ export default {
             this.getUser()
         },
         updateProfile: async function (event) {
-            const autoVault = event.target.value
-            console.log(autoVault, autoVault == 'true');
+            const autoVault = event.target.checked
+            console.log(autoVault, autoVault == 'true', autoVault == true);
             const address = (await Authenticate.getUserAddress(this.network)).address;
 
             const response = await FleepSwap.updateProfile(autoVault, address)
