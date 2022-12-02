@@ -325,16 +325,20 @@ contract Swap {
     function removeLiquidity(uint id) public onlyProvider {
         require(liquids[id].provider == msg.sender, "Unauthorized");
 
-        Pool memory pool = pools[liquids[id].poolId];
-        IERC20 token0 = IERC20(pool.token0);
-        IERC20 token1 = IERC20(pool.token1);
+        // extract pool id from liquid
+        uint poolId = liquids[id].poolId;
 
-        token0.transfer(msg.sender, liquids[id].amount0);
-        token1.transfer(msg.sender, liquids[id].amount1);
+        // extract pool struct
+        Pool memory pool = pools[poolId];
 
-        // delete liquid TO DO
-        liquids[id].amount0 = 0;
-        liquids[id].amount1 = 0;
+        // transfer tokens to providers
+        IERC20(pool.token0).transfer(msg.sender, liquids[id].amount0);
+        IERC20(pool.token1).transfer(msg.sender, liquids[id].amount1);
+
+        // delete liquid
+        delete providers[msg.sender].liquids[id];
+        delete pools[poolId].liquids[id];
+        delete liquids[id];
     }
 
     // fetach all liquidities from a wallet
