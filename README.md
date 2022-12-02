@@ -14,6 +14,11 @@ About fleep here
 
 - # Liquidity Earning and AutoYield Farming
     Sample Description
+    
+## How To Earning
+- # Provide Liquidity
+
+- # AutoYield Investing
 
 ## Revenue Model
 - We deduct 20% out of 0.25% of swapping fee, and 80% is shared among liquidity providers.
@@ -38,12 +43,13 @@ About fleep here
 
 ## Sneak peaks
    
-
-## Other Services
-- Netlify
-
 ## Roadmap
-   https://fleep-finance.netlify.app/#roadmap
+- Phase1: Minimul Viable Product (MVP)
+- Phase2: Restructing and Improvement
+- Phase3: Community building and Testing
+- Phase4: Launch on mainnet
+- Phase5: Scaling
+- Phase6: Fleep token and tokenomics
 
 ## Contribution
 
