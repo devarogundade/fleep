@@ -24,18 +24,17 @@ About fleep here
 ## Tech Stacks
 
 - Polygon (Testnet & Mainnet)
-- ChainLink
-- Xend Finance
-- Solidity (Smart Contract)
+- ChainLink (AggregatorV3)
+- Xend Finance (xAuto)
 - Nuxtjs (Frontend)
-- Truffle
+- Truffle (Smart Contract)
 - Web3js
-- Moralis API
+- Moralis (Web3 APIs)
 
 ## Demo
 
 - See mode at https://fleep-finance.netflify.app/
-- Faucet https://fleep-finance.netlify.app/faucet
+- Test tokens faucet https://fleep-finance.netlify.app/faucet
 
 ## Sneak peaks
    
