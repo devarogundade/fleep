@@ -3,8 +3,6 @@
 # Fleep Finance - A Layer-2 Decentralized Swap, and AutoYield Protocol
 ## _A Xend Finance X Polygon Hackathon Project_
 
-About fleep here
-
 ## Core Features
 - # Assets Swapping
     Sample Description
@@ -14,6 +12,8 @@ About fleep here
 
 - # Liquidity Earning and AutoYield
     Sample Description
+    
+- # Localization
     
 ## How To Earn
 - # Provide Liquidity
