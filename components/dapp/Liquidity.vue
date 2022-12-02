@@ -152,7 +152,6 @@ export default {
         }
 
         this.pool = pools.filter((p) => p.id == this.poolId)[0];
-        console.log(this.pool);
 
         this.from.token = tokens.filter((t) => t.address == this.pool.token0)[0];
         this.to.token = tokens.filter((t) => t.address == this.pool.token1)[0];
@@ -182,9 +181,8 @@ export default {
                 await FleepSwap.getContractAddress(),
                 this.to.token.address
             );
-            this.allocations.token1 = Utils.fromWei(allocation1);
 
-            console.log(this.allocations);
+            this.allocations.token1 = Utils.fromWei(allocation1);
         },
         approve: async function () {
             const address = (await Authenticate.getUserAddress(this.network)).address;
@@ -223,6 +221,7 @@ export default {
 
             this.picker = false;
             this.getExchangeRate();
+            this.getBalance()
         },
         getExchangeRate: async function () {
             this.rate = "•••";

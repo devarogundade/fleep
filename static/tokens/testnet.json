@@ -1,6 +1,6 @@
 [{
         "symbol": "WBTC",
-        "name": "Bitcoin",
+        "name": "Wrapper Bitcoin",
         "address": "0xc0EC2DCA88Dbe3C91518958C935Ce250c718f0EB",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3717.png"
     },

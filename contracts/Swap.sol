@@ -337,6 +337,30 @@ contract Swap {
         liquids[id].amount1 = 0;
     }
 
+    // fetach all liquidities from a wallet
+    function myLiquidities(
+        address wallet
+    )
+        public
+        view
+        returns (uint256[] memory, uint256[] memory, uint256[] memory)
+    {
+        // array of provider liquidities position
+        uint256[] memory providerLiquids = providers[wallet].liquids;
+
+        uint256[] memory _pools = new uint256[](providerLiquids.length);
+        uint256[] memory _amounts0 = new uint256[](providerLiquids.length);
+        uint256[] memory _amounts1 = new uint256[](providerLiquids.length);
+
+        for (uint index; index < providerLiquids.length; index++) {
+            _pools[index] = liquids[providerLiquids[index]].poolId;
+            _amounts0[index] = liquids[providerLiquids[index]].amount0;
+            _amounts1[index] = liquids[providerLiquids[index]].amount1;
+        }
+
+        return (_pools, _amounts0, _amounts1);
+    }
+
     function createPool(
         address token0,
         address token1
@@ -454,9 +478,7 @@ contract Swap {
             if (
                 providers[provider].autoStake &&
                 providers[provider].balance >= _inWei(1)
-            ) {
-
-            }
+            ) {}
         }
     }
 

@@ -60,6 +60,32 @@ const FleepSwap = {
             }
         }
     },
+    removeLiquidity: async function(liquidityId) {
+        const instance = await this.getInstance()
+
+        if (instance == null) return {
+            message: 'Failed to Initialize',
+            error: null,
+            status: false
+        }
+
+        try {
+            const trx = await instance.removeLiquidity(liquidityId, {
+                from: address
+            })
+            return {
+                message: 'Transaction Hash',
+                trx: trx,
+                status: true
+            }
+        } catch (error) {
+            return {
+                message: 'Transaction failed',
+                error: error,
+                status: false
+            }
+        }
+    },
     swap: async function(token0, token1, amount0, address) {
         const instance = await this.getInstance()
 
@@ -116,6 +142,16 @@ const FleepSwap = {
 
         try {
             return await instance.pairs(token)
+        } catch (error) {
+            return null
+        }
+    },
+    getLiquidities: async function(address) {
+        const instance = await this.getInstance()
+        if (instance == null) return null
+
+        try {
+            return await instance.myLiquidities(address)
         } catch (error) {
             return null
         }
