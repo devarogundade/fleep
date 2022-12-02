@@ -25,11 +25,18 @@
             </div>
         </div>
     </div>
+
+    <Language v-if="language" v-on:close="language = false" />
 </section>
 </template>
 
 <script>
 export default {
+    data() {
+        return {
+            language: false
+        }
+    },
     mounted() {
         window.addEventListener('scroll', (e) => {
             const header = document.getElementById('header')

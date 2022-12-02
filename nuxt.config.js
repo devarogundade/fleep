@@ -16,7 +16,7 @@ export default {
     },
 
     head: {
-        title: 'Fleep Finance | Layer-2 DAPP',
+        title: 'Fleep Finance | A Layer-2 Decentralized App',
         htmlAttrs: {
             lang: 'en'
         },
@@ -52,7 +52,7 @@ export default {
     ],
 
     axios: {
-        baseURL: '/',
+        baseURL: '/api/v1/',
     },
 
     build: {
