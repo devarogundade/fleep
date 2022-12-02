@@ -50,6 +50,8 @@ About fleep here
 - Phase4: Launch on mainnet
 - Phase5: Scaling
 - Phase6: Fleep token and tokenomics
+- Phase7: Crosschain support
+- Phase8: Fiat to crypto with xendbridge 
 
 ## Contribution
 
