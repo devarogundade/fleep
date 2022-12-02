@@ -27,7 +27,7 @@
                     <p class="name2">{{ _yield.locked }}</p>
                     <p class="name2">{{ _yield.vaultBalance }}</p>
                     <div class="action">
-                        <div class="deposit">Deposit</div>
+                        <div class="deposit" v-on:click="deposit(_yield)">Deposit</div>
                     </div>
                 </div>
             </div>
@@ -40,18 +40,35 @@
 import tokens from "../../static/tokens/mainnet.json"
 import yields from "../../static/vault/yields.json"
 import FleepVault from '~/static/scripts/FleepVault'
+import Network from '~/static/scripts/Network'
+import Authenticate from '~/static/scripts/Authenticate'
 import Utils from '~/static/scripts/Utils'
 
 export default {
     data() {
         return {
             tokens: tokens,
-            yields: yields
+            yields: yields,
+            network: Network.current() == 'true'
         }
     },
     methods: {
         yieldToken: function (address) {
             return this.tokens.filter(token => token.address == address)[0]
+        },
+        deposit: async function (_yield) {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+
+            if (!this.network) {
+                alert('Switch to mainnet')
+                return
+            }
+
+            const response = await FleepVault.deposit(
+                1,
+                address,
+                _yield.contractAddress
+            )
         }
     }
 }
