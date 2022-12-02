@@ -336,8 +336,19 @@ contract Swap {
         IERC20(pool.token1).transfer(msg.sender, liquids[id].amount1);
 
         // delete liquid
-        delete providers[msg.sender].liquids[id];
-        delete pools[poolId].liquids[id];
+        
+        for (uint index = 0; index < pools[poolId].liquids.length; index++) {
+            if (liquids[pools[poolId].liquids[index]].provider == msg.sender) {
+                delete pools[poolId].liquids[index];
+            }
+        }
+
+        for (uint index = 0; index < providers[msg.sender].liquids.length; index++) {
+            if (liquids[providers[msg.sender].liquids[index]].poolId == pool.id) {
+                delete providers[msg.sender].liquids[index];
+            }
+        }
+
         delete liquids[id];
     }
 
@@ -347,7 +358,12 @@ contract Swap {
     )
         public
         view
-        returns (uint256[] memory, uint256[] memory, uint256[] memory)
+        returns (
+            uint256[] memory,
+            uint256[] memory,
+            uint256[] memory,
+            uint256[] memory
+        )
     {
         // array of provider liquidities position
         uint256[] memory providerLiquids = providers[wallet].liquids;
@@ -362,7 +378,7 @@ contract Swap {
             _amounts1[index] = liquids[providerLiquids[index]].amount1;
         }
 
-        return (_pools, _amounts0, _amounts1);
+        return (_pools, _amounts0, _amounts1, providerLiquids);
     }
 
     function createPool(

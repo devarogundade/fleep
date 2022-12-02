@@ -87,7 +87,7 @@
                     </div>
                     <div class="liquidities">
                         <h3>My Liquidities</h3>
-                        <div class="liquidity" v-for="liquidity in liquidities" :key="liquidity.poolId">
+                        <div class="liquidity" v-for="(liquidity, index) in liquidities" :key="index">
                             <div class="images">
                                 <img :src="liquidity.tokens.token0.image" alt="">
                                 <img :src="liquidity.tokens.token1.image" alt="">
@@ -169,27 +169,30 @@ export default {
     methods: {
         poolTokens: function (id) {
             const pool = this.pools.filter(p => p.id == id)[0]
+            if (!pool) return -1
             return {
                 token0: this.tokens.filter(t => t.address == pool.token0)[0],
                 token1: this.tokens.filter(t => t.address == pool.token1)[0]
             }
         },
         getLiquidities: async function () {
-            // const address = (await Authenticate.getUserAddress(this.network)).address;
-            // const response = FleepSwap.getLiquidities(address)
-            // if (!response) return
+            const address = (await Authenticate.getUserAddress(this.network)).address;
+            const response = await FleepSwap.getLiquidities(address)
+            if (!response) return
 
-            const poolIds = this.xLiquidities[0];
-            const amounts0 = this.xLiquidities[1];
-            const amounts1 = this.xLiquidities[2];
-            const liquidIds = this.xLiquidities[3];
+            const poolIds = response[0];
+            const amounts0 = response[1];
+            const amounts1 = response[2];
+            const liquidIds = response[3];
 
             for (let index = 0; index < poolIds.length; index++) {
+                const tokens =this.poolTokens(poolIds[index])
+                if (tokens == -1) continue
                 this.liquidities.push({
                     poolId: poolIds[index],
-                    tokens: this.poolTokens(poolIds[index]),
-                    amount0: amounts0[index],
-                    amount1: amounts1[index],
+                    tokens: tokens,
+                    amount0: Utils.toMoney(Utils.fromWei(amounts0[index])),
+                    amount1: Utils.toMoney(Utils.fromWei(amounts1[index])),
                     liquidId: liquidIds[index]
                 })
             }
@@ -266,7 +269,6 @@ export default {
         },
         updateProfile: async function (event) {
             const autoVault = event.target.checked
-            console.log(autoVault, autoVault == 'true', autoVault == true);
             const address = (await Authenticate.getUserAddress(this.network)).address;
 
             const response = await FleepSwap.updateProfile(autoVault, address)
@@ -275,8 +277,11 @@ export default {
             }
         },
         removeLiquidity: async function (id) {
+            const address = (await Authenticate.getUserAddress(this.network)).address;
             this.removing = id
-            const response = await FleepSwap.removeLiquidity(id)
+
+            const response = await FleepSwap.removeLiquidity(id, address)
+            console.log(response);
             this.removing = -1
         }
     },
@@ -350,7 +355,8 @@ section {
 }
 
 .welcome .action {
-    padding: 16px 24px;
+    padding: 0 24px;
+    height: 55px;
     border-radius: 30px;
     margin-top: 40px;
     width: 240px;

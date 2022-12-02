@@ -64,6 +64,15 @@ export default {
                 return
             }
 
+            const approve = await FleepVault.approve(
+                Utils.toWei('1'),
+                address,
+                _yield.address,
+                _yield.contractAddress
+            )
+
+            if (!approve) return
+
             const response = await FleepVault.deposit(
                 1,
                 address,

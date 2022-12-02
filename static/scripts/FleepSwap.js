@@ -60,7 +60,7 @@ const FleepSwap = {
             }
         }
     },
-    removeLiquidity: async function(liquidityId) {
+    removeLiquidity: async function(liquidityId, address) {
         const instance = await this.getInstance()
 
         if (instance == null) return {

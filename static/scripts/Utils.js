@@ -1,4 +1,5 @@
 import Web3 from "web3";
+import axios from "vue-axios"
 
 const Utils = {
     fromWei: function(value) {
@@ -43,6 +44,17 @@ const Utils = {
             //maximumFractionDigits: 0,
         });
         return formatter.format(amount).replace('$', '')
+    },
+    estimateGasFee: async function() {
+        try {
+            const request = await axios.get('https://gasstation-mainnet.matic.network/v2');
+            const response = request.data
+
+            return response ? response.fast.maxFee : 0
+        } catch (e) {
+            console.log(e);
+            return 0;
+        }
     }
 }
 

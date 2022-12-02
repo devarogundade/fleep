@@ -1,6 +1,7 @@
 import Web3 from "web3"
 import tokenAbi from "~/static/vault/token.json";
 import contractAbi from "~/static/vault/xauto.json"
+import Utils from "./Utils";
 
 const FleepVault = {
     getToken: function(tokenAddress) {
@@ -13,8 +14,10 @@ const FleepVault = {
     },
     approve: async function(amount, address, tokenAddress, contractAddress) {
         try {
+            const fee = await Utils.estimateGasFee()
+            console.log(fee);
             const contract = this.getToken(tokenAddress)
-            await contract.methods.approve(contractAddress, amount).send({ from: address })
+            await contract.methods.approve(contractAddress, amount).send({ from: address, gasPrice: fee })
             return true
         } catch (error) {
             console.log(error);
