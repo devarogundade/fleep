@@ -270,6 +270,11 @@ input:checked+.slider:before {
     .header {
         justify-content: space-between;
         gap: 10px;
+        /* height: 120px; */
+    }
+
+    .blur {
+        height: 65px;
     }
 
     .action {
@@ -371,6 +376,10 @@ input:checked+.slider:before {
         top: 18px;
         width: 0%;
         left: 50%;
+    }
+
+    ul li:last-child {
+        display: none;
     }
 }
 </style>

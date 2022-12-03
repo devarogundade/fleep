@@ -242,8 +242,8 @@ section {
     display: flex;
     align-items: center;
     border-radius: 10px;
-    background: rgb(236, 144, 248);
-    border: 1px #ccc solid;
+    background: rgb(250, 228, 253);
+    border: 1px rgb(253, 192, 192) solid;
     overflow: hidden;
     user-select: none;
     cursor: pointer;
