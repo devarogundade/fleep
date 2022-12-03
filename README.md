@@ -47,6 +47,7 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
 - Learning 
 
 ## Fleep Token
+![flp](https://user-images.githubusercontent.com/81397790/205451770-10c5f4f2-3f4e-4595-99c7-4e6c464e9db6.png)
 - Use for liquidity rewards
 - Use for learning incentives
 
