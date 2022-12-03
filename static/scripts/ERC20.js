@@ -1,8 +1,11 @@
 import Web3 from "web3"
-import contractJson from "~/build/contracts/TestnetToken.json"
+import testnetContractJson from "~/build/testnet/TestnetToken.json"
+import mainnetContractJson from "~/build/mainnet/TestnetToken.json"
+import Network from "./Network"
 
 const ERC20 = {
-    abi: contractJson.abi,
+    abi: this.network ? mainnetContractJson.abi : testnetContractJson.abi,
+    network: Network.current() == 'true',
     faucet: async function(address, amount, tokenAddress) {
         const web3 = new Web3(ethereum)
         const contract = new web3.eth.Contract(this.abi, tokenAddress)

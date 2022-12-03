@@ -1,12 +1,12 @@
 import axios from "axios"
 import Network from "./Network"
 
-// TO DO
+// UNCOMPLETED
 
-// xendbridge api requires business registration which
+// xend bridge API requires business registration which
 // is beyond the scope of this hackathon
 
-// FIAT => CRYPTO will be implemented later in the future
+// FIAT => CRYPTO will be implemented after this hackathon
 
 const env = require('env')
 env.config()
@@ -19,7 +19,7 @@ const MAINNET_URL = "https://xendbridge.xend.finance/"
 const FleepPeerToPeer = {
     network: Network.current() == 'true',
     baseUrl: this.network ? MAINNET_URL : TESTNET_URL,
-    rate: async function(trade) {
+    getExchangeRate: async function(trade) {
 
     },
     buyOrder: async function(user, trade) {

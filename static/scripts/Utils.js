@@ -51,8 +51,8 @@ const Utils = {
             const response = request.data
 
             return response ? response.fast.maxFee : 0
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            console.log(error);
             return 0;
         }
     }

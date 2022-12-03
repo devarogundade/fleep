@@ -1,9 +1,13 @@
 import contract from 'truffle-contract'
-import abi from "~/build/contracts/Swap.json"
+import testnetContractJson from "~/build/testnet/Swap.json"
+import mainnetContractJson from "~/build/mainnet/Swap.json"
+import Network from './Network';
 import Utils from './Utils';
 
 const FleepSwap = {
     instance: null,
+    abi: this.network ? mainnetContractJson : testnetContractJson,
+    network: Network.current() == 'true',
     getInstance: async function() {
         if (this.instance != null) {
             return this.instance
@@ -11,7 +15,7 @@ const FleepSwap = {
 
         if (typeof ethereum === 'undefined') return null
 
-        const swapContract = contract(abi)
+        const swapContract = contract(this.abi)
         swapContract.setProvider(ethereum)
 
         try {

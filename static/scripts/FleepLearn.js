@@ -1,5 +1,7 @@
 import contract from 'truffle-contract'
-import abi from "~/build/contracts/Learn.json"
+import testnetContractJson from "~/build/testnet/Learn.json"
+import mainnetContractJson from "~/build/mainnet/Learn.json"
+import Network from './Network'
 
 // UNCOMPLETED
 
@@ -8,6 +10,8 @@ const FleepLearn = {
     RADIO_FORMAT: 2,
     CHECKBOX_FORMAT: 3,
     instance: null,
+    abi: this.network ? mainnetContractJson : testnetContractJson,
+    network: Network.current() == 'true',
     getInstance: async function() {
         if (this.instance != null) {
             return this.instance
@@ -15,7 +19,7 @@ const FleepLearn = {
 
         if (typeof ethereum === 'undefined') return null
 
-        const swapContract = contract(abi)
+        const swapContract = contract(this.abi)
         swapContract.setProvider(ethereum)
 
         try {
