@@ -29,8 +29,7 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
     
 
 - # Localization
-  Decentralized finance is a solution for all....
-We are redefining decentralized finance, bring it closer to many Africans in their local languages 
+    Redefining decentralized finance, bring it closer to many Africans in their local languages.
 
 ## Ways To Earn 
 - Provide Liquidity
