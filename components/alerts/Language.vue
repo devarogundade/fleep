@@ -5,18 +5,29 @@
         <p class="subtitle">Embrace it in your language..</p>
 
         <div class="languages">
-            <div :class="language == 'eng' ? 'language active' : 'language'" v-on:click="switchTo('eng')">
-                <img src="/images/uk.webp" alt="">
-                <div class="text">
-                    <p>English</p>
-                    <p>Default</p>
+            <nuxt-link :to="switchLocalePath('en')">
+                <div :class="language == 'eng' ? 'language active' : 'language'">
+                    <img src="/images/uk.webp" alt="">
+                    <div class="text">
+                        <p>English</p>
+                        <p>Default</p>
+                    </div>
                 </div>
-            </div>
+            </nuxt-link>
 
-            <div :class="language == 'pid' ? 'language active' : 'language'" v-on:click="switchTo('pid')">
-                <img src="/images/nigeria-ghana.webp" alt="">
+            <nuxt-link :to="switchLocalePath('af')">
+                <div :class="language == 'pid' ? 'language active' : 'language'">
+                    <img src="/images/south-africa.png" alt="">
+                    <div class="text">
+                        <p>Afrikaans</p>
+                        <p>South Africa</p>
+                    </div>
+                </div>
+            </nuxt-link>
+
+            <div class="language nt"> <img src="/images/nigeria-ghana.webp" alt="">
                 <div class="text">
-                    <p>Pigdin</p>
+                    <p>Pigdin <span>Soon</span></p>
                     <p>Nigeria, Ghana..</p>
                 </div>
             </div>
@@ -29,14 +40,9 @@
                 </div>
             </div>
 
-            <div class="language nt">
-                <img src="/images/south-africa.png" alt="">
-                <div class="text">
-                    <p>Afrikaans <span>Soon</span></p>
-                    <p>South Africa</p>
-                </div>
-            </div>
         </div>
+
+        <p class="close" v-on:click="$emit('close')">Close</p>
     </div>
 </div>
 </template>
@@ -46,12 +52,6 @@ export default {
     data() {
         return {
             language: 'eng'
-        }
-    },
-    methods: {
-        switchTo: function (language) {
-            this.language = language
-            this.$emit('close')
         }
     },
     mounted() {
@@ -75,6 +75,13 @@ export default {
     align-items: center;
     justify-content: center;
     background: #8708a7a1;
+}
+
+.close {
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .box {

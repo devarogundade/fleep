@@ -10,7 +10,7 @@
                 <p>•</p>
                 <p><a target="_blank" href="https://polygon.technology/africa-bootcamp/">Hackathon Link</a></p>
                 <p>•</p>
-                <p><router-link to="/faucet">Faucet</router-link></p>
+                <p><router-link :to="localePath('/faucet')">Faucet</router-link></p>
             </div>
         </div>
     </div>

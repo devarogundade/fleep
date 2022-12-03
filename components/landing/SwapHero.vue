@@ -8,7 +8,7 @@
                     <h3>Exchange Your ERC20 Tokens to Other Assets</h3>
                     <p>PIP Button allows anyone to embed crypto payment buttons on their website.</p>
                 </div>
-                <router-link to="/dapp">
+                <router-link :to="localePath('/dapp')">
                     <div class="action">Swap Now</div>
                 </router-link>
             </div>

@@ -49,7 +49,32 @@ export default {
 
     modules: [
         '@nuxtjs/axios',
+        'nuxt-i18n'
     ],
+
+    i18n: {
+        locales: [{
+                name: 'English',
+                code: 'en',
+                iso: 'en-US',
+                file: 'en-US.js'
+            },
+            {
+                name: 'Pidgin',
+                code: 'pg',
+                iso: 'pg-NG',
+                file: 'pg-NG.js'
+            },
+            {
+                name: 'Afrikaans',
+                code: 'af',
+                iso: 'af-SA',
+                file: 'af-SA.js'
+            },
+        ],
+        langDir: 'localization/',
+        defaultLocale: 'en',
+    },
 
     axios: {
         baseURL: '/api/v1/',

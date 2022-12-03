@@ -2,23 +2,23 @@
 <section id="header">
     <div class="app-width">
         <div class="header">
-            <router-link to="/">
+            <router-link :to="localePath('/')">
                 <div class="logo">
                     <img src="/images/logo.png" alt="">
                 </div>
             </router-link>
             <ul ref="menu">
-                <li><a href="/#swap">Swap</a></li>
-                <li><a href="/#sweep">Dusts Sweeper</a></li>
-                <li><a href="/#earn">Liquidity & AutoYield Farming</a></li>
-                <li><a href="/#buy-crypto">Buy Crypto</a></li>
-                <li><a href="/#faqs">FAQs</a></li>
+                <li><a :href="localePath('/#swap')">{{ $t('index.sw') }}</a></li>
+                <li><a :href="localePath('/#sweep')">{{ $t('index.ds') }}</a></li>
+                <li><a :href="localePath('/#earn')">{{ $t('index.la') }}</a></li>
+                <li><a :href="localePath('/#buy-crypto')">{{ $t('index.bc') }}</a></li>
+                <li><a :href="localePath('/#faqs')">{{ $t('index.fq') }}</a></li>
                 <li v-on:click="language = true">
-                    <img src="/images/uk.webp" alt="">
+                    <img :src="$t('index.li')" alt="">
                 </li>
             </ul>
-            <router-link to="/dapp">
-                <div class="action"> Launch App <i class="fi fi-rr-arrow-right"></i></div>
+            <router-link :to="localePath('/dapp')">
+                <div class="action"> {{ $t('index.app') }} <i class="fi fi-rr-arrow-right"></i></div>
             </router-link>
             <div ref="handburger" id="handburger" v-on:click="onDrawer()">
                 <span></span>

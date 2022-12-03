@@ -4,14 +4,14 @@
         <div class="hero">
             <h3 class="hero_title">
                 Fleep is a Layer-2 Decentralized
-                <a href="#swap"><span>Swap</span></a>, <a href="#sweep"><span>Sweeper</span></a>
-                and <a href="#earn"><span>AutoYield</span></a>
+                <a :href="localePath('/learn')"><span>Learn</span></a>, <a :href="localePath('/#swap')"><span>Swap</span></a>
+                and <a :href="localePath('/#earn')"><span>AutoYield</span></a>
             </h3>
-            <p class="hero_subtitle">Swap, Provide Liquidity and AutoYield Earnings, Sweep Dusts to $MATIC.</p>
+            <p class="hero_subtitle">Defining Decentralized Finance for Africa.</p>
             <div class="action">
-                <a href="/#swap">
-                    <div class="get_started">Get Started</div>
-                </a>
+                <router-link :to="localePath('/learn')">
+                    <div class="get_started">Learn 'n Earn Crypto</div>
+                </router-link>
             </div>
             <div class="powered">
                 <p>Built With:</p>

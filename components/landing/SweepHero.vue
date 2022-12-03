@@ -8,7 +8,7 @@
                     <h3>Covert Your Low-Value Assets to $USDT</h3>
                     <p>With a single click on a button, swap all your assets lesser than $20 dollars to $USDT.</p>
                 </div>
-                <router-link to="/dapp/sweep">
+                <router-link :to="localePath('/dapp/sweep')">
                     <div class="action">Sweep Dusts</div>
                 </router-link>
             </div>

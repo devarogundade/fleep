@@ -5,7 +5,7 @@
             <div class="head">
                 <div class="toolbar">
                     <input type="text" placeholder="Search by name or address">
-                    <router-link to="/dapp/earnings">
+                    <router-link :to="localePath('/dapp/earnings')">
                         <div class="my-liquid">My Liquidities</div>
                     </router-link>
                 </div>
