@@ -28,7 +28,7 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
     The testnet mode also let users to practice with test tokens and fake fees before going live and reduce risks.
   
 - # Buy/Sell Crypto with Local Currencies
-    
+    Seamless peer to peer trade of cryptocurrencies and local currencies. Powered by Xend bridge.
 
 - # Localization
     Redefining decentralized finance, bring it closer to many Africans in their local languages.
