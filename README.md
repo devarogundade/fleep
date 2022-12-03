@@ -24,7 +24,7 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
     An effective way of bringing potential adoption is teaching and rewarding users afterwards for learning. 
     There are startups like nestcoin, lazerpay and others that are creating business use cases for Africans around Web3, fleep learn 
     is an amazing tool for these startups to teach people about their product.
-  - Support in local lanquages.
+  - Support in local languages.
   - The testnet mode also let users to practice with test tokens and fake fees before going live and reduce risks.
   
 - # Buy/Sell Crypto with Local Currencies
