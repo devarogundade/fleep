@@ -4,6 +4,7 @@
 # Fleep Finance - A Layer-2 Decentralized Swap, and AutoYield Protocol
 ## _A Xend Finance X Polygon Hackathon Project_
 
+![Uploading banner.png…]()
 Despite the numerous advantages of blockchain and how it can drastically improve the financial system of today, we are still yet to unleash these benefits because the adoption is still quite low especially in Africa, government laws and restrictions etc.
 
 We believe Fleep finance will bring more adoption to web3(in general) in Africa by educating, incentivizing, and localizing decentralized finance.
