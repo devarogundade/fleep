@@ -10,7 +10,7 @@
                 <div class="entity">
                     <div class="label">
                         <p>Base</p>
-                        <p>Available: {{ toMoney(from.balance) }}</p>
+                        <p>Available: <span>{{ toMoney(from.balance) }}</span></p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('from')">
@@ -31,7 +31,7 @@
                 <div class="entity">
                     <div class="label">
                         <p>Quote</p>
-                        <p>Available: {{ toMoney(to.balance) }}</p>
+                        <p>Available: <span>{{ toMoney(to.balance) }}</span></p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('to')">
@@ -311,8 +311,8 @@ section {
     height: 36px;
     width: 36px;
     color: #8708A7;
-   background: #FFFFFF;
-border-radius: 6px;
+    background: #FFFFFF;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -329,12 +329,19 @@ border-radius: 6px;
 }
 
 .entity .label p {
-    color: #555;
+    color: #464754;
 }
 
+.entity .label p:nth-child(1) {
+    font-weight: 600;
+}
+
+
 .entity .label p:nth-child(2) {
-    text-decoration: underline;
     cursor: pointer;
+}
+
+.entity .label p:nth-child(2) span {
     font-weight: 600;
 }
 
@@ -344,10 +351,11 @@ border-radius: 6px;
 
 .entity .input {
     display: flex;
-    border: #ccc 1px solid;
-    margin-top: 6px;
-    border-radius: 12px;
+    margin-top: 20px;
     height: 56px;
+    background: #FFFFFF;
+    border: 0.5px solid #CCCCCC;
+    border-radius: 6px;
 }
 
 .entity input {

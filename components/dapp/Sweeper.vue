@@ -34,7 +34,7 @@
                     <div class="entity">
                         <div class="label">
                             <p>To</p>
-                            <p>Available: {{ to.balance }}</p>
+                            <p>Available: <span>{{ to.balance }}</span></p>
                         </div>
                         <div class="input">
                             <div class="token">
@@ -42,7 +42,7 @@
                                     <img :src="to.token.image" alt="" />
                                     <p class="symbol">{{ to.token.symbol }}</p>
                                 </div>
-                                <!-- <i class="fi fi-rr-angle-small-down"></i> -->
+                                <i class="fi fi-rr-angle-small-down"></i>
                             </div>
                             <input v-model="to.amount" type="number" placeholder="0" disabled />
                         </div>
@@ -375,8 +375,8 @@ section {
     height: 36px;
     width: 36px;
     color: #8708A7;
-   background: #FFFFFF;
-border-radius: 6px;
+    background: #FFFFFF;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -393,12 +393,19 @@ border-radius: 6px;
 }
 
 .entity .label p {
-    color: #555;
+    color: #464754;
 }
 
+.entity .label p:nth-child(1) {
+    font-weight: 600;
+}
+
+
 .entity .label p:nth-child(2) {
-    text-decoration: underline;
     cursor: pointer;
+}
+
+.entity .label p:nth-child(2) span {
     font-weight: 600;
 }
 
@@ -408,10 +415,11 @@ border-radius: 6px;
 
 .entity .input {
     display: flex;
-    border: #ccc 1px solid;
-    margin-top: 6px;
-    border-radius: 12px;
+    margin-top: 20px;
     height: 56px;
+    background: #FFFFFF;
+    border: 0.5px solid #CCCCCC;
+    border-radius: 6px;
 }
 
 .entity input {
@@ -489,7 +497,7 @@ border-radius: 6px;
     margin-top: 24px;
     background: #8708A7;
     color: #fff;
-    border-radius: 12px;
+    border-radius: 10px;
     height: 56px;
     width: 100%;
     user-select: none;
