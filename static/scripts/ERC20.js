@@ -35,6 +35,24 @@ const ERC20 = {
         } catch (error) {
             return 0
         }
+    },
+    addToWallet: async function(token) {
+        try {
+            await ethereum.request({
+                method: 'wallet_watchAsset',
+                params: {
+                    type: 'ERC20',
+                    options: {
+                        address: token.address,
+                        symbol: token.symbol,
+                        decimals: '18',
+                        image: token.image,
+                    },
+                },
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

@@ -9,6 +9,7 @@
                     <p>100</p>
                     <p>{{ token.address }}</p>
                     <button v-on:click="faucetMint(token)">Mint</button>
+                    <button v-on:click="addToMetamask(token)">Add to Metamask</button>
                 </div>
             </div>
         </div>
@@ -22,6 +23,7 @@ import contractJson from "../build/contracts/TestnetToken.json"
 import Web3 from "web3"
 import Authenticate from '~/static/scripts/Authenticate';
 import Utils from '~/static/scripts/Utils';
+import ERC20 from '~/static/scripts/ERC20';
 
 export default {
     layout: 'landing',
@@ -47,6 +49,9 @@ export default {
 
             this.minting = -1
         },
+        addToMetamask: async function (token) {
+            await ERC20.addToWallet(token)
+        }
     },
 };
 </script>
