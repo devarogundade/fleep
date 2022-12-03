@@ -52,6 +52,7 @@ We are redefining decentralized finance, bring it closer to many Africans in the
 - Polygon (Testnet & Mainnet)
 - ChainLink (AggregatorV3)
 - Xend Finance (xAuto)
+- Xend Bridge 
 - Nuxtjs (Frontend)
 - Truffle (Smart Contract)
 - Web3js
