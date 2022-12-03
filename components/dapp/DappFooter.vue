@@ -20,7 +20,7 @@
 <style scoped>
 section {
     padding: 30px 0;
-    background-image: linear-gradient(to top, #f3f6fd 0%, #f2f4f7 100%);
+    background: #F2F4F7;
     border-top: 1px #ccc solid;
 }
 

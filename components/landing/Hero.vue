@@ -91,8 +91,8 @@ section {
     margin-top: 100px;
     background: #efe8f1;
     color: #660180;
-    box-shadow: 2px 2px #8708a7;
-    border: 1px solid #8708a7;
+    box-shadow: 2px 2px #8708A7;
+    border: 1px solid #8708A7;
 }
 
 .powered {

@@ -11,7 +11,7 @@
                 <div class="entity">
                     <div class="label">
                         <p>From</p>
-                        <p>Available: {{ toMoney(from.balance) }}</p>
+                        <p>Available: <span>{{ toMoney(from.balance) }}</span></p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('from')">
@@ -32,7 +32,7 @@
                 <div class="entity">
                     <div class="label">
                         <p>To</p>
-                        <p>Available: {{ toMoney(to.balance) }}</p>
+                        <p>Available: <span>{{ toMoney(to.balance) }}</span></p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('to')">
@@ -304,7 +304,7 @@ section {
     height: fit-content;
     padding: 20px;
     border-radius: 16px;
-    background-image: linear-gradient(to top, #f3f6fd 0%, #f2f4f7 100%);
+    background: #F2F4F7;
     border: 1px #ccc solid;
 }
 
@@ -318,8 +318,9 @@ section {
 .toolbar i {
     height: 36px;
     width: 36px;
-    color: #8708a7;
-    background: #e6c5ee;
+    color: #8708A7;
+    background: #FFFFFF;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -336,12 +337,19 @@ section {
 }
 
 .entity .label p {
-    color: #555;
+    color: #464754;
 }
 
+.entity .label p:nth-child(1) {
+    font-weight: 600;
+}
+
+
 .entity .label p:nth-child(2) {
-    text-decoration: underline;
     cursor: pointer;
+}
+
+.entity .label p:nth-child(2) span {
     font-weight: 600;
 }
 
@@ -351,10 +359,11 @@ section {
 
 .entity .input {
     display: flex;
-    border: #ccc 1px solid;
-    margin-top: 6px;
-    border-radius: 12px;
+    margin-top: 20px;
     height: 56px;
+    background: #FFFFFF;
+    border: 0.5px solid #CCCCCC;
+    border-radius: 6px;
 }
 
 .entity input {
@@ -430,9 +439,9 @@ section {
     font-size: 16px;
     font-weight: 600;
     margin-top: 24px;
-    background: #8708a7;
+    background: #8708A7;
     color: #fff;
-    border-radius: 12px;
+    border-radius: 10px;
     height: 56px;
     width: 100%;
     user-select: none;

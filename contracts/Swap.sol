@@ -30,6 +30,7 @@ contract Swap {
     address public NATIVE_PAIR;
     // paired address to USDT
     address public USDT_PAIR;
+    address public FLEEP_PAIR;
 
     // id => liquidity pools
     mapping(uint => Pool) public pools;
@@ -336,15 +337,21 @@ contract Swap {
         IERC20(pool.token1).transfer(msg.sender, liquids[id].amount1);
 
         // delete liquid
-        
+
         for (uint index = 0; index < pools[poolId].liquids.length; index++) {
             if (liquids[pools[poolId].liquids[index]].provider == msg.sender) {
                 delete pools[poolId].liquids[index];
             }
         }
 
-        for (uint index = 0; index < providers[msg.sender].liquids.length; index++) {
-            if (liquids[providers[msg.sender].liquids[index]].poolId == pool.id) {
+        for (
+            uint index = 0;
+            index < providers[msg.sender].liquids.length;
+            index++
+        ) {
+            if (
+                liquids[providers[msg.sender].liquids[index]].poolId == pool.id
+            ) {
                 delete providers[msg.sender].liquids[index];
             }
         }
@@ -416,6 +423,11 @@ contract Swap {
         USDT_PAIR = pair;
     }
 
+    function updateFleepPair(address pair) public onlyDeployer {
+        require(pair != address(0), "Invalid Pair Address");
+        FLEEP_PAIR = pair;
+    }
+
     function updateSwapFee(uint fee) public onlyDeployer {
         require(fee > 0, "Platform fee cannot be zero");
         require(fee < 1000, "Platform fee cannot be a hundred");
@@ -434,9 +446,8 @@ contract Swap {
     ) public onlyDeployer {
         require(_platformProfit >= amount, "Insufficient Balance");
 
-        // USDT as reward token
-        IERC20(USDT_PAIR).transfer(receiver, amount);
-
+        // Fleep token as reward token
+        IERC20(FLEEP_PAIR).transfer(receiver, amount);
         _platformProfit -= amount;
     }
 
@@ -492,13 +503,6 @@ contract Swap {
 
             providers[provider].totalEarned += reward;
             providers[provider].balance += reward;
-
-            // if provider is auto staking rewards in XEND vault
-            // and their balance is at least 1 MATIC
-            if (
-                providers[provider].autoStake &&
-                providers[provider].balance >= _inWei(1)
-            ) {}
         }
     }
 
@@ -515,8 +519,8 @@ contract Swap {
         // give user their destination token minus fee
         quoteToken.transfer(owner, (amount1 - _fee));
 
-        // convert fee to USDT
-        return estimate(token1, USDT_PAIR, _fee);
+        // convert fee to Fleep tokens
+        return estimate(token1, FLEEP_PAIR, _fee);
     }
 
     // ERC20 => MATIC
@@ -539,8 +543,8 @@ contract Swap {
         );
         payable(owner).transfer(amount1 - _fee);
 
-        // convert fee to USDT
-        return estimate(NATIVE_PAIR, USDT_PAIR, _fee);
+        // convert fee to Fleep tokens
+        return estimate(NATIVE_PAIR, FLEEP_PAIR, _fee);
     }
 
     // ERC20 => ERC20
@@ -563,8 +567,8 @@ contract Swap {
         // give user their destination token minus fee
         quoteToken.transfer(owner, (amount1 - _fee));
 
-        // convert fee to USDT
-        return estimate(token1, USDT_PAIR, _fee);
+        // convert fee to Fleep tokens
+        return estimate(token1, FLEEP_PAIR, _fee);
     }
 
     function _inWei(uint256 amount) private pure returns (uint256) {
@@ -656,6 +660,7 @@ contract Swap {
     function testnetHelper() private onlyDeployer {
         updateNativePair(0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada);
         updateUSDTPair(0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864);
+        updateFleepPair(0xd24ac22e0Fb3694D0318c9e56E1E99D170a31864);
 
         // WBTC
         createPair(

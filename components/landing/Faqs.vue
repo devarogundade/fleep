@@ -116,7 +116,7 @@ section h3 {
 }
 
 .show .question p {
-    color: #8708a7;
+    color: #8708A7;
 }
 
 .answer {
@@ -174,7 +174,7 @@ section h3 {
 }
 
 .show .handle div {
-    background: #8708a7;
+    background: #8708A7;
 }
 
 @media screen and (max-width: 700px) {

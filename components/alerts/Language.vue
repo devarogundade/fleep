@@ -74,7 +74,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #8708a7a1;
+    background: #8708A7a1;
 }
 
 .close {
@@ -89,7 +89,7 @@ export default {
     height: fit-content;
     padding: 20px 10px;
     border-radius: 16px;
-    background-image: linear-gradient(to top, #f3f6fd 0%, #f2f4f7 100%);
+    background: #F2F4F7;
 }
 
 .title {
@@ -138,7 +138,7 @@ export default {
 }
 
 .active {
-    background: #8708a7;
+    background: #8708A7;
     color: #fff;
 }
 

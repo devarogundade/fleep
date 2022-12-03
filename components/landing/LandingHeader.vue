@@ -119,7 +119,7 @@ li img {
     border-radius: 30px;
     width: 200px;
     font-size: 20px;
-    background: #8708a7;
+    background: #8708A7;
     font-size: 15px;
     font-weight: 600;
     display: flex;

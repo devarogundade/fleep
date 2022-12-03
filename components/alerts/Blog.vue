@@ -35,7 +35,7 @@ section {
     top: 0;
     width: 100%;
     height: 100%;
-    background: #8708a7a1;
+    background: #8708A7a1;
 }
 
 .app-width {
@@ -50,7 +50,7 @@ section {
 
 .box {
     width: 100%;
-    background-image: linear-gradient(to top, #f3f6fd 0%, #f2f4f7 100%);
+    background: #F2F4F7;
     border-radius: 30px;
     overflow: hidden;
 }

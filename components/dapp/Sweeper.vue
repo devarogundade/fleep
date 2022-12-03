@@ -276,7 +276,7 @@ section {
 .head i {
     margin-top: 4px;
     cursor: pointer;
-    color: #8708a7;
+    color: #8708A7;
 }
 
 .swap {
@@ -336,7 +336,7 @@ section {
 
 .dust .balance {
     font-size: 18px;
-    color: #8708a7;
+    color: #8708A7;
     font-weight: 600;
 }
 
@@ -360,7 +360,7 @@ section {
     height: fit-content;
     padding: 20px;
     border-radius: 16px;
-    background-image: linear-gradient(to top, #f3f6fd 0%, #f2f4f7 100%);
+    background: #F2F4F7;
     border: 1px #ccc solid;
 }
 
@@ -374,8 +374,9 @@ section {
 .toolbar i {
     height: 36px;
     width: 36px;
-    color: #8708a7;
-    background: #e6c5ee;
+    color: #8708A7;
+   background: #FFFFFF;
+border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -486,7 +487,7 @@ section {
     font-size: 16px;
     font-weight: 600;
     margin-top: 24px;
-    background: #8708a7;
+    background: #8708A7;
     color: #fff;
     border-radius: 12px;
     height: 56px;

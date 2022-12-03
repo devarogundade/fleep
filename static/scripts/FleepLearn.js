@@ -1,6 +1,8 @@
 import contract from 'truffle-contract'
 import abi from "~/build/contracts/Learn.json"
 
+// UNCOMPLETED
+
 const FleepLearn = {
     INPUT_FORMAT: 1,
     RADIO_FORMAT: 2,

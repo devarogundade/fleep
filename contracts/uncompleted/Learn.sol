@@ -1,16 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import {FleepToken} from "./FleepToken.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Learn {
-    FleepToken private _fleepToken;
+    IERC20 private _fleepToken;
     address private _deployer;
 
     uint private CREATOR_FEE;
-    uint private INPUT_FORMAT = 1;
-    uint private RADIO_FORMAT = 2;
-    uint private CHECKBOX_FORMAT = 3;
 
     mapping(address => Creator) public creators;
     mapping(address => Learner) public learners;
@@ -19,7 +16,7 @@ contract Learn {
     mapping(uint => Score) public scores;
 
     constructor(address fleepToken) {
-        _fleepToken = FleepToken(fleepToken);
+        _fleepToken = IERC20(fleepToken);
         _deployer = msg.sender;
 
         CREATOR_FEE = _inWei(1000);
@@ -72,16 +69,12 @@ contract Learn {
     function startLearning() public onlyLearners {}
 
     function submitQuiz(uint id, string[] memory answers) public onlyLearners {
-      // check if user has already took quiz
-      // require(scores[])
+        // check if user has already took quiz
+        // require(scores[])
 
-      string[] memory quizAnswers = quizzes[id].answers;
-      uint score = _markQuiz(answers, quizAnswers);
-      scores[msg.sender].push(
-        Score(
-          0,
-        );
-      )
+        string[] memory quizAnswers = quizzes[id].answers;
+        (uint score, uint total) = _markQuiz(answers, quizAnswers);
+        scores[0] = Score(0, 0, score, total, block.timestamp);
     }
 
     function createResource(
@@ -101,17 +94,20 @@ contract Learn {
 
     // == Internal Functions == //
 
-    function _markQuiz(string[] memory answers, string[] memory quizAnswers) private returns (uint, uint) {
+    function _markQuiz(
+        string[] memory answers,
+        string[] memory quizAnswers
+    ) private pure returns (uint, uint) {
         require(answers.length == quizAnswers.length, "Answers must map");
 
         uint score;
         uint total;
 
         for (uint index = 0; index < answers.length; index++) {
-          if (_compareStrings(answers[index]), (quizAnswers[index])) {
-            score++;
-          }
-          total++;
+            if (_compareStrings(answers[index], quizAnswers[index])) {
+                score++;
+            }
+            total++;
         }
 
         return (score, total);
@@ -121,9 +117,13 @@ contract Learn {
         return amount * 10 ** 18;
     }
 
-    function _compareStrings(string memory a, string memory b) private view returns (bool) {
-    return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
-}
+    function _compareStrings(
+        string memory a,
+        string memory b
+    ) private pure returns (bool) {
+        return (keccak256(abi.encodePacked((a))) ==
+            keccak256(abi.encodePacked((b))));
+    }
 
     modifier onlyGuest() {
         require(learners[msg.sender].id == 0, "Only Guest");
