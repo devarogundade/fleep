@@ -7,7 +7,8 @@ Despite the numerous advantages of blockchain and how it can drastically improve
 
 We believe Fleep finance will bring more adoption to web3(in general) in Africa by educating, incentivizing, and localizing decentralized finance.
 
-
+Today DEFI protocols out there are built targeting on a global scale leaving a wide gap between DEFI and developing countries in Africa, the best way to 
+bridge the gap is a unique protocol that brings DEFI closer to these countries.
 
 ## Features
 - # Swap and Dust sweeping 
