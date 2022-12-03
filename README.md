@@ -68,11 +68,8 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
 - Phase1: Minimul Viable Product (MVP)
 - Phase2: Restructing and Improvement
 - Phase3: Community building and Testing
-- Phase4: Launch on mainnet
+- Phase4: Launch on mainnet, fleep token
 - Phase5: Scaling
-- Phase6: Fleep token and tokenomics
-- Phase7: Crosschain support
-- Phase8: Fiat to crypto with xendbridge 
 
 ## Contribution
 
