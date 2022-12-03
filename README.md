@@ -29,7 +29,10 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
   
 - # Buy/Sell Crypto with Local Currencies
     Seamless peer to peer trade of cryptocurrencies and local currencies. Powered by Xend bridge.
-
+  - Nigerian Naira
+  - Kenyan Shillings
+  - Ghanian Cedis
+  
 - # Localization
     Redefining decentralized finance, bring it closer to many Africans in their local languages.
 
