@@ -15,7 +15,11 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
     Sample
 
 - # Liquidity and AutoYield Earning
-
+    Providing liquidity and autoyield are ways of investing your crypto in fleep finance.
+    
+  - Provide Liquidity and earn 0.2% fee on all trades proportional to your share of the pool.
+  - Stake USDT, USDC, AAVE, WBTC in the xAuto Yield protocol to earn up to 15% APY. Built on xend finance.
+    
 - # Learn 'n Earn
   
   - Quizzes
@@ -23,6 +27,7 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
   
 - # Buy/Sell Crypto with Local Currencies
     
+
 - # Localization
   Decentralized finance is a solution for all....
 We are redefining decentralized finance, bring it closer to many Africans in their local languages 
