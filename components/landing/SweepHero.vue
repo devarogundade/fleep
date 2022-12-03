@@ -13,7 +13,7 @@
                 </router-link>
             </div>
             <div class="image">
-                <img src="/images/swap.png" alt="">
+                <img src="/images/sweep.png" alt="">
             </div>
         </div>
     </div>

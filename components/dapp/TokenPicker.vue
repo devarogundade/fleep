@@ -12,7 +12,12 @@
                     <p>{{ token.name }}</p>
                 </div>
                 <div class="right">
-                    <p>0x4d...83d2</p>
+                    <p>{{
+                  token.address.substring(0, 4) +
+                  "..." +
+                  token.address.substring(token.address.length - 4, token.address.length)
+                }}
+                    </p>
                 </div>
             </div>
         </div>
