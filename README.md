@@ -51,7 +51,7 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
   
 ## Ways To Earn 
 - Providing Liquidity
-- AutoYield
+- Auto Yield
 - Learning 
 
 ## Fleep Token
