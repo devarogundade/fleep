@@ -11,11 +11,14 @@ Despite the numerous advantages of blockchain and how it can drastically improve
 We believe Fleep finance will bring more adoption to web3(in general) in Africa by educating, incentivizing, and localizing decentralized finance.
 
 Today DEFI protocols out there are built targeting on a global scale leaving a wide gap between DEFI and developing countries in Africa, the best way to 
-bridge the gap is a unique tailored protocol that brings DEFI closer to such countries.
+bridge the gap is a unique tailored product that brings DEFI closer to these countries.
 
 ## Features
 - # Swap and Dust sweeping 
     Exchange assets to others assets with a low gas fee.
+    
+    ![Screenshot 2022-12-03 223401](https://user-images.githubusercontent.com/81397790/205463072-d4ef9686-9654-4166-83e6-d51620c7c38f.png)
+
   - Dust sweeping means swapping all assets below $20 to a particular asset in a single transaction.
 
 - # Liquidity and AutoYield Earning
@@ -23,11 +26,17 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
     
   - Provide Liquidity and earn 0.2% fee on all trades proportional to your share of the pool.
   - Stake USDT, USDC, AAVE, WBTC in the xAuto Yield protocol to earn up to 15% APY. Built on Xend finance.
-    
+  
+    ![Screenshot 2022-12-03 224052](https://user-images.githubusercontent.com/81397790/205463252-03743d91-7f55-4678-8f1a-c4a73afabe62.png)
+
 - # Testnet Mode
     It can be so easy to lost or unwilling stake funds in DEFI protocols if the user is new or still learning how the system works which is also one of major reasons why most Africans are scared to get into DEFI.
     
     With testnet mode, our users will able to interact with all the fleep features with fake assets and fees from faucets, and switch to mainnet when they are confident enough.
+    
+    ![Screenshot 2022-12-03 222755](https://user-images.githubusercontent.com/81397790/205462932-a878e7f7-e35d-411b-ab98-89c022bb86f5.png)
+
+  - Testnet faucet at https://fleep-finance.netlify.app/faucet
   
 - # Buy/Sell Crypto with Local Currencies
     Seamless peer to peer trade of cryptocurrencies and local currencies. Powered by Xend bridge.
@@ -78,6 +87,7 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
 
 ## Demo
 - See mode at https://fleep-finance.netlify.app
+- Design at https://www.figma.com/file/8NsmO00yC8bsX24Q0cGquV/Fleep-(Copy)?node-id=0%3A1&t=HY5L3r5kktNp8qTS-1
    
 ## Roadmap
 - Phase1: Minimul Viable Product (MVP)
