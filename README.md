@@ -60,9 +60,7 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
 - Moralis (Web3 APIs)
 
 ## Demo
-
 - See mode at https://fleep-finance.netflify.app/
-- Test tokens faucet https://fleep-finance.netlify.app/faucet
 
 ## Sneak peaks
    
