@@ -8,33 +8,42 @@ Despite the numerous advantages of blockchain and how it can drastically improve
 We believe Fleep finance will bring more adoption to web3(in general) in Africa by educating, incentivizing, and localizing decentralized finance.
 
 Today DEFI protocols out there are built targeting on a global scale leaving a wide gap between DEFI and developing countries in Africa, the best way to 
-bridge the gap is a unique protocol that brings DEFI closer to these countries.
+bridge the gap is a unique tailored protocol that brings DEFI closer to such countries.
 
 ## Features
 - # Swap and Dust sweeping 
     Exchange assets to others assets with a low gas fee.
+  - Dust sweeping means swapping all assets below $20 to a particular asset in a single transaction.
 
 - # Liquidity and AutoYield Earning
     Providing liquidity and autoyield are ways of investing your crypto in fleep finance.
     
   - Provide Liquidity and earn 0.2% fee on all trades proportional to your share of the pool.
-  - Stake USDT, USDC, AAVE, WBTC in the xAuto Yield protocol to earn up to 15% APY. Built on xend finance.
+  - Stake USDT, USDC, AAVE, WBTC in the xAuto Yield protocol to earn up to 15% APY. Built on Xend finance.
     
 - # Learn 'n Earn
     An effective way of bringing potential adoption is teaching and rewarding users afterwards for learning. 
-    There are startups like nestcoin, lazerpay and others that are creating business use cases around web3, fleep learn 
+    There are startups like nestcoin, lazerpay and others that are creating business use cases for Africans around Web3, fleep learn 
     is an amazing tool for these startups to teach people about their product.
-
-    The testnet mode also let users to practice with test tokens and fake fees before going live and reduce risks.
+  - Support in local languages.
+  - The testnet mode also let users to practice with test tokens and fake fees before going live and reduce risks.
   
 - # Buy/Sell Crypto with Local Currencies
     Seamless peer to peer trade of cryptocurrencies and local currencies. Powered by Xend bridge.
-
+  - Nigerian Naira
+  - Kenyan Shillings
+  - Ghanian Cedis
+  
 - # Localization
     Redefining decentralized finance, bring it closer to many Africans in their local languages.
-
+  - English (default)
+  - Afrikaans
+  - Hausa
+  - Pidgin
+  - more to add..
+  
 ## Ways To Earn 
-- Provide Liquidity
+- Providing Liquidity
 - AutoYield
 - Learning 
 
