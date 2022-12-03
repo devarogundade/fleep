@@ -5,8 +5,8 @@
         <div class="sweeper">
             <div class="text">
                 <div>
-                    <h3>Covert Your Low-Value Assets to $USDT</h3>
-                    <p>With a single click on a button, swap all your assets lesser than $20 dollars to $USDT.</p>
+                    <h3>Covert Your Low-Value Assets to $USDT, others</h3>
+                    <p>With a single click on a button, swap all your assets lesser than $20 dollars to a particular asset.</p>
                 </div>
                 <router-link :to="localePath('/dapp/sweep')">
                     <div class="action">Sweep Dusts</div>
