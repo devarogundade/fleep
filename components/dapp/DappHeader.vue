@@ -11,19 +11,22 @@
                 <div class="menu" ref="menu">
                     <ul>
                         <li>
-                            <router-link :class="$route.name == 'dapp' ? 'active' : ''" :to="localePath('/dapp')">Swap</router-link>
+                            <router-link :class="$route.name.startsWith('dapp__') ? 'active' : ''" :to="localePath('/dapp')">Swap</router-link>
                         </li>
                         <li>
-                            <router-link :class="$route.name == 'dapp-sweep' ? 'active' : ''" :to="localePath('/dapp/sweep')">Sweep Dust</router-link>
+                            <router-link :class="$route.name.startsWith('dapp-sweep') ? 'active' : ''" :to="localePath('/dapp/sweep')">Sweep Dust</router-link>
                         </li>
                         <li>
-                            <router-link :class="($route.name == 'dapp-pools' || $route.name == 'dapp-liquidity-pool') ? 'active' : ''" :to="localePath('/dapp/pools')">Pools</router-link>
+                            <router-link :class="($route.name.startsWith('dapp-pools') || $route.name.startsWith('dapp-liquidity-pool')) ? 'active' : ''" :to="localePath('/dapp/pools')">Pools</router-link>
                         </li>
                         <li>
-                            <router-link :class="$route.name == 'dapp-liquidities' ? 'active' : ''" :to="localePath('/dapp/liquidities')">Liquidities</router-link>
+                            <router-link :class="$route.name.startsWith('dapp-liquidities') ? 'active' : ''" :to="localePath('/dapp/liquidities')">Liquidities</router-link>
                         </li>
                         <li>
-                            <router-link :class="$route.name == 'dapp-auto-yield' ? 'active' : ''" :to="localePath('/dapp/auto-yield')">AutoYield</router-link>
+                            <router-link :class="$route.name.startsWith('dapp-auto-yield') ? 'active' : ''" :to="localePath('/dapp/auto-yield')">AutoYield</router-link>
+                        </li>
+                        <li>
+                            <router-link :class="$route.name.startsWith('dapp-peer-to-peer') ? 'active' : ''" :to="localePath('/dapp/peer-to-peer')">P2P</router-link>
                         </li>
                     </ul>
                 </div>

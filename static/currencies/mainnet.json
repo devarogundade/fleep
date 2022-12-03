@@ -1,0 +1,19 @@
+[{
+        "name": "Nigeria Naira",
+        "symbol": "NGN",
+        "code": "ngn",
+        "image": "/images/nigeria.png"
+    },
+    {
+        "name": "Kenyan Shillings",
+        "symbol": "KES",
+        "code": "kes",
+        "image": "/images/shillings.png"
+    },
+    {
+        "name": "Ghanian Cedis",
+        "symbol": "NGN",
+        "code": "ngn",
+        "image": "/images/cedis.png"
+    }
+]

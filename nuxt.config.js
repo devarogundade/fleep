@@ -5,14 +5,7 @@ export default {
 
     env: {
         MORALIS_KEY: process.env.MORALIS_KEY,
-        PRIVATE_KEY: process.env.PRIVATE_KEY,
-        FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
-        FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
-        FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
-        FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
-        FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
-        FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
-        FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID
+        XEND_BRIDGE_KEY: process.env.XEND_BRIDGE_KEY,
     },
 
     head: {
@@ -58,12 +51,6 @@ export default {
                 code: 'en',
                 iso: 'en-US',
                 file: 'en-US.js'
-            },
-            {
-                name: 'Pidgin',
-                code: 'pg',
-                iso: 'pg-NG',
-                file: 'pg-NG.js'
             },
             {
                 name: 'Afrikaans',

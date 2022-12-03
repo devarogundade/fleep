@@ -2,7 +2,7 @@
 <section>
     <div class="app-width">
         <div class="box">
-            <i class="fi fi-rr-close" v-on:click="$emit('close')"></i>
+            <i class="fi fi-rr-cross-small" v-on:click="$emit('close')"></i>
             <div class="video"><video controls poster="/images/hero-bg.jpg"></video></div>
             <h3>This is how to swap</h3>
             <p class="desc">
@@ -77,5 +77,14 @@ h3 {
     padding: 0 20px;
     padding-top: 20px;
     padding-bottom: 40px;
+}
+
+.box i {
+    padding: 10px;
+    font-size: 30px;
+    color: #d20808;
+    cursor: pointer;
+    background: #fae7e7;
+    width: 100%;
 }
 </style>

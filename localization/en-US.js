@@ -3,13 +3,13 @@ export default {
         sw: 'Swap',
         ds: "Dusts sweeper",
         la: "Liquidity & AutoYield Farming",
-        bc: "Buy Crypto",
+        bc: "Buy/Sell Crypto",
         fq: "FAQs",
         li: "/images/uk.webp",
         app: "Launch App"
     },
     hero: {
-        f2: "Fleep is 'n Laag-2 Gedesentraliseerde",
+        f2: "Fleep is a Layer-2 Decentralized",
         sw: 'Swap',
         sp: "Sweeper",
         ay: "AutoYield",

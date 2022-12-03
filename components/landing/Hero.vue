@@ -3,7 +3,7 @@
     <div class="app-width">
         <div class="hero">
             <h3 class="hero_title">
-                Fleep is a Layer-2 Decentralized
+                {{ $t('hero.f2') }}
                 <a :href="localePath('/learn')"><span>Learn</span></a>, <a :href="localePath('/#swap')"><span>Swap</span></a>
                 and <a :href="localePath('/#earn')"><span>AutoYield</span></a>
             </h3>

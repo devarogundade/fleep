@@ -1,7 +1,0 @@
-export default {
-    swap: 'Siwopu',
-    pages: {
-        home: 'Home',
-        contacts: 'Contacts'
-    },
-}

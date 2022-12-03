@@ -11,7 +11,9 @@
                 <li><a :href="localePath('/#swap')">{{ $t('index.sw') }}</a></li>
                 <li><a :href="localePath('/#sweep')">{{ $t('index.ds') }}</a></li>
                 <li><a :href="localePath('/#earn')">{{ $t('index.la') }}</a></li>
-                <li><a :href="localePath('/#buy-crypto')">{{ $t('index.bc') }}</a></li>
+                <li>
+                    <router-link :to="localePath('/dapp/peer-to-peer')">{{ $t('index.bc') }}</router-link>
+                </li>
                 <li><a :href="localePath('/#faqs')">{{ $t('index.fq') }}</a></li>
                 <li v-on:click="language = true">
                     <img :src="$t('index.li')" alt="">
