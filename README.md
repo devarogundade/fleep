@@ -3,25 +3,37 @@
 # Fleep Finance - A Layer-2 Decentralized Swap, and AutoYield Protocol
 ## _A Xend Finance X Polygon Hackathon Project_
 
+Despite the numerous advantages of blockchain and how it can drastically improve the financial system of today, we are still yet to unleash these benefits because the adoption is still quite low especially in Africa, government laws and restrictions etc.
+
+We believe Fleep finance will bring more adoption to web3(in general) in Africa by educating, incentivizing, and localizing decentralized finance.
+
+
+
 ## Features
 - # Swap and Dust sweeping 
     Sample
 
 - # Liquidity and AutoYield Earning
-  
 
-- # Buy/Sell Crypto with Fiat
+- # Learn 'n Earn
+  
+  - Quizzes
+  - Testnet 
+  
+- # Buy/Sell Crypto with Local Currencies
     
 - # Localization
   Decentralized finance is a solution for all....
 We are redefining decentralized finance, bring it closer to many Africans in their local languages 
 
-- # Blogs
+## Ways To Earn 
+- Provide Liquidity
+- AutoYield
+- Learning 
 
-## How To Earn
-- # Provide Liquidity
-
-- # AutoYield Investing
+## Fleep Token
+- Use for liquidity rewards
+- Use for learning incentives
 
 ## Revenue Model
 - We deduct 20% out of 0.25% of swapping fee, and 80% is shared among liquidity providers.
