@@ -1,6 +1,7 @@
 <template>
 <div class="landing">
     <Hero />
+    <Demo />
     <SwapHero />
     <SweepHero />
     <EarnHero />
