@@ -262,6 +262,7 @@ section {
 
 .form {
     width: 400px;
+    max-width: 100%;
     height: fit-content;
     padding: 20px;
     border-radius: 16px;
@@ -427,6 +428,7 @@ section {
 
 .tab {
     width: 400px;
+    max-width: 100%;
     height: 45px;
     border-radius: 20px;
     overflow: hidden;

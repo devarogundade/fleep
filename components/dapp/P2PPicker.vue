@@ -42,6 +42,7 @@ export default {
     right: 0;
     width: 400px;
     max-width: 100%;
+    max-width: 100%;
     height: 100vh;
     top: 0;
     box-shadow: 0 0 10px #CCC;

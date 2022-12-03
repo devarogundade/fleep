@@ -293,6 +293,7 @@ section {
 
 .form {
     width: 400px;
+    max-width: 100%;
     height: fit-content;
     padding: 20px;
     border-radius: 16px;
