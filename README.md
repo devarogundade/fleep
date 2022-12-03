@@ -37,7 +37,7 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
     Redefining decentralized finance, bring it closer to many Africans in their local languages.
 
 ## Ways To Earn 
-- Provide Liquidity
+- Providing Liquidity
 - AutoYield
 - Learning 
 
