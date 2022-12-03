@@ -5,6 +5,7 @@
 ## _A Xend Finance X Polygon Hackathon Project_
 
 ![banner2](https://user-images.githubusercontent.com/81397790/205460460-df88671d-f708-4791-b107-9ac7b4337ed2.png)
+
 Despite the numerous advantages of blockchain and how it can drastically improve the financial system of today, we are still yet to unleash these benefits because the adoption is still quite low especially in Africa, government laws and restrictions etc.
 
 We believe Fleep finance will bring more adoption to web3(in general) in Africa by educating, incentivizing, and localizing decentralized finance.
