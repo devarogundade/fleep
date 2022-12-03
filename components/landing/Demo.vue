@@ -67,6 +67,7 @@ img {
     border-radius: 20px;
     gap: 10px;
     color: #000;
+    box-shadow: 0 4px 6px #ccc;
 }
 
 .play p {

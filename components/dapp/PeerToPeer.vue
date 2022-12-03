@@ -68,7 +68,6 @@
             </div>
         </div>
         <div class="blog" v-on:click="blog = true">
-            <img src="/images/hero-bg.jpg" alt="">
             <p>How to Place Order?</p>
         </div>
     </div>
@@ -83,7 +82,6 @@
 import Network from '~/static/scripts/Network';
 import tokens from "../../static/p2p/tokens.json"
 import currencies from "../../static/p2p/currencies.json"
-import Authenticate from '~/static/scripts/Authenticate';
 import Utils from '~/static/scripts/Utils';
 
 export default {
@@ -218,6 +216,18 @@ section {
     align-items: center;
 }
 
+.blog {
+    height: 45px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    background: rgb(250, 228, 253);
+    border: 1px rgb(253, 192, 192) solid;
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+}
+
 .swap {
     display: flex;
     justify-content: center;
@@ -270,8 +280,8 @@ section {
     height: 36px;
     width: 36px;
     color: #8708A7;
-   background: #FFFFFF;
-border-radius: 6px;
+    background: #FFFFFF;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -294,7 +304,6 @@ border-radius: 6px;
 .entity .label p:nth-child(1) {
     font-weight: 600;
 }
-
 
 .entity .label p:nth-child(2) {
     cursor: pointer;

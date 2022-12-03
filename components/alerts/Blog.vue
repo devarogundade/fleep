@@ -3,7 +3,7 @@
     <div class="app-width">
         <div class="box">
             <i class="fi fi-rr-cross-small" v-on:click="$emit('close')"></i>
-            <div class="video"><video controls poster="/images/hero-bg.jpg"></video></div>
+            <div class="video"><video controls poster="/images/banner2.png"></video></div>
             <h3>This is how to swap</h3>
             <p class="desc">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis perspiciatis enim illo inventore quod corporis omnis quo tempora. Maiores accusamus ab in beatae voluptatem reiciendis facilis exercitationem quaerat quia facere?
@@ -57,7 +57,7 @@ section {
 
 video {
     width: 100%;
-    height: 350px;
+    height: 300px;
     object-fit: cover;
 }
 
