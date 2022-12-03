@@ -39,6 +39,8 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
 
 - # Localization
     Redefining decentralized finance, bring it closer to many Africans in their local languages.
+    ![Screenshot 2022-12-03 215823](https://user-images.githubusercontent.com/81397790/205461875-95985553-689f-408c-ba99-408dec3f46b3.png)
+    
   - English (default)
   - Afrikaans
   - Hausa
