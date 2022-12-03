@@ -14,7 +14,9 @@ contract Learn {
 
     mapping(address => Creator) public creators;
     mapping(address => Learner) public learners;
+    mapping(uint => Resource) public resources;
     mapping(uint => Quiz) public quizzes;
+    mapping(uint => Score) public scores;
 
     constructor(address fleepToken) {
         _fleepToken = FleepToken(fleepToken);
@@ -36,6 +38,14 @@ contract Learn {
         uint256 totalEarned;
     }
 
+    struct Score {
+        uint id;
+        uint quizId;
+        uint score;
+        uint total;
+        uint date;
+    }
+
     struct Resource {
         string title;
         string image; // ipfs src
@@ -54,14 +64,25 @@ contract Learn {
 
     struct Quiz {
         uint id;
-        uint[] questions;
-        uint[] formats; // input or radio or checkbox
+        string[] questions;
         string[] answers;
+        uint[] formats; // input or radio or checkbox
     }
 
     function startLearning() public onlyLearners {}
 
-    function submitQuiz() public onlyLearners {}
+    function submitQuiz(uint id, string[] memory answers) public onlyLearners {
+      // check if user has already took quiz
+      // require(scores[])
+
+      string[] memory quizAnswers = quizzes[id].answers;
+      uint score = _markQuiz(answers, quizAnswers);
+      scores[msg.sender].push(
+        Score(
+          0,
+        );
+      )
+    }
 
     function createResource(
         string memory name,
@@ -78,9 +99,31 @@ contract Learn {
 
     function deleteResource() public onlyCreators {}
 
+    // == Internal Functions == //
+
+    function _markQuiz(string[] memory answers, string[] memory quizAnswers) private returns (uint, uint) {
+        require(answers.length == quizAnswers.length, "Answers must map");
+
+        uint score;
+        uint total;
+
+        for (uint index = 0; index < answers.length; index++) {
+          if (_compareStrings(answers[index]), (quizAnswers[index])) {
+            score++;
+          }
+          total++;
+        }
+
+        return (score, total);
+    }
+
     function _inWei(uint256 amount) private pure returns (uint256) {
         return amount * 10 ** 18;
     }
+
+    function _compareStrings(string memory a, string memory b) private view returns (bool) {
+    return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
+}
 
     modifier onlyGuest() {
         require(learners[msg.sender].id == 0, "Only Guest");

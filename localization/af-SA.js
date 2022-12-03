@@ -10,10 +10,12 @@ export default {
     },
     hero: {
         f2: "Fleep is 'n Laag-2 Gedesentraliseerde",
+        ln: "Leer",
         sw: 'Ruil',
-        sp: "Veer",
         ay: "AutoYieldr",
         and: "en",
-        desc: ""
+        df: "Definieer Gedesentraliseerde Finansies vir Afrika.",
+        lne: "Leer en Verdien Crypto",
+        bw: "Gebou met:"
     }
 }

@@ -5,7 +5,6 @@ import Utils from './Utils';
 const FleepSwap = {
     instance: null,
     getInstance: async function() {
-        console.log(abi);
         if (this.instance != null) {
             return this.instance
         }

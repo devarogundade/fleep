@@ -10,10 +10,12 @@ export default {
     },
     hero: {
         f2: "Fleep is a Layer-2 Decentralized",
+        ln: "Learn",
         sw: 'Swap',
-        sp: "Sweeper",
         ay: "AutoYield",
         and: "and",
-        desc: ""
+        df: "Defining Decentralized Finance for Africa.",
+        lne: "Learn 'n Earn Crypto",
+        bw: "Built with:"
     }
 }

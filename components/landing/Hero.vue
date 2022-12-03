@@ -4,17 +4,17 @@
         <div class="hero">
             <h3 class="hero_title">
                 {{ $t('hero.f2') }}
-                <a :href="localePath('/learn')"><span>Learn</span></a>, <a :href="localePath('/#swap')"><span>Swap</span></a>
-                and <a :href="localePath('/#earn')"><span>AutoYield</span></a>
+                <a :href="localePath('/learn')"><span>{{ $t('hero.ln') }}</span></a>, <a :href="localePath('/#swap')"><span>{{ $t('hero.sw')  }}</span></a>
+                {{ $t('hero.and') }} <a :href="localePath('/#earn')"><span>{{ $t('hero.ay') }}</span></a>
             </h3>
-            <p class="hero_subtitle">Defining Decentralized Finance for Africa.</p>
+            <p class="hero_subtitle">{{ $t('hero.df') }}</p>
             <div class="action">
                 <router-link :to="localePath('/learn')">
-                    <div class="get_started">Learn 'n Earn Crypto</div>
+                    <div class="get_started">{{ $t('hero.lne') }}</div>
                 </router-link>
             </div>
             <div class="powered">
-                <p>Built With:</p>
+                <p>{{ $t('hero.bw') }}</p>
                 <div class="images">
                     <img src="/images/polygon.png" alt="">
                     <img src="/images/xend.svg" alt="">
