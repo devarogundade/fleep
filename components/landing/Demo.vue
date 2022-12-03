@@ -28,7 +28,7 @@ section {
 
 .demo {
     position: relative;
-    height: 450px;
+    height: fit-content;
     background: #000;
     border-radius: 20px;
     overflow: hidden;
@@ -36,7 +36,6 @@ section {
 
 img {
     width: 850px;
-    height: 100%;
     max-width: 100%;
     height: fit-content;
     opacity: 0.95;
