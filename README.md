@@ -28,6 +28,8 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
     It can be so easy to lost or unwilling stake funds in DEFI protocols if the user is new or still learning how the system works which is also one of major reasons why most Africans are scared to get into DEFI.
     
     With testnet mode, our users will able to interact with all the fleep features with fake assets and fees from faucets, and switch to mainnet when they are confident enough.
+    
+  - Testnet faucet at https://fleep-finance.netlify.app/faucet
   
 - # Buy/Sell Crypto with Local Currencies
     Seamless peer to peer trade of cryptocurrencies and local currencies. Powered by Xend bridge.
