@@ -64,10 +64,15 @@
                 </div>
             </div>
         </div>
+        <div class="blog" v-on:click="blog = true">
+            <img src="/images/hero-bg.jpg" alt="">
+            <p>How to swap?</p>
+        </div>
     </div>
 
     <TokenPicker v-if="picker" v-on:close="picker = false" v-on:pick="pickToken($event)" />
     <SwapHistory v-if="history" v-on:close="history = false" />
+    <Blog v-if="blog" v-on:close="blog = false" />
 </section>
 </template>
 
@@ -106,6 +111,7 @@ export default {
             },
             rate: 0,
             allocation: 0,
+            blog: false,
 
             // progress
             swapping: false
@@ -255,12 +261,42 @@ section {
     background-size: cover;
 }
 
+.app-width {
+    min-height: 95vh;
+    padding: 150px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
 .swap {
     display: flex;
     justify-content: center;
-    padding: 150px 0;
     width: 100%;
-    min-height: 95vh;
+}
+
+.blog {
+    height: 45px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    background: rgb(236, 144, 248);
+    border: 1px #ccc solid;
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+}
+
+.blog p {
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.blog img {
+    width: 50px;
+    height: 100%;
 }
 
 .form {

@@ -13,6 +13,9 @@
                 <li><a href="/#earn">Liquidity & AutoYield Farming</a></li>
                 <li><a href="/#buy-crypto">Buy Crypto</a></li>
                 <li><a href="/#faqs">FAQs</a></li>
+                <li v-on:click="language = true">
+                    <img src="/images/uk.webp" alt="">
+                </li>
             </ul>
             <router-link to="/dapp">
                 <div class="action"> Launch App <i class="fi fi-rr-arrow-right"></i></div>
@@ -98,6 +101,15 @@ li a {
     font-size: 16px;
     font-weight: 600;
     color: #000;
+}
+
+li img {
+    width: 30px;
+    height: 24px;
+    border-radius: 6px;
+    object-fit: cover;
+    margin-top: 6px;
+    cursor: pointer;
 }
 
 .action {

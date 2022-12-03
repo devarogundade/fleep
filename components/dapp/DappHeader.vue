@@ -22,7 +22,7 @@
                         <li>
                             <router-link :class="$route.name == 'dapp-liquidities' ? 'active' : ''" to="/dapp/liquidities">Liquidities</router-link>
                         </li>
-                           <li>
+                        <li>
                             <router-link :class="$route.name == 'dapp-auto-yield' ? 'active' : ''" to="/dapp/auto-yield">AutoYield</router-link>
                         </li>
                     </ul>
@@ -30,6 +30,9 @@
             </div>
 
             <div class="right">
+                <li v-on:click="language = true">
+                    <img src="/images/uk.webp" alt="">
+                </li>
                 <div class="action" v-if="address">
                     {{
                   address.substring(0, 8) +
@@ -54,6 +57,8 @@
             </div>
         </div>
     </div>
+
+    <Language v-if="language" v-on:close="language = false" />
 </section>
 </template>
 
@@ -64,7 +69,8 @@ export default {
     data() {
         return {
             address: null,
-            network: Network.current() == 'true'
+            network: Network.current() == 'true',
+            language: false
         }
     },
     created() {
@@ -153,6 +159,15 @@ li a {
     padding: 8px 20px;
     display: block;
     border-radius: 22px;
+}
+
+li img {
+    width: 30px;
+    height: 24px;
+    border-radius: 6px;
+    object-fit: cover;
+    margin-top: 6px;
+    cursor: pointer;
 }
 
 li .active {

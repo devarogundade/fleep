@@ -53,6 +53,12 @@ export default {
             this.language = language
             this.$emit('close')
         }
+    },
+    mounted() {
+        document.body.classList.add('modal')
+    },
+    destroyed() {
+        document.body.classList.remove('modal')
     }
 }
 </script>

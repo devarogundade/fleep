@@ -19,6 +19,12 @@
     transition: .2s;
 }
 
+.modal {
+    height: 100vh;
+    overflow-y: hidden;
+    padding-right: 10px;
+}
+
 html {
     scroll-behavior: smooth;
 }
