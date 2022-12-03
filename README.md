@@ -3,18 +3,21 @@
 # Fleep Finance - A Layer-2 Decentralized Swap, and AutoYield Protocol
 ## _A Xend Finance X Polygon Hackathon Project_
 
-## Core Features
-- # Assets Swapping
-    Sample Description
-    
-- # Dusts Sweeping
-    Sample Description
+## Features
+- # Swap and Dust sweeping 
+    Sample
 
-- # Liquidity Earning and AutoYield
-    Sample Description
+- # Liquidity and AutoYield Earning
+  
+
+- # Buy/Sell Crypto with Fiat
     
 - # Localization
-    
+  Decentralized finance is a solution for all....
+We are redefining decentralized finance, bring it closer to many Africans in their local languages 
+
+- # Blogs
+
 ## How To Earn
 - # Provide Liquidity
 
