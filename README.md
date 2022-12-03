@@ -21,12 +21,7 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
   - Provide Liquidity and earn 0.2% fee on all trades proportional to your share of the pool.
   - Stake USDT, USDC, AAVE, WBTC in the xAuto Yield protocol to earn up to 15% APY. Built on Xend finance.
     
-- # Learn 'n Earn
-    An effective way of bringing potential adoption is teaching and rewarding users afterwards for learning. 
-    There are startups like nestcoin, lazerpay and others that are creating business use cases for Africans around Web3, fleep learn 
-    is an amazing tool for these startups to teach people about their product.
-  - Support in local languages.
-  - The testnet mode also let users to practice with test tokens and fake fees before going live and reduce risks.
+- # Testnet Mode
   
 - # Buy/Sell Crypto with Local Currencies
     Seamless peer to peer trade of cryptocurrencies and local currencies. Powered by Xend bridge.
