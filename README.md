@@ -13,6 +13,7 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
 ## Features
 - # Swap and Dust sweeping 
     Exchange assets to others assets with a low gas fee.
+  - Dust sweeping means swap all assets below $20 to a particular asset in a single transaction.
 
 - # Liquidity and AutoYield Earning
     Providing liquidity and autoyield are ways of investing your crypto in fleep finance.
