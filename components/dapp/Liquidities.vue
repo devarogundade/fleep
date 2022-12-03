@@ -14,12 +14,12 @@
                     <div class="benefit">
                         <img src="/images/provide.png" alt="" />
                         <p>1. Earn from liquidity</p>
-                        <p>Earn $USDT tokens as reward for providing liquidities.</p>
+                        <p>Earn $FLP tokens as reward for providing liquidities.</p>
                     </div>
                     <div class="benefit">
                         <img src="/images/interest.png" alt="" />
                         <p>2. Earn up to 15% APY</p>
-                        <p>Boost your liquidity earning up to 15% per annual with vault.</p>
+                        <p>Boost your portfolio up to 15% per annual with AutoYield.</p>
                     </div>
                 </div>
 
@@ -36,7 +36,7 @@
                     <div class="form">
                         <div class="toolbar">
                             <div class="av" v-if="user">
-                                <p>AutoYield <i class="fi fi-rr-info"></i></p>
+                                <p>Auto Stake FLP <i class="fi fi-rr-info"></i></p>
                                 <label class="switch">
                                     <input type="checkbox" v-model="user.autoStake" v-on:change="updateProfile($event)">
                                     <span class="slider round"></span>
@@ -64,7 +64,7 @@
 
                         <div class="button">
                             <div class="action" v-if="!moving" v-on:click="moveToVault()">
-                                Withdraw to AutoYield
+                                Stake FLP
                             </div>
                             <div class="action" v-else>
                                 <TinyProgress />
@@ -82,7 +82,7 @@
 
                         <div class="exchange">
                             <p>Total Earned:</p>
-                            <p>{{ user.totalEarned }} USDT</p>
+                            <p>{{ user.totalEarned }} FLP</p>
                         </div>
                     </div>
                     <div class="liquidities">
@@ -130,17 +130,11 @@ export default {
                 balance: "•••",
                 amount: "",
                 token: {
-                    symbol: "USDT",
-                    image: "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png",
+                    symbol: "FLP",
+                    image: "/images/flp.png",
                 },
             },
             address: null,
-            xLiquidities: [
-                [1, 2, 3],
-                [1000000, 1000000, 1000000],
-                [2000000, 2000000, 2000000],
-                [1, 2, 3]
-            ],
             pools: [],
             tokens: [],
             liquidities: [],
@@ -171,7 +165,7 @@ export default {
             const pool = this.pools.filter(p => p.id == id)[0]
             if (!pool) return -1
             return {
-                token0: this.tokens.filter(t => t.address == pool.token0)[0],
+                token0: this.tokens.filter(t => t.address.toLowerCase() == pool.token0.toLowerCase())[0],
                 token1: this.tokens.filter(t => t.address == pool.token1)[0]
             }
         },

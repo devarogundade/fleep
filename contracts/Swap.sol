@@ -662,6 +662,12 @@ contract Swap {
         updateUSDTPair(0xd5062391b4f3Eed59EE24D198F56183DFEaC7576);
         updateFleepPair(0x69C02513F5Af6651B80207003a4bcAA530605a03);
 
+        // FLP
+        createPair(
+            0x69C02513F5Af6651B80207003a4bcAA530605a03,
+            0x1C2252aeeD50e0c9B64bDfF2735Ee3C932F5C408
+        );
+
         // WBTC
         createPair(
             0xc4BC789ee50DdAf8243fFD65C7Fc8776b8D334ac,

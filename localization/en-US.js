@@ -14,7 +14,7 @@ export default {
         sw: 'Swap',
         ay: "AutoYield",
         and: "and",
-        df: "Defining Decentralized Finance for Africa.",
+        df: "Re-Defining Decentralized Finance for Africa.",
         lne: "Learn 'n Earn Crypto",
         bw: "Built with:"
     }

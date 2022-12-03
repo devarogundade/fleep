@@ -6,13 +6,13 @@ import Network from './Network'
 const FleepSweeper = {
     instance: null,
     network: Network.current() == 'true',
-    abi: this.network ? mainnetContractJson : testnetContractJson,
+    getAbi: function() { return this.network ? mainnetContractJson : testnetContractJson },
     getInstance: async function() {
         if (this.instance) return this.instance
 
         if (typeof ethereum === 'undefined') return null
 
-        const sweepContract = contract(this.abi)
+        const sweepContract = contract(this.getAbi())
         sweepContract.setProvider(ethereum)
 
         try {

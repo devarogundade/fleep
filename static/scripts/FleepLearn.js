@@ -10,8 +10,8 @@ const FleepLearn = {
     RADIO_FORMAT: 2,
     CHECKBOX_FORMAT: 3,
     instance: null,
-    abi: this.network ? mainnetContractJson : testnetContractJson,
     network: Network.current() == 'true',
+    abi: this.network ? mainnetContractJson : testnetContractJson,
     getInstance: async function() {
         if (this.instance != null) {
             return this.instance

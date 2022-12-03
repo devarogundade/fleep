@@ -6,8 +6,8 @@ import Utils from './Utils';
 
 const FleepSwap = {
     instance: null,
-    abi: this.network ? mainnetContractJson : testnetContractJson,
     network: Network.current() == 'true',
+    getAbi: function() { return this.network ? mainnetContractJson : testnetContractJson },
     getInstance: async function() {
         if (this.instance != null) {
             return this.instance
@@ -15,7 +15,7 @@ const FleepSwap = {
 
         if (typeof ethereum === 'undefined') return null
 
-        const swapContract = contract(this.abi)
+        const swapContract = contract(this.getAbi())
         swapContract.setProvider(ethereum)
 
         try {

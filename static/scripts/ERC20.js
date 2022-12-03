@@ -4,11 +4,11 @@ import mainnetContractJson from "~/build/mainnet/TestnetToken.json"
 import Network from "./Network"
 
 const ERC20 = {
-    abi: this.network ? mainnetContractJson.abi : testnetContractJson.abi,
     network: Network.current() == 'true',
+    getAbi: function() { return this.network ? mainnetContractJson.abi : testnetContractJson.abi },
     faucet: async function(address, amount, tokenAddress) {
         const web3 = new Web3(ethereum)
-        const contract = new web3.eth.Contract(this.abi, tokenAddress)
+        const contract = new web3.eth.Contract(this.getAbi(), tokenAddress)
         try {
             await contract.methods.faucet(address, amount).send({ from: address })
             return true
@@ -18,7 +18,7 @@ const ERC20 = {
     },
     approve: async function(address, spender, amount, tokenAddress) {
         const web3 = new Web3(ethereum)
-        const contract = new web3.eth.Contract(this.abi, tokenAddress)
+        const contract = new web3.eth.Contract(this.getAbi(), tokenAddress)
         try {
             await contract.methods.approve(spender, amount).send({ from: address })
             return true
@@ -29,7 +29,7 @@ const ERC20 = {
     },
     allocation: async function(address, spender, tokenAddress) {
         const web3 = new Web3(ethereum)
-        const contract = new web3.eth.Contract(this.abi, tokenAddress)
+        const contract = new web3.eth.Contract(this.getAbi(), tokenAddress)
         try {
             return await contract.methods.allowance(address, spender).call();
         } catch (error) {

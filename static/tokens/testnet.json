@@ -9,6 +9,12 @@
         "name": "DAI",
         "address": "0xE9c6AbB1369159809D9f874C1A3a032019570F8C",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png"
+    },
+    {
+        "symbol": "FLP",
+        "name": "Fleep Token",
+        "address": "0x69C02513F5Af6651B80207003a4bcAA530605a03",
+        "image": "/images/flp.png"
     }, {
         "symbol": "ETH",
         "name": "Ethereum",
