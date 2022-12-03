@@ -12,7 +12,7 @@ bridge the gap is a unique protocol that brings DEFI closer to these countries.
 
 ## Features
 - # Swap and Dust sweeping 
-    Sample
+    Exchange assets to others assets with a low gas fee.
 
 - # Liquidity and AutoYield Earning
     Providing liquidity and autoyield are ways of investing your crypto in fleep finance.
