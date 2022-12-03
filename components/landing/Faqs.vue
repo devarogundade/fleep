@@ -30,11 +30,11 @@ export default {
             show: -1,
             faqs: [{
                     question: 'What is dusts sweeping?',
-                    answer: 'Dusts sweeping simply means converting all your low value assets(<$20) to MATIC all at once.'
+                    answer: 'Dusts sweeping simply means converting all your low value assets(<$20) to a particular asset all at once.'
                 },
                 {
                     question: 'How can I start earning?',
-                    answer: 'When you provide liquidities to a fleep pool, you\'ll earn a share in MATIC whenever a swap is perform on the pool, plus up to 15% Interest on your earnings per annual.'
+                    answer: 'When you provide liquidities to a fleep pool, you\'ll earn a share in $FLP whenever a swap is perform on the pool, plus up to 15% Interest on crypto per annual with Auto Yield.'
                 }, {
                     question: 'What is assets swapping?',
                     answer: 'Assets swapping simply means exchanging one asset for another with exact same market value.'
