@@ -1,7 +1,7 @@
 *This Project has been hosted on a free host. You might experience a little delay at cold laod*
 
 ![Full logo (1)](https://user-images.githubusercontent.com/81397790/205451204-af32f247-3d7c-43af-9283-bff7aa3821a9.png)
-# Fleep Finance - A Layer-2 Decentralized Swap, and AutoYield Protocol
+# Fleep Finance - A Layer-2 Decentralized Application Targeting Africa.
 ## _A Xend Finance X Polygon Hackathon Project_
 
 ![banner2](https://user-images.githubusercontent.com/81397790/205460460-df88671d-f708-4791-b107-9ac7b4337ed2.png)
