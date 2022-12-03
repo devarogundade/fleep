@@ -78,6 +78,7 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
 
 ## Demo
 - See mode at https://fleep-finance.netlify.app
+- Design at https://www.figma.com/file/8NsmO00yC8bsX24Q0cGquV/Fleep-(Copy)?node-id=0%3A1&t=HY5L3r5kktNp8qTS-1
    
 ## Roadmap
 - Phase1: Minimul Viable Product (MVP)
