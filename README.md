@@ -1,5 +1,6 @@
 *This Project has been hosted on a free host. You might experience a little delay at cold laod*
 
+![Full logo (1)](https://user-images.githubusercontent.com/81397790/205451204-af32f247-3d7c-43af-9283-bff7aa3821a9.png)
 # Fleep Finance - A Layer-2 Decentralized Swap, and AutoYield Protocol
 ## _A Xend Finance X Polygon Hackathon Project_
 
@@ -22,6 +23,9 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
   - Stake USDT, USDC, AAVE, WBTC in the xAuto Yield protocol to earn up to 15% APY. Built on Xend finance.
     
 - # Testnet Mode
+    It can be so easy to lost or unwilling stake funds in DEFI protocols if the user is new or still learning how the system works which is also one of major reasons why most Africans are scared to get into DEFI.
+    
+    With testnet mode, our users will able to interact with all the fleep features with fake assets and fees from faucets, and switch to mainnet when they are confident enough.
   
 - # Buy/Sell Crypto with Local Currencies
     Seamless peer to peer trade of cryptocurrencies and local currencies. Powered by Xend bridge.
@@ -43,6 +47,7 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
 - Learning 
 
 ## Fleep Token
+![flp](https://user-images.githubusercontent.com/81397790/205451770-10c5f4f2-3f4e-4595-99c7-4e6c464e9db6.png)
 - Use for liquidity rewards
 - Use for learning incentives
 
@@ -64,16 +69,16 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
 - Moralis (Web3 APIs)
 
 ## Demo
-- See mode at https://fleep-finance.netflify.app/
+- See mode at https://fleep-finance.netlify.app/
 
 ## Sneak peaks
    
 ## Roadmap
 - Phase1: Minimul Viable Product (MVP)
 - Phase2: Restructing and Improvement
-- Phase3: Community building and Testing
+- Phase3: Community building and Testing, Auditting
 - Phase4: Launch on mainnet, fleep token
-- Phase5: Scaling
+- Phase5: Scaling and Patnerships
 
 ## Contribution
 
