@@ -31,6 +31,7 @@ section {
     height: fit-content;
     background: #000;
     border-radius: 20px;
+    max-height: 450px;
     overflow: hidden;
 }
 
