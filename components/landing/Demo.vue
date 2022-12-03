@@ -39,6 +39,7 @@ img {
     max-width: 100%;
     height: fit-content;
     opacity: 0.95;
+    object-fit: cover;
 }
 
 .tag {
