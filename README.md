@@ -77,9 +77,7 @@ bridge the gap is a unique tailored protocol that brings DEFI closer to such cou
 - Moralis (Web3 APIs)
 
 ## Demo
-- See mode at https://fleep-finance.netlify.app/
-
-## Sneak peaks
+- See mode at https://fleep-finance.netlify.app
    
 ## Roadmap
 - Phase1: Minimul Viable Product (MVP)
