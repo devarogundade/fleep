@@ -3,8 +3,8 @@
     <div class="app-width">
         <div class="swap">
             <div class="tab">
-                <p v-on:click="switchTokens()" :class="tab == 1 ? 'active' : ''">Buy</p>
-                <p v-on:click="switchTokens()" :class="tab == 2 ? 'active' : ''">Sell</p>
+                <p v-on:click="switchTokens()" :class="tab == 1 ? 'active' : ''">Sell</p>
+                <p v-on:click="switchTokens()" :class="tab == 2 ? 'active' : ''">Buy</p>
             </div>
             <div class="form">
                 <div class="toolbar">
@@ -57,8 +57,7 @@
 
                 <div class="button">
                     <div v-if="!swapping">
-                        <div class="action" v-if="allocation < from.amount" v-on:click="approve()">Approve</div>
-                        <div class="action" v-else v-on:click="swap()">Place Order</div>
+                        <div class="action" v-on:click="swap()">Place Order</div>
                     </div>
                     <div class="action" v-else>
                         <TinyProgress />
@@ -74,7 +73,7 @@
         </div>
     </div>
 
-    <TokenPicker v-if="picker" v-on:close="picker = false" v-on:pick="pickToken($event)" />
+    <P2PPicker v-if="picker" :type="pickType" v-on:close="picker = false" v-on:pick="pickToken($event)" />
     <OrderHistory v-if="history" v-on:close="history = false" />
     <Blog v-if="blog" v-on:close="blog = false" />
 </section>
@@ -82,21 +81,21 @@
 
 <script>
 import Network from '~/static/scripts/Network';
-import FleepSwap from "../../static/scripts/FleepSwap";
-import testnetTokens from "../../static/tokens/testnet.json"
-import mainnetTokens from "../../static/tokens/mainnet.json"
+import tokens from "../../static/p2p/tokens.json"
+import currencies from "../../static/p2p/currencies.json"
 import Authenticate from '~/static/scripts/Authenticate';
 import Utils from '~/static/scripts/Utils';
-import ERC20 from '~/static/scripts/ERC20';
 
 export default {
     data() {
         return {
             picker: false,
             history: false,
+            pickType: 'currency',
             network: Network.current() == 'true',
             pickCursor: "from",
-            tokens: [],
+            tokens: tokens,
+            currencies: currencies,
             from: {
                 balance: '0',
                 amount: "",
@@ -139,50 +138,44 @@ export default {
         }
     },
     mounted() {
-        if (this.network) {
-            // mainnet
-            this.tokens = mainnetTokens
-        } else {
-            // testnet
-            this.tokens = testnetTokens
-        }
-
         this.from.token = this.tokens[0]
-        this.to.token = this.tokens[1]
+        this.to.token = this.currencies[0]
 
         this.getExchangeRate()
         this.getBalance()
-        this.getAllocation()
     },
     methods: {
         switchCursor: function (cursor) {
-            this.picker = true;
             this.pickCursor = cursor;
-        },
-        pickToken: function (token) {
-            if (this.pickCursor == "from") {
-                this.from.token = token;
+
+            if (this.tab == 1) {
+                if (this.pickCursor == "to") {
+                    this.pickType = "currency"
+                } else {
+                    this.pickType = "tokens"
+                }
             } else {
-                this.to.token = token;
+                if (this.pickCursor == "from") {
+                    this.pickType = "currency"
+                } else {
+                    this.pickType = "tokens"
+                }
+            }
+
+            this.picker = true;
+        },
+        pickToken: function (event) {
+            if (this.pickCursor == "from") {
+                this.from.token = event;
+            } else {
+                this.to.token = event;
             }
 
             this.picker = false;
-            this.getExchangeRate();
+            this.getExchangeRate()
             this.getBalance()
-            this.getAllocation()
         },
-        getExchangeRate: async function () {
-            this.rate = 0;
-
-            const response = await FleepSwap.getExchangeRate(
-                this.from.token.address,
-                this.to.token.address
-            );
-
-            if (response.status) {
-                this.rate = response.rate;
-            }
-        },
+        getExchangeRate: async function () {},
         switchTokens: function () {
             let tempFrom = this.from;
 
@@ -195,65 +188,12 @@ export default {
 
             this.getExchangeRate();
             this.getBalance()
-            this.getAllocation()
-        },
-        getAllocation: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
-            const allocation = await ERC20.allocation(
-                address,
-                await FleepSwap.getContractAddress(),
-                this.from.token.address
-            )
-            this.allocation = Utils.fromWei(allocation)
         },
         swap: async function () {
-            if (this.from.amount == '' || this.to.amount == '') return
-            const address = (await Authenticate.getUserAddress(this.network)).address
 
-            this.swapping = true
-
-            const response = await FleepSwap.swap(
-                this.from.token.address,
-                this.to.token.address,
-                Utils.toWei(this.from.amount),
-                address
-            )
-
-            this.swapping = false
-
-            this.getBalance()
-        },
-        approve: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
-
-            this.swapping = true
-
-            await ERC20.approve(
-                address,
-                await FleepSwap.getContractAddress(),
-                Utils.toWei(this.from.amount),
-                this.from.token.address
-            )
-
-            this.swapping = false
-
-            this.getAllocation()
         },
         getBalance: async function () {
-            const address = (await Authenticate.getUserAddress(this.network)).address
-            const tokens = await this.$balance.erc20Balances(address, this.network)
 
-            if (!tokens) return
-
-            tokens.forEach(token => {
-                if (token.token_address.toLowerCase() == this.from.token.address.toLowerCase()) {
-                    this.from.balance = Utils.fromWei(token.balance)
-                }
-
-                if (token.token_address.toLowerCase() == this.to.token.address.toLowerCase()) {
-                    this.to.balance = Utils.fromWei(token.balance)
-                }
-            });
         },
         toMoney: function (amount) {
             return Utils.toMoney(amount)
