@@ -99,7 +99,7 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
 - Design https://www.figma.com/file/8NsmO00yC8bsX24Q0cGquV/Fleep-(Copy)?node-id=0%3A1&t=HY5L3r5kktNp8qTS-1
    
 ## Roadmap
-- Phase1: Minimul Viable Product (MVP)
+- Phase1: Minimum Viable Product (MVP)
 - Phase2: Restructing and Improvement
 - Phase3: Community building and Testing, Auditting
 - Phase4: Launch on mainnet, fleep token
