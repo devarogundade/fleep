@@ -42,5 +42,30 @@ export default {
     },
     faq: {
         title: "Gereelde Vrae"
+    },
+    dappheader: {
+        t1: "Swap",
+        t2: "Sweep Dusts",
+        t3: "Pools",
+        t4: "Liquidities",
+        t5: "AutoYield",
+        t6: "P2P",
+        cw: "Connect Wallet",
+        tn: "Testnet",
+        mn: "Mainnet"
+    },
+    dappswap: {
+        fr: "From",
+        to: "To",
+        av: "Available",
+        action: "Swap",
+        approve: "Approve"
+    },
+    dappsweep: {
+        to: "To",
+        av: "Available",
+        desc: "",
+        msg1: "dust was found",
+        action: "Sweep"
     }
 }
