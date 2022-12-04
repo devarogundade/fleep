@@ -14,7 +14,7 @@
         "symbol": "FLP",
         "name": "Fleep Token",
         "address": "0x69C02513F5Af6651B80207003a4bcAA530605a03",
-        "image": "/images/flp.png"
+        "image": "https://fleep-finance.netlify.app/images/flp.png"
     }, {
         "symbol": "WETH",
         "name": "Wrapped Ethereum",
