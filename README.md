@@ -27,7 +27,7 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
   - Provide Liquidity and earn 0.2% fee on all trades proportional to your share of the pool.
   - Stake USDT, USDC, AAVE, WBTC in the xAuto Yield protocol to earn up to 15% APY. Built on Xend finance.
   
-   ![Screenshot 2022-12-03 224052](https://user-images.githubusercontent.com/81397790/205468566-a93dc6a8-1833-4293-a0a8-de1cd1234723.png)
+   ![Screenshot 2022-12-04 015122](https://user-images.githubusercontent.com/81397790/205468676-44033b0a-48cf-42b2-9fc7-3da894065d3d.png)
 
 - # Testnet Mode
     It can be so easy to lost or unwilling stake funds in DEFI protocols if the user is new or still learning how the system works which is also one of major reasons why most Africans are scared to get into DEFI.
