@@ -94,7 +94,7 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
 - Web3js
 - Moralis (Web3 APIs)
 
-## Demo
+## Links
 - See mode at https://fleep-finance.netlify.app
 - Design at https://www.figma.com/file/8NsmO00yC8bsX24Q0cGquV/Fleep-(Copy)?node-id=0%3A1&t=HY5L3r5kktNp8qTS-1
    
