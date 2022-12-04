@@ -38,7 +38,7 @@
     </div>
 
     <div class="pop" v-if="to.token">
-        <h3>Enter Amount <i v-on:click="to.token = null" class="fi fi-rr-cross"></i></h3>
+        <h3>Enter Amount <i v-on:click="closePop()" class="fi fi-rr-cross"></i></h3>
         <div class="input">
             <div class="token">
                 <div class="lt">
@@ -46,7 +46,7 @@
                     <p class="symbol">{{ yieldToken(to.token.address).symbol }}</p>
                 </div>
             </div>
-            <input v-model="to.amount" type="number" placeholder="0" />
+            <input v-model="to.amount" type="number" min="0" placeholder="0" />
         </div>
         <div class="button">
             <div v-if="!depositing">
@@ -90,7 +90,12 @@ export default {
         yieldToken: function (address) {
             return this.tokens.filter(token => token.address == address)[0]
         },
+        closePop: function () {
+            this.to.token = null
+            this.to.amount = ""
+        },
         deposit: async function (_yield) {
+            if (this.to.token == null || this.to.token.amount == '') return
             const address = (await Authenticate.getUserAddress(this.network)).address
 
             if (!this.network) {
@@ -99,7 +104,7 @@ export default {
             }
 
             const approve = await FleepVault.approve(
-                Utils.toWei('1'),
+                Utils.toWei(this.to.token.amount),
                 address,
                 _yield.address,
                 _yield.contractAddress
@@ -112,6 +117,14 @@ export default {
                 address,
                 _yield.contractAddress
             )
+        },
+        locked: async function (token) {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            return await FleepVault.balance(address, token.address)
+        },
+        balance: async function (token) {
+            const address = (await Authenticate.getUserAddress(this.network)).address
+            return await FleepVault.savings(address, token.address)
         }
     }
 }
