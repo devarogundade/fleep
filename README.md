@@ -17,7 +17,7 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
 - # Swap and Dust sweeping 
     Exchange assets to others assets with a low gas fee.
     
-    ![Screenshot 2022-12-03 223401](https://user-images.githubusercontent.com/81397790/205463072-d4ef9686-9654-4166-83e6-d51620c7c38f.png)
+   ![Screenshot 2022-12-03 223401](https://user-images.githubusercontent.com/81397790/205468656-10c5b5a9-36ca-4afd-bbcb-8ba95d12a3e1.png)
 
   - Dust sweeping means swapping all assets below $20 to a particular asset in a single transaction.
 
@@ -27,21 +27,21 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
   - Provide Liquidity and earn 0.2% fee on all trades proportional to your share of the pool.
   - Stake USDT, USDC, AAVE, WBTC in the xAuto Yield protocol to earn up to 15% APY. Built on Xend finance.
   
-    ![Screenshot 2022-12-03 224052](https://user-images.githubusercontent.com/81397790/205463252-03743d91-7f55-4678-8f1a-c4a73afabe62.png)
+   ![Screenshot 2022-12-04 015122](https://user-images.githubusercontent.com/81397790/205468676-44033b0a-48cf-42b2-9fc7-3da894065d3d.png)
 
 - # Testnet Mode
     It can be so easy to lost or unwilling stake funds in DEFI protocols if the user is new or still learning how the system works which is also one of major reasons why most Africans are scared to get into DEFI.
     
     With testnet mode, our users will able to interact with all the fleep features with fake assets and fees from faucets, and switch to mainnet when they are confident enough.
     
-    ![Screenshot 2022-12-03 222755](https://user-images.githubusercontent.com/81397790/205462932-a878e7f7-e35d-411b-ab98-89c022bb86f5.png)
-
+   ![Screenshot 2022-12-03 222755](https://user-images.githubusercontent.com/81397790/205468636-60993b03-a40b-4ab2-ad6e-f49c30dbc0a9.png)
+  
   - Testnet faucet at https://fleep-finance.netlify.app/faucet
   
 - # Buy/Sell Crypto with Local Currencies
     Seamless peer to peer trade of cryptocurrencies and local currencies. Powered by Xend bridge.
     
-  ![Screenshot 2022-12-03 215001](https://user-images.githubusercontent.com/81397790/205461657-df7daf5b-660c-4919-9987-db3653e06839.png)
+   ![Screenshot 2022-12-04 015214](https://user-images.githubusercontent.com/81397790/205468627-fa4f9a72-dc8a-4d18-8f8c-07463da05be4.png)
   
   - Nigerian Naira
   - Kenyan Shillings
@@ -50,7 +50,7 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
 - # Localization
     Redefining decentralized finance, bring it closer to many Africans in their local languages.
     
-    ![Screenshot 2022-12-03 215823](https://user-images.githubusercontent.com/81397790/205461875-95985553-689f-408c-ba99-408dec3f46b3.png)
+    ![Screenshot 2022-12-03 215823](https://user-images.githubusercontent.com/81397790/205468613-bae88429-1398-45bf-b7d0-a302104da03c.png)
     
   - English (default)
   - Afrikaans
@@ -60,8 +60,14 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
   
 ## Ways To Earn 
 - Providing Liquidity
+
+![Screenshot 2022-12-04 014733](https://user-images.githubusercontent.com/81397790/205468605-ceaf27b2-82f8-4a9d-9af2-c09d20cdcf18.png)
+
 - Auto Yield
-- Learning 
+
+![Screenshot 2022-12-04 015122](https://user-images.githubusercontent.com/81397790/205468788-6ad2f29e-3fc4-4cd2-8ff7-03f9e6ea61a1.png)
+
+- Learning (Uncompleted)
 
 ## Fleep Token
 ![flp](https://user-images.githubusercontent.com/81397790/205451770-10c5f4f2-3f4e-4595-99c7-4e6c464e9db6.png)
