@@ -13,6 +13,8 @@ We believe Fleep finance will bring more adoption to web3(in general) in Africa 
 Today DEFI protocols out there are built targeting on a global scale leaving a wide gap between DEFI and developing countries in Africa, the best way to 
 bridge the gap is a unique tailored product that brings DEFI closer to these countries.
 
+**[Watch Demo Video](https://demo.com)**
+
 ## Features
 - # Swap and Dust sweeping 
     Exchange assets to others assets with a low gas fee.
