@@ -1,6 +1,6 @@
 <template>
 <div class="box" v-if="data">
-    <h3><i class="fi fi-br-shield-exclamation"></i> {{ data.title }}</h3>
+    <h3><i class="fi fi-rr-shield-exclamation"></i> {{ data.title }}</h3>
     <p>{{ data.message }}</p>
     <div class="action" v-on:click="$emit('close')">Close</div>
 </div>

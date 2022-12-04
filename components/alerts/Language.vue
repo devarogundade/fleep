@@ -86,7 +86,7 @@ export default {
 
 .box {
     width: 400px;
-    max-width: 100%;
+    max-width: 90%;
     height: fit-content;
     padding: 20px 10px;
     border-radius: 16px;
