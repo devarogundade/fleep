@@ -4,8 +4,6 @@ pragma solidity >=0.7.0 <0.9.0;
 import {PriceApi} from "./PriceApi.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-// import {xUSDT} from "./xend/XUSDT.sol";
-
 contract Swap {
     PriceApi private _priceApi;
 
@@ -664,7 +662,7 @@ contract Swap {
 
         return POOL_ID;
     }
-    
+
     // === Modifiers === //
 
     modifier onlyGuest() {
