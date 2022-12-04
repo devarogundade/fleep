@@ -60,6 +60,9 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
   
 ## Ways To Earn 
 - Providing Liquidity
+
+![Screenshot 2022-12-04 014733](https://user-images.githubusercontent.com/81397790/205468430-e176ff02-e19f-439b-9c00-12f1d04a3d54.png)
+
 - Auto Yield
 - Learning 
 
