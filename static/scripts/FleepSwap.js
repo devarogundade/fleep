@@ -99,7 +99,7 @@ const FleepSwap = {
         }
 
         try {
-            const trx = await instance.swap(token0, token1, amount0, {
+            const trx = await instance.swap(token0, token1, amount0, address, {
                 from: address
             })
             return {
@@ -108,6 +108,7 @@ const FleepSwap = {
                 status: true
             }
         } catch (error) {
+            console.log(error);
             return {
                 message: 'Transaction failed',
                 error: error,
