@@ -13,6 +13,8 @@ We believe Fleep finance will bring more adoption to web3(in general) in Africa 
 Today DEFI protocols out there are built targeting on a global scale leaving a wide gap between DEFI and developing countries in Africa, the best way to 
 bridge the gap is a unique tailored product that brings DEFI closer to these countries.
 
+**[Watch Demo Video](https://demo.com)**
+
 ## Features
 - # Swap and Dust sweeping 
     Exchange assets to others assets with a low gas fee.
@@ -46,6 +48,7 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
   - Nigerian Naira
   - Kenyan Shillings
   - Ghanian Cedis
+  - more to come...
 
 - # Localization
     Redefining decentralized finance, bring it closer to many Africans in their local languages.
@@ -56,7 +59,7 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
   - Afrikaans
   - Hausa
   - Pidgin
-  - more to add..
+  - more to come..
   
 ## Ways To Earn 
 - Providing Liquidity
@@ -91,12 +94,12 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
 - Web3js
 - Moralis (Web3 APIs)
 
-## Demo
-- See mode at https://fleep-finance.netlify.app
-- Design at https://www.figma.com/file/8NsmO00yC8bsX24Q0cGquV/Fleep-(Copy)?node-id=0%3A1&t=HY5L3r5kktNp8qTS-1
+## Links
+- MVP https://fleep-finance.netlify.app
+- Design https://www.figma.com/file/8NsmO00yC8bsX24Q0cGquV/Fleep-(Copy)?node-id=0%3A1&t=HY5L3r5kktNp8qTS-1
    
 ## Roadmap
-- Phase1: Minimul Viable Product (MVP)
+- Phase1: Minimum Viable Product (MVP)
 - Phase2: Restructing and Improvement
 - Phase3: Community building and Testing, Auditting
 - Phase4: Launch on mainnet, fleep token
