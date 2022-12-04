@@ -1,15 +1,15 @@
 <template>
 <section id="sweep">
     <div class="app-width">
-        <div class="tag">Sweep Dusts</div>
+        <div class="tag">{{ $t('sweephero.sp') }}</div>
         <div class="sweeper">
             <div class="text">
                 <div>
-                    <h3>Covert Your Low-Value Assets to $USDT, others</h3>
-                    <p>With a single click on a button, swap all your assets lesser than $20 dollars to a particular asset.</p>
+                    <h3>{{ $t('sweephero.title') }}</h3>
+                    <p>{{ $t('sweephero.desc') }}</p>
                 </div>
                 <router-link :to="localePath('/dapp/sweep')">
-                    <div class="action">Sweep Dusts</div>
+                    <div class="action">{{ $t('sweephero.action') }}</div>
                 </router-link>
             </div>
             <div class="image">

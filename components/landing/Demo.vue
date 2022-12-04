@@ -2,12 +2,12 @@
 <section>
     <div class="app-width">
         <div class="demo">
-            <div class="tag">Demo</div>
+            <div class="tag">{{ $t('demo.tag') }}</div>
             <img :src="'/images/banner.png'">
             <a href="" target="_blank">
                 <div class="play">
                     <i class="fi fi-rr-play"></i>
-                    <p>Play Video</p>
+                    <p>{{ $t('demo.play') }}</p>
                 </div>
             </a>
         </div>

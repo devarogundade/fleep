@@ -2,8 +2,7 @@
 <section id="faqs">
     <div class="app-width">
         <div class="faq">
-            <h3>Frequently Asked Questions</h3>
-
+            <h3>{{ $t('faq.title') }}</h3>
             <div class="items">
                 <div v-for="(faq, index) in faqs" :key="faq.question" :class="show == index ? 'show item' : 'item'">
                     <div class="question" v-on:click="openFaq(index)">

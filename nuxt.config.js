@@ -6,6 +6,8 @@ export default {
     env: {
         MORALIS_KEY: process.env.MORALIS_KEY,
         XEND_BRIDGE_KEY: process.env.XEND_BRIDGE_KEY,
+        ALCHEMY_TESTNET_KEY: process.env.ALCHEMY_TESTNET_KEY,
+        ALCHEMY_MAINNET_KEY: process.env.ALCHEMY_MAINNET_KEY,
     },
 
     head: {

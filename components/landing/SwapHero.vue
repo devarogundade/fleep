@@ -1,15 +1,15 @@
 <template>
 <section id="swap">
     <div class="app-width">
-        <div class="tag">Swap</div>
+        <div class="tag">{{ $t('swaphero.sw') }}</div>
         <div class="sweeper">
             <div class="text">
                 <div>
-                    <h3>Exchange Your ERC20 Tokens to Other Assets</h3>
-                    <p>Exchange assets to others assets with a low gas fee.</p>
+                    <h3>{{ $t('swaphero.title') }}</h3>
+                    <p>{{ $t('swaphero.desc') }}</p>
                 </div>
                 <router-link :to="localePath('/dapp')">
-                    <div class="action">Swap Now</div>
+                    <div class="action">{{ $t('swaphero.action') }}</div>
                 </router-link>
             </div>
             <div class="image">

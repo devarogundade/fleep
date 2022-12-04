@@ -1,15 +1,15 @@
 <template>
 <section id="earn">
     <div class="app-width">
-        <div class="tag">Earn from Liquidity + Up to 15% APY</div>
+        <div class="tag">{{ $t('earnhero.en') }}</div>
         <div class="sweeper">
             <div class="text">
                 <div>
-                    <h3>Provide Liquidity to Earn and Up to 15% Annual Interest</h3>
-                    <p>You will earn $FLP for providing liquidity, and can also earn upto 15% interest on crypto annually.</p>
+                    <h3>{{ $t('earnhero.title') }}</h3>
+                    <p>{{ $t('earnhero.desc') }}</p>
                 </div>
                 <router-link :to="localePath('/dapp/pools')">
-                    <div class="action">Provide Liquidity</div>
+                    <div class="action">{{ $t('earnhero.action') }}</div>
                 </router-link>
             </div>
             <div class="image">

@@ -4,7 +4,8 @@ const dotenv = require("dotenv")
 dotenv.config()
 
 const MNEMONIC = process.env.MNEMONIC;
-const MATIC_RPC_ID = process.env.MATIC_RPC_ID;
+const ALCHEMY_TESTNET_KEY = process.env.ALCHEMY_TESTNET_KEY;
+const ALCHEMY_MAINNET_KEY = process.env.ALCHEMY_MAINNET_KEY;
 
 module.exports = {
     networks: {
@@ -16,7 +17,7 @@ module.exports = {
         testnet: {
             provider: () => new HDWalletProvider(
                 MNEMONIC,
-                `https://rpc.ankr.com/polygon_mumbai`
+                `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_TESTNET_KEY}`
             ),
             network_id: 80001, // Polygon chain testnet id
             confirmations: 2,
@@ -27,7 +28,7 @@ module.exports = {
         mainnet: {
             provider: () => new HDWalletProvider(
                 MNEMONIC,
-                `https://polygon-rpc.com`
+                `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_MAINNET_KEY}`
             ),
             network_id: 80001, // Polygon chain mainnet id
             confirmations: 2,

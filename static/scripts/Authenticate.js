@@ -47,7 +47,7 @@ const Authenticate = {
                                 decimals: 18
                             },
                             blockExplorerUrls: ['https://mumbai.polygonscan.com'],
-                            rpcUrls: ['https://polygon-mumbai.g.alchemy.com/v2/demo'],
+                            rpcUrls: ['https://polygon-mumbai.g.alchemy.com/v2/-p7aGEm_G-s1dprQ3GRtQcahJ7niGvTN'],
                         }, ],
                     });
                 } catch (addError) {
