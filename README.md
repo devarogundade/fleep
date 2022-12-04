@@ -17,7 +17,7 @@ Another major problem is the quantity of scams that makes people distrust, and t
 
 Our aim is a platform for Africans where people can learn, interact, earn, and invest in DEFI in the most simplified way.
 
-**[Watch Demo Video](https://demo.com)**
+**[Watch Demo Video](https://fleep-finance.netlify.app/videos/demo.mp4)**
 
 ## Features
 - # Swap and Dust sweeping 
