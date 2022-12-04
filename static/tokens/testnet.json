@@ -1,13 +1,13 @@
 [{
         "symbol": "WBTC",
         "name": "Wrapper Bitcoin",
-        "address": "0xc4BC789ee50DdAf8243fFD65C7Fc8776b8D334ac",
+        "address": "0xfcd9eB765936D608C6f9a4cC3C9080190e3A2566",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3717.png"
     },
     {
         "symbol": "DAI",
         "name": "DAI",
-        "address": "0xE9c6AbB1369159809D9f874C1A3a032019570F8C",
+        "address": "0xac2003580BD6329D1CbE5c492D523fC5b8004d56",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png"
     },
     {
@@ -16,9 +16,9 @@
         "address": "0x69C02513F5Af6651B80207003a4bcAA530605a03",
         "image": "/images/flp.png"
     }, {
-        "symbol": "ETH",
-        "name": "Ethereum",
-        "address": "0x60D4A61940Ac5e59cbdaF05E7F702B26048320bF",
+        "symbol": "WETH",
+        "name": "Wrapped Ethereum",
+        "address": "0x5b9228d432B21e5Faf6c07792149bEaa0A650032",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png"
     },
     {
@@ -29,18 +29,18 @@
     }, {
         "symbol": "SAND",
         "name": "Sandbox",
-        "address": "0xaCeD5967a5a60b29007968AD55904fbCd660e6D8",
+        "address": "0x87714Bba938f16C852E91847c0bC95DA3609A2EA",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/6210.png"
     }, {
         "symbol": "USDC",
         "name": "USDC",
-        "address": "0x7E0577066d3B4DE9869F4178791b702694a0c17c",
+        "address": "0x934253c5B9455F4694F49163E4D132f3de5A5666",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png"
     },
     {
         "symbol": "USDT",
         "name": "USDT",
-        "address": "0xd5062391b4f3Eed59EE24D198F56183DFEaC7576",
+        "address": "0xa90058c81Ce72946526acb37c444a1Cd640CCC21",
         "image": "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png"
     }
 ]
