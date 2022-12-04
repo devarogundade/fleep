@@ -27,13 +27,36 @@
                     <p class="name2">{{ _yield.locked }}</p>
                     <p class="name2">{{ _yield.vaultBalance }}</p>
                     <div class="action">
-                        <div class="deposit" v-on:click="deposit(_yield)">Deposit</div>
+                        <div class="deposit" v-on:click="to.token = _yield">Deposit</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="blog" v-on:click="blog = true">
             <p>How to AutoYield?</p>
+        </div>
+    </div>
+
+    <div class="pop" v-if="to.token">
+        <h3>Enter Amount <i v-on:click="to.token = null" class="fi fi-rr-cross"></i></h3>
+        <div class="input">
+            <div class="token">
+                <div class="lt">
+                    <img :src="yieldToken(to.token.address).image" alt="" />
+                    <p class="symbol">{{ yieldToken(to.token.address).symbol }}</p>
+                </div>
+            </div>
+            <input v-model="to.amount" type="number" placeholder="0" />
+        </div>
+        <div class="button">
+            <div v-if="!depositing">
+                <div class="action" v-on:click="deposit(to.token)">Deposit</div>
+            </div>
+            <div class="action" v-else>
+                <TinyProgress />
+            </div>
+
+            <p>Enter amount.</p>
         </div>
     </div>
 
@@ -56,6 +79,11 @@ export default {
             yields: yields,
             network: Network.current() == 'true',
             blog: false,
+            depositing: false,
+            to: {
+                amount: "",
+                token: null
+            }
         }
     },
     methods: {
@@ -243,5 +271,102 @@ section {
     border-radius: 10px;
     color: #000986;
     font-size: 14px;
+}
+
+.pop {
+    width: 300px;
+    border-radius: 20px;
+    background: #F2F4F7;
+    border: 1px #ccc solid;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    padding: 20px;
+}
+
+.pop h3 {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pop i {
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.pop .token {
+    display: flex;
+}
+
+.pop .input {
+    display: flex;
+    margin-top: 20px;
+    height: 56px;
+    background: #FFFFFF;
+    border: 0.5px solid #CCCCCC;
+    border-radius: 6px;
+}
+
+.pop input {
+    width: calc(100% - 140px);
+    background: transparent;
+    border: none;
+    outline: none;
+    text-align: right;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.pop .token {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    cursor: pointer;
+    user-select: none;
+    color: #555;
+    width: 140px;
+}
+
+.token .lt {
+    display: flex;
+    align-items: center;
+}
+
+.token img {
+    width: 24px;
+    margin-right: 4px;
+    border-radius: 20px;
+}
+
+.token .symbol {
+    font-size: 14px;
+    margin-top: -4px;
+}
+
+.pop .action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 24px;
+    background: #8708A7;
+    color: #fff;
+    border-radius: 10px;
+    height: 56px;
+    width: 100%;
+    user-select: none;
+    cursor: pointer;
+}
+
+.pop .button p {
+    font-size: 14px;
+    text-align: center;
+    margin-top: 4px;
 }
 </style>
