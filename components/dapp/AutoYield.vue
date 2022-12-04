@@ -164,7 +164,9 @@ export default {
                 address,
                 _yield.contractAddress
             )
+            
             this.depositing = false
+            this.loadValues()
         },
         withdraw: async function (_yield) {
             if (this.from.token == null || this.from.amount == '') return
@@ -179,6 +181,7 @@ export default {
             )
 
             this.withdrawing = false
+            this.loadValues()
         },
         locked: async function (token) {
             const address = (await Authenticate.getUserAddress(this.network)).address
