@@ -99,7 +99,7 @@ const FleepSwap = {
         }
 
         try {
-            const trx = await instance.swap(token0, token1, amount0, address, {
+            const trx = await instance.swap(token0, token1, amount0, {
                 from: address
             })
             return {

@@ -2,7 +2,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import {Swap} from "./Swap.sol";
-import {PriceApi} from "./PriceApi.sol";
+import {Events} from "../libraries/Events.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Sweeper {
@@ -13,10 +13,6 @@ contract Sweeper {
 
     // dust price threshold
     uint256 private DUST_THRESHOLD;
-
-    // === Events === //
-
-    event FleepSweeped(uint256 amount, address from, uint timestamp);
 
     constructor(address swap) {
         _swap = Swap(swap);
@@ -49,7 +45,7 @@ contract Sweeper {
             if (tokens[index] == destinationPair) continue;
 
             // swap to USDT
-            amount1 += _swap.swap(
+            amount1 += _swap.doSwap(
                 tokens[index],
                 destinationPair,
                 amount0,
@@ -58,7 +54,7 @@ contract Sweeper {
         }
 
         // registers every successful sweeps
-        emit FleepSweeped(amount1, msg.sender, block.timestamp);
+        emit Events.FleepSweeped(amount1, msg.sender, block.timestamp);
 
         return amount1;
     }

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import {PriceApi} from "./PriceApi.sol";
+import {PriceApi} from "../feeds/PriceApi.sol";
+import {Events} from "../libraries/Events.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Swap {
@@ -36,25 +37,6 @@ contract Swap {
     mapping(address => Provider) public providers;
     // id => liquids
     mapping(uint => Liquid) public liquids;
-
-    // === Events === //
-
-    event LiquidProvided(
-        address token0,
-        address token1,
-        uint256 amount0,
-        uint256 amount1,
-        address provider,
-        uint timestamp
-    );
-
-    event FleepSwaped(
-        uint256 amount,
-        uint256 amountOut,
-        address from,
-        address to,
-        uint timestamp
-    );
 
     // === Structs === //
 
@@ -152,10 +134,10 @@ contract Swap {
         address token1,
         uint256 amount0
     ) public payable returns (uint256) {
-        return swap(token0, token1, amount0, msg.sender);
+        return doSwap(token0, token1, amount0, msg.sender);
     }
 
-    function swap(
+    function doSwap(
         address token0,
         address token1,
         uint256 amount0,
@@ -254,7 +236,13 @@ contract Swap {
         }
 
         // store the swap data on-chain
-        emit FleepSwaped(amount0, amount1, token0, token1, block.timestamp);
+        emit Events.FleepSwaped(
+            amount0,
+            amount1,
+            token0,
+            token1,
+            block.timestamp
+        );
 
         return amount1;
     }
@@ -320,7 +308,7 @@ contract Swap {
         }
 
         // store the liquidity data on-chain
-        emit LiquidProvided(
+        emit Events.LiquidProvided(
             pools[poolId].token0,
             pools[poolId].token1,
             _safeAmount0,
