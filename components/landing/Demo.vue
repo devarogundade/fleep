@@ -4,7 +4,7 @@
         <div class="demo">
             <div class="tag">{{ $t('demo.tag') }}</div>
             <img :src="'/images/banner.png'">
-            <a href="" target="_blank">
+            <a href="/videos/demo.mp4" target="_blank">
                 <div class="play">
                     <i class="fi fi-rr-play"></i>
                     <p>{{ $t('demo.play') }}</p>
