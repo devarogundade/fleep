@@ -11,22 +11,22 @@
                 <div class="menu" ref="menu">
                     <ul>
                         <li>
-                            <router-link :class="$route.name.startsWith('dapp__') ? 'active' : ''" :to="localePath('/dapp')">Swap</router-link>
+                            <router-link :class="$route.name.startsWith('dapp__') ? 'active' : ''" :to="localePath('/dapp')">{{ $t('dappheader.t1') }}</router-link>
                         </li>
                         <li>
-                            <router-link :class="$route.name.startsWith('dapp-sweep') ? 'active' : ''" :to="localePath('/dapp/sweep')">Sweep Dust</router-link>
+                            <router-link :class="$route.name.startsWith('dapp-sweep') ? 'active' : ''" :to="localePath('/dapp/sweep')">{{ $t('dappheader.t2') }}</router-link>
                         </li>
                         <li>
-                            <router-link :class="($route.name.startsWith('dapp-pools') || $route.name.startsWith('dapp-liquidity-pool')) ? 'active' : ''" :to="localePath('/dapp/pools')">Pools</router-link>
+                            <router-link :class="($route.name.startsWith('dapp-pools') || $route.name.startsWith('dapp-liquidity-pool')) ? 'active' : ''" :to="localePath('/dapp/pools')">{{ $t('dappheader.t3') }}</router-link>
                         </li>
                         <li>
-                            <router-link :class="$route.name.startsWith('dapp-liquidities') ? 'active' : ''" :to="localePath('/dapp/liquidities')">Liquidities</router-link>
+                            <router-link :class="$route.name.startsWith('dapp-liquidities') ? 'active' : ''" :to="localePath('/dapp/liquidities')">{{ $t('dappheader.t4') }}</router-link>
                         </li>
                         <li>
-                            <router-link :class="$route.name.startsWith('dapp-auto-yield') ? 'active' : ''" :to="localePath('/dapp/auto-yield')">AutoYield</router-link>
+                            <router-link :class="$route.name.startsWith('dapp-auto-yield') ? 'active' : ''" :to="localePath('/dapp/auto-yield')">{{ $t('dappheader.t5') }}</router-link>
                         </li>
                         <li>
-                            <router-link :class="$route.name.startsWith('dapp-peer-to-peer') ? 'active' : ''" :to="localePath('/dapp/peer-to-peer')">P2P</router-link>
+                            <router-link :class="$route.name.startsWith('dapp-peer-to-peer') ? 'active' : ''" :to="localePath('/dapp/peer-to-peer')">{{ $t('dappheader.t6') }}</router-link>
                         </li>
                     </ul>
                 </div>
@@ -43,7 +43,7 @@
                   address.substring(address.length - 8, address.length)
                 }}
                 </div>
-                <div class="action" v-else v-on:click="connectWallet()">Connect Wallet</div>
+                <div class="action" v-else v-on:click="connectWallet()">{{ $t('dappheader.cw') }}</div>
                 <div ref="handburger" id="handburger" v-on:click="onDrawer()">
                     <span></span>
                     <span></span>
@@ -55,7 +55,7 @@
                         <input v-model="network" v-on:change="switchNetwork($event)" type="checkbox">
                         <span class="slider round"></span>
                     </label>
-                    <p>{{ network ? 'Mainnet' : 'Testnet' }}</p>
+                    <p>{{ network ? $t('dappheader.mn') : $t('dappheader.tn') }}</p>
                 </div>
             </div>
         </div>

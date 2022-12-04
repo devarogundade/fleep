@@ -10,8 +10,8 @@
                 </div>
                 <div class="entity">
                     <div class="label">
-                        <p>From</p>
-                        <p>Available: <span>{{ toMoney(from.balance) }}</span></p>
+                        <p>{{ $t('dappswap.fr') }}</p>
+                        <p>{{ $t('dappswap.av') }}: <span>{{ toMoney(from.balance) }}</span></p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('from')">
@@ -31,8 +31,8 @@
 
                 <div class="entity">
                     <div class="label">
-                        <p>To</p>
-                        <p>Available: <span>{{ toMoney(to.balance) }}</span></p>
+                        <p>{{ $t('dappswap.to') }}</p>
+                        <p>{{ $t('dappswap.av') }}: <span>{{ toMoney(to.balance) }}</span></p>
                     </div>
                     <div class="input">
                         <div class="token" v-on:click="switchCursor('to')">

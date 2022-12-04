@@ -44,28 +44,28 @@ export default {
         title: "Gereelde Vrae"
     },
     dappheader: {
-        t1: "Swap",
-        t2: "Sweep Dusts",
-        t3: "Pools",
-        t4: "Liquidities",
-        t5: "AutoYield",
+        t1: "Ruil",
+        t2: "Vee Stof",
+        t3: "Swembaddens",
+        t4: "Likiditeite",
+        t5: "AutoYieldr",
         t6: "P2P",
-        cw: "Connect Wallet",
-        tn: "Testnet",
+        cw: "Koppel Wallet",
+        tn: "Toetsnet",
         mn: "Mainnet"
     },
     dappswap: {
-        fr: "From",
-        to: "To",
-        av: "Available",
-        action: "Swap",
-        approve: "Approve"
+        fr: "Van",
+        to: "Om",
+        av: "Beskikbaar",
+        action: "Ruil",
+        approve: "Keur goed"
     },
     dappsweep: {
-        to: "To",
-        av: "Available",
+        to: "Om",
+        av: "Beskikbaar",
         desc: "",
-        msg1: "dust was found",
+        msg1: "stof gevind is",
         action: "Sweep"
     }
 }
