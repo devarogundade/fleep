@@ -48,6 +48,7 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
   - Nigerian Naira
   - Kenyan Shillings
   - Ghanian Cedis
+  - more to come...
 
 - # Localization
     Redefining decentralized finance, bring it closer to many Africans in their local languages.
@@ -58,7 +59,7 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
   - Afrikaans
   - Hausa
   - Pidgin
-  - more to add..
+  - more to come..
   
 ## Ways To Earn 
 - Providing Liquidity
