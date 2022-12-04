@@ -19,7 +19,7 @@
 
 <script>
 import testnetTokens from "../static/tokens/testnet.json"
-import contractJson from "../build/contracts/TestnetToken.json"
+import contractJson from "../build/testnet/TestnetToken.json"
 import Web3 from "web3"
 import Authenticate from '~/static/scripts/Authenticate';
 import Utils from '~/static/scripts/Utils';
