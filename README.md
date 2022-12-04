@@ -64,7 +64,10 @@ bridge the gap is a unique tailored product that brings DEFI closer to these cou
 ![Screenshot 2022-12-04 014733](https://user-images.githubusercontent.com/81397790/205468605-ceaf27b2-82f8-4a9d-9af2-c09d20cdcf18.png)
 
 - Auto Yield
-- Learning 
+
+![Screenshot 2022-12-04 015122](https://user-images.githubusercontent.com/81397790/205468788-6ad2f29e-3fc4-4cd2-8ff7-03f9e6ea61a1.png)
+
+- Learning (Uncompleted)
 
 ## Fleep Token
 ![flp](https://user-images.githubusercontent.com/81397790/205451770-10c5f4f2-3f4e-4595-99c7-4e6c464e9db6.png)
