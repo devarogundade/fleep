@@ -5752,12 +5752,12 @@
     "80001": {
       "events": {},
       "links": {},
-      "address": "0x3F8305A73Fd36a713A63dD46612B89cEe999cC93",
-      "transactionHash": "0x8ed04c41b0bed5227fe2b2915fc9cbeac06ae750ccc60b1cc1edd951c6bff4a0"
+      "address": "0x9253017750Dd1d65Df3Da2025af9AaFd4010D699",
+      "transactionHash": "0xc9ddf9b74a42b5a3a9da3c9037b1fd461fd804a9c2fddf4064ac58067c1310f6"
     }
   },
   "schemaVersion": "3.4.10",
-  "updatedAt": "2022-12-04T06:55:15.891Z",
+  "updatedAt": "2022-12-04T07:31:01.557Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
