@@ -49,7 +49,12 @@ contract Sweeper {
             if (tokens[index] == destinationPair) continue;
 
             // swap to USDT
-            amount1 += _swap.swap(tokens[index], destinationPair, amount0);
+            amount1 += _swap.swap(
+                tokens[index],
+                destinationPair,
+                amount0,
+                msg.sender
+            );
         }
 
         // registers every successful sweeps

@@ -53,7 +53,9 @@
                         <div class="action" v-if="!sweeping" v-on:click="sweep()">
                             Sweep
                         </div>
-                        <div class="action" v-else>•••</div>
+                        <div class="action" v-else>
+                            <TinyProgress />
+                        </div>
                         <p>Enter the amount of tokens you want to swap.</p>
                     </div>
                 </div>
@@ -180,18 +182,20 @@ export default {
             this.sweeping = true;
 
             for (let index = 0; index < tokens.length; index++) {
+                const balance = await ERC20.getBalance(address, tokens[index])
+
                 const allocation = await ERC20.allocation(
                     address,
                     await FleepSwap.getContractAddress(),
                     tokens[index]
                 )
 
-                if (allocation >= dusts[index].balance) continue
+                if (allocation >= balance) continue
 
                 await ERC20.approve(
                     address,
                     await FleepSwap.getContractAddress(),
-                    dusts[index].balance,
+                    balance,
                     tokens[index]
                 )
             }
@@ -399,7 +403,6 @@ section {
 .entity .label p:nth-child(1) {
     font-weight: 600;
 }
-
 
 .entity .label p:nth-child(2) {
     cursor: pointer;

@@ -154,6 +154,15 @@ contract Swap {
         address token1,
         uint256 amount0
     ) public payable returns (uint256) {
+        return swap(token0, token1, amount0, msg.sender);
+    }
+
+    function swap(
+        address token0,
+        address token1,
+        uint256 amount0,
+        address user
+    ) public payable returns (uint256) {
         require(amount0 >= 100, "Amount to swap cannot be lesser than 100 WEI");
 
         uint256 amount1;
@@ -174,7 +183,7 @@ contract Swap {
             uint256 fee = _transferSwappedTokens0(
                 pools[poolId].token1,
                 amount1,
-                msg.sender
+                user
             );
 
             uint256 providersReward = ((fee * 80) / 100);
@@ -200,7 +209,7 @@ contract Swap {
                 pools[poolId].token0,
                 _safeAmount0,
                 amount1,
-                msg.sender
+                user
             );
 
             uint256 providersReward = ((fee * 80) / 100);
@@ -231,7 +240,7 @@ contract Swap {
                 pools[poolId].token1,
                 _safeAmount0,
                 amount1,
-                msg.sender
+                user
             );
 
             uint256 providersReward = ((fee * 80) / 100);

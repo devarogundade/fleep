@@ -36,6 +36,16 @@ const ERC20 = {
             return 0
         }
     },
+    getBalance: async function(address, tokenAddress) {
+        const web3 = new Web3(ethereum)
+        const contract = new web3.eth.Contract(this.getAbi(), tokenAddress)
+        try {
+            return await contract.methods.balanceOf(address).call();
+        } catch (error) {
+            console.log(error);
+            return 0
+        }
+    },
     addToWallet: async function(token) {
         try {
             await ethereum.request({
