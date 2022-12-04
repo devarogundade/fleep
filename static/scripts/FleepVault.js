@@ -45,8 +45,10 @@ const FleepVault = {
     withdraw: async function(amount, address, contractAddress) {
         try {
             const contract = this.getContract(contractAddress)
-            const sharePrice = await contract.methods.getPricePerFullShare()
+            const sharePrice = await contract.methods.getPricePerFullShare().call()
+            console.log('sp', sharePrice);
             const withdrawAmountInShares = ((amount * 10 ** 24) / sharePrice)
+            console.log(parseInt(String(withdrawAmountInShares), 10));
             await contract.methods.withdraw(parseInt(String(withdrawAmountInShares), 10))
                 .send({ from: address })
             return true

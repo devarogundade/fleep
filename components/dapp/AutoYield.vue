@@ -17,6 +17,7 @@
                     <p class="name2">Locked</p>
                     <p class="name2">Balance</p>
                     <p class="action"></p>
+                    <p class="action"></p>
                 </div>
                 <div class="yield" v-for="(_yield, index) in yields" :key="index">
                     <div class="images">
@@ -28,6 +29,9 @@
                     <p class="name2">{{ _yield.vaultBalance }}</p>
                     <div class="action">
                         <div class="deposit" v-on:click="to.token = _yield">Deposit</div>
+                    </div>
+                    <div class="action">
+                        <div class="deposit" v-on:click="from.token = _yield">Withdraw</div>
                     </div>
                 </div>
             </div>
@@ -60,6 +64,29 @@
         </div>
     </div>
 
+    <div class="pop" v-if="from.token">
+        <h3>Enter Amount <i v-on:click="closePop()" class="fi fi-rr-cross"></i></h3>
+        <div class="input">
+            <div class="token">
+                <div class="lt">
+                    <img :src="yieldToken(from.token.address).image" alt="" />
+                    <p class="symbol">{{ yieldToken(from.token.address).symbol }}</p>
+                </div>
+            </div>
+            <input v-model="from.amount" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="button">
+            <div v-if="!withdrawing">
+                <div class="action" v-on:click="withdraw(from.token)">Withdraw</div>
+            </div>
+            <div class="action" v-else>
+                <TinyProgress />
+            </div>
+
+            <p>Enter amount.</p>
+        </div>
+    </div>
+
     <Blog v-if="blog" v-on:close="blog = false" />
 </section>
 </template>
@@ -80,22 +107,38 @@ export default {
             network: Network.current() == 'true',
             blog: false,
             depositing: false,
+            withdrawing: false,
             to: {
+                amount: "",
+                token: null
+            },
+            from: {
                 amount: "",
                 token: null
             }
         }
     },
+    mounted() {
+        this.loadValues()
+    },
     methods: {
+        loadValues: async function () {
+            for (let index = 0; index < this.yields.length; index++) {
+                this.yields[index].locked = Utils.toMoney(await this.locked(this.yields[index]))
+                this.yields[index].vaultBalance = Utils.toMoney(await this.balance(this.yields[index]))
+            }
+        },
         yieldToken: function (address) {
             return this.tokens.filter(token => token.address == address)[0]
         },
         closePop: function () {
             this.to.token = null
             this.to.amount = ""
+            this.from.token = null
+            this.from.amount = ""
         },
         deposit: async function (_yield) {
-            if (this.to.token == null || this.to.token.amount == '') return
+            if (this.to.token == null || this.to.amount == '') return
             const address = (await Authenticate.getUserAddress(this.network)).address
 
             if (!this.network) {
@@ -103,28 +146,47 @@ export default {
                 return
             }
 
+            this.depositing = true
             const approve = await FleepVault.approve(
-                Utils.toWei(this.to.token.amount),
+                Utils.toWei(this.to.amount),
                 address,
                 _yield.address,
                 _yield.contractAddress
             )
 
-            if (!approve) return
+            if (!approve) {
+                this.depositing = false
+                return
+            }
 
             const response = await FleepVault.deposit(
                 1,
                 address,
                 _yield.contractAddress
             )
+            this.depositing = false
+        },
+        withdraw: async function (_yield) {
+            if (this.from.token == null || this.from.amount == '') return
+            const address = (await Authenticate.getUserAddress(this.network)).address
+
+            this.withdrawing = true
+
+            const response = await FleepVault.withdraw(
+                Utils.toWei(this.from.amount),
+                address,
+                _yield.address
+            )
+
+            this.withdrawing = false
         },
         locked: async function (token) {
             const address = (await Authenticate.getUserAddress(this.network)).address
-            return await FleepVault.balance(address, token.address)
+            return Utils.fromWei(await FleepVault.balance(address, token.address))
         },
         balance: async function (token) {
             const address = (await Authenticate.getUserAddress(this.network)).address
-            return await FleepVault.savings(address, token.address)
+            return Utils.fromWei(await FleepVault.savings(address, token.address))
         }
     }
 }
@@ -275,7 +337,7 @@ section {
 }
 
 .deposit {
-    width: 140px;
+    width: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
